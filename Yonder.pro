@@ -91,3 +91,39 @@ RESOURCES += \
     yonder.qrc
 
 RC_FILE = yonder.rc
+
+OTHER_FILES += \
+    data/yonder.svg \
+    data/resource.sql \
+    data/resource.db \
+    icon/yonder.ico \
+    icon/yonder-256x256.png \
+    icon/yonder-128x128.png \
+    icon/yonder-64x64.png \
+    icon/yonder-32x32.png \
+    icon/yonder-16x16.png \
+    icon/splash.png \
+    icon/package-x-generic.png \
+    icon/media-skip-forward.png \
+    icon/media-skip-backward.png \
+    icon/media-seek-forward.png \
+    icon/media-seek-backward.png \
+    icon/media-playback-stop.png \
+    icon/media-playback-start.png \
+    icon/media-playback-pause.png \
+    icon/icon-special.png \
+    icon/icon-singleshot.png \
+    icon/icon-singleshot-start.png \
+    icon/icon-sfx.png \
+    icon/icon-sfx-start.png \
+    icon/icon-music.png \
+    icon/icon-music-start.png \
+    icon/icon-hotkeys.png \
+    icon/icon-hotkeys-start.png \
+    icon/icon-atmosphere.png \
+    icon/icon-atmosphere-start.png \
+    icon/folder.png \
+    icon/edit-delete.png \
+    icon/edit-clear.png \
+    icon/document-new.png \
+    icon/audio-x-generic.png
