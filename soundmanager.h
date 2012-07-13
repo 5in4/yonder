@@ -1,0 +1,80 @@
+#ifndef SOUNDMANAGER_H
+#define SOUNDMANAGER_H
+
+#include <QtCore>
+#include <QtGui/QProgressBar>
+#include <QtSql>
+#include <qapplication.h>
+
+#ifdef __WIN32
+#include <taglib.h>
+#elif __linux__
+#include <taglib/taglib.h>
+#else
+#include <taglib/taglib.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+#endif
+
+#include <vlc/vlc.h>
+
+#include <agmediacontainer.h>
+#include <model/librarymodel.h>
+#include <model/objectsmodel.h>
+#include <model/objectstracksmodel.h>
+
+class SoundManager : public QObject
+{
+Q_OBJECT
+public:
+    explicit SoundManager(QString project_path, QString identifier, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent = 0);
+    ~SoundManager();
+
+    enum tag { ARTIST, ALBUM, TITLE };
+
+    libvlc_instance_t *inst;
+
+    QSqlDatabase db;
+
+    QString project_path;
+    QString identifier;
+
+    QString library_identifier;
+    QString objects_identifier;
+    QString objects_tracks_identifier;
+    QString path;
+
+    QStringList accepted_mimetypes;
+    QString objects;
+    QString objects_tracks;
+    QStringList library_tracks;
+    int channels;
+    QList<AGMediaContainer*> media_container;
+
+    LibraryModel *library_model;
+    ObjectsModel *objects_model;
+    ObjectsTracksModel *objects_tracks_model;
+
+    virtual void createTables();
+    bool rescanLibrary();
+    bool createChannels(int channels);
+    bool setVolume(unsigned int volume);
+    bool updateDatabase(QString identifier, QString sql);
+    QString getTag(QString file, int field);
+    QString absoluteFilePath(QString relative);
+    QString relativeFilePath(QString absolute);
+
+    // status information
+    QProgressBar *progress_bar;
+
+private:
+    QStringList scanLibraryDirectory(QString dir);
+
+signals:
+    void playbackError(int channel);
+
+public slots:
+
+};
+
+#endif // SOUNDMANAGER_H

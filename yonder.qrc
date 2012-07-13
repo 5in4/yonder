@@ -1,0 +1,36 @@
+<RCC>
+    <qresource prefix="/application/icons">
+        <file alias="icon-atmosphere.png">icon/icon-atmosphere.png</file>
+        <file alias="icon-hotkeys.png">icon/icon-hotkeys.png</file>
+        <file alias="icon-music.png">icon/icon-music.png</file>
+        <file alias="icon-sfx.png">icon/icon-sfx.png</file>
+        <file alias="icon-singleshot.png">icon/icon-singleshot.png</file>
+        <file alias="yonder-16x16.png">icon/yonder-16x16.png</file>
+        <file alias="yonder-32x32.png">icon/yonder-32x32.png</file>
+        <file alias="yonder-64x64.png">icon/yonder-64x64.png</file>
+        <file alias="yonder-128x128.png">icon/yonder-128x128.png</file>
+        <file alias="yonder-256x256.png">icon/yonder-256x256.png</file>
+        <file alias="yonder.ico">icon/yonder.ico</file>
+        <file alias="edit-clear.png">icon/edit-clear.png</file>
+        <file alias="edit-delete.png">icon/edit-delete.png</file>
+        <file alias="edit-new.png">icon/document-new.png</file>
+        <file alias="audio-generic.png">icon/audio-x-generic.png</file>
+        <file alias="media-skip-forward.png">icon/media-skip-forward.png</file>
+        <file alias="media-playback-pause.png">icon/media-playback-pause.png</file>
+        <file alias="media-playback-start.png">icon/media-playback-start.png</file>
+        <file alias="media-playback-stop.png">icon/media-playback-stop.png</file>
+        <file alias="media-seek-backward.png">icon/media-seek-backward.png</file>
+        <file alias="media-seek-forward.png">icon/media-seek-forward.png</file>
+        <file alias="media-skip-backward.png">icon/media-skip-backward.png</file>
+        <file alias="icon-atmosphere-start.png">icon/icon-atmosphere-start.png</file>
+        <file alias="icon-hotkeys-start.png">icon/icon-hotkeys-start.png</file>
+        <file alias="icon-music-start.png">icon/icon-music-start.png</file>
+        <file alias="icon-sfx-start.png">icon/icon-sfx-start.png</file>
+        <file alias="icon-singleshot-start.png">icon/icon-singleshot-start.png</file>
+        <file alias="icon-special.png">icon/icon-special.png</file>
+        <file alias="splash.png">icon/splash.png</file>
+    </qresource>
+    <qresource prefix="/database/dump">
+        <file alias="resource.sql">data/resource.sql</file>
+    </qresource>
+</RCC>

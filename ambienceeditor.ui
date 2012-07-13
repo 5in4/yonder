@@ -1,0 +1,1728 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AmbienceEditor</class>
+ <widget class="QDialog" name="AmbienceEditor">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>990</width>
+    <height>750</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Yonder Ambience Editor</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="yonder.qrc">
+    <normaloff>:/application/icons/yonder-128x128.png</normaloff>:/application/icons/yonder-128x128.png</iconset>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item>
+    <layout class="QVBoxLayout" name="layout_wrapper">
+     <item>
+      <widget class="QTabWidget" name="tabs_ambienceeditor">
+       <property name="currentIndex">
+        <number>4</number>
+       </property>
+       <widget class="QWidget" name="music_tab">
+        <attribute name="icon">
+         <iconset resource="yonder.qrc">
+          <normaloff>:/application/icons/icon-music.png</normaloff>:/application/icons/icon-music.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>&amp;Music</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_5">
+         <item>
+          <widget class="QSplitter" name="splitter_music">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QWidget" name="layoutWidget_5">
+            <layout class="QVBoxLayout" name="layout_music_playlists">
+             <item>
+              <layout class="QHBoxLayout" name="layout_music_playlists_buttons">
+               <item>
+                <widget class="QLabel" name="label_music_playlists">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Playlists</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>music_playlists_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_music_playlist_add">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-new.png</normaloff>:/application/icons/edit-new.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+N</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_music_playlist_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="music_playlists_view">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_6">
+            <layout class="QVBoxLayout" name="layout_music_tracks">
+             <item>
+              <layout class="QHBoxLayout" name="layout_music_tracks_buttons">
+               <item>
+                <widget class="QLabel" name="label_music_tracks">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Tracks in Playlist</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>music_tracks_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_2">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_music_tracks_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="MusicPlaylistTracksView" name="music_tracks_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragDrop</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="verticalHeaderHighlightSections">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_7">
+            <layout class="QVBoxLayout" name="layout_music_library">
+             <item>
+              <layout class="QHBoxLayout" name="layout_music_library_buttons">
+               <item>
+                <widget class="QLabel" name="label_music_library">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Music library</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>music_library_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_3">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLineEditFilter" name="edit_music_filter">
+                 <property name="placeholderText">
+                  <string>filter</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_music_library_refresh">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Refresh</string>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="view-refresh">
+                   <normaloff/>
+                  </iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="MusicLibraryView" name="music_library_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="verticalHeaderHighlightSections">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="atmosphere_tab">
+        <attribute name="icon">
+         <iconset resource="yonder.qrc">
+          <normaloff>:/application/icons/icon-atmosphere.png</normaloff>:/application/icons/icon-atmosphere.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>&amp;Atmosphere</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QSplitter" name="splitter_atmosphere">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QWidget" name="layoutWidget_2">
+            <layout class="QVBoxLayout" name="layout_atmosphere_objects">
+             <item>
+              <layout class="QHBoxLayout" name="layout_atmosphere_object_buttons">
+               <item>
+                <widget class="QLabel" name="label_atmosphere_objects">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Atmosphere objects</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>atmosphere_objects_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_4">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_atmosphere_object_add">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-new.png</normaloff>:/application/icons/edit-new.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+N</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_atmosphere_object_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="atmosphere_objects_view">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_3">
+            <layout class="QVBoxLayout" name="layout_atmosphere_tracks">
+             <item>
+              <layout class="QHBoxLayout" name="layout_atmosphere_tracks_buttons">
+               <item>
+                <widget class="QLabel" name="label_atmosphere_tracks">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Tracks in object</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>atmosphere_tracks_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_5">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_atmosphere_tracks_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="AtmosphereObjectsTracksView" name="atmosphere_tracks_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragDrop</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_4">
+            <layout class="QVBoxLayout" name="layout_atmosphere_library">
+             <item>
+              <layout class="QHBoxLayout" name="layout_atmosphere_library_buttons">
+               <item>
+                <widget class="QLabel" name="label_atmosphere_library">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Atmosphere library</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>atmosphere_library_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLineEditFilter" name="edit_atmosphere_filter">
+                 <property name="placeholderText">
+                  <string>filter</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_atmosphere_library_refresh">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Refresh</string>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="view-refresh">
+                   <normaloff/>
+                  </iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="AtmosphereLibraryView" name="atmosphere_library_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="singleshot_tab">
+        <attribute name="icon">
+         <iconset resource="yonder.qrc">
+          <normaloff>:/application/icons/icon-singleshot.png</normaloff>:/application/icons/icon-singleshot.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>S&amp;ingleshots</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_6">
+         <item>
+          <widget class="QSplitter" name="splitter_singleshots">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QWidget" name="layoutWidget_13">
+            <layout class="QVBoxLayout" name="layout_singleshot_objects">
+             <item>
+              <layout class="QHBoxLayout" name="layout_singleshot_object_buttons">
+               <item>
+                <widget class="QLabel" name="label_singleshot_objects">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Singleshot objects</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>singleshot_objects_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_13">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_singleshot_object_add">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-new.png</normaloff>:/application/icons/edit-new.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+N</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_singleshot_object_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="singleshot_objects_view">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_15">
+            <layout class="QVBoxLayout" name="layout_singleshot_tracks">
+             <item>
+              <layout class="QHBoxLayout" name="layout_singleshot_tracks_buttons">
+               <item>
+                <widget class="QLabel" name="label_singleshot_tracks">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Tracks in object</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>singleshot_tracks_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_15">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_singleshot_tracks_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="SingleshotObjectsTracksView" name="singleshot_tracks_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragDrop</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_14">
+            <layout class="QVBoxLayout" name="layout_singleshot_library">
+             <item>
+              <layout class="QHBoxLayout" name="layout_singleshot_library_buttons">
+               <item>
+                <widget class="QLabel" name="label_singleshot_library">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Singleshot library</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>singleshot_library_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_14">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLineEditFilter" name="edit_singleshot_filter">
+                 <property name="placeholderText">
+                  <string>filter</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_singleshot_library_refresh">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Refresh</string>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="view-refresh">
+                   <normaloff/>
+                  </iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="SingleshotLibraryView" name="singleshot_library_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="sfx_tab">
+        <attribute name="icon">
+         <iconset resource="yonder.qrc">
+          <normaloff>:/application/icons/icon-sfx.png</normaloff>:/application/icons/icon-sfx.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>&amp;Sfx</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QSplitter" name="splitter_sfx">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QWidget" name="layoutWidget_8">
+            <layout class="QVBoxLayout" name="layout_sfx_objects">
+             <item>
+              <layout class="QHBoxLayout" name="layout_sfx_object_buttons">
+               <item>
+                <widget class="QLabel" name="label_sfx_objects">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Sfx objects</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>sfx_objects_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_sfx_object_add">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-new.png</normaloff>:/application/icons/edit-new.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+N</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_sfx_object_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QListView" name="sfx_objects_view">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget">
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <layout class="QHBoxLayout" name="layout_sfx_tracks_buttons">
+               <item>
+                <widget class="QLabel" name="label_sfx_tracks">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Tracks in object</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>sfx_tracks_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_sfx_tracks_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="SfxObjectsTracksView" name="sfx_tracks_view">
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DropOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_10">
+            <layout class="QVBoxLayout" name="layout_sfx_library">
+             <item>
+              <layout class="QHBoxLayout" name="layout_sfx_library_buttons">
+               <item>
+                <widget class="QLabel" name="label_sfx_library">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Sfx library</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>sfx_library_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLineEditFilter" name="edit_sfx_filter">
+                 <property name="placeholderText">
+                  <string>filter</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_sfx_library_refresh">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="text">
+                  <string>Refresh</string>
+                 </property>
+                 <property name="icon">
+                  <iconset theme="view-refresh">
+                   <normaloff/>
+                  </iconset>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="SfxLibraryView" name="sfx_library_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragEnabled">
+                <bool>true</bool>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DragOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="hotkeys_tab">
+        <attribute name="icon">
+         <iconset resource="yonder.qrc">
+          <normaloff>:/application/icons/icon-hotkeys.png</normaloff>:/application/icons/icon-hotkeys.png</iconset>
+        </attribute>
+        <attribute name="title">
+         <string>&amp;Hotkeys</string>
+        </attribute>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QSplitter" name="splitter_hotkeys">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QWidget" name="layoutWidget_9">
+            <layout class="QVBoxLayout" name="layout_hotkeys_hotkeys">
+             <item>
+              <layout class="QHBoxLayout" name="layout_hotkeys_hotkey_buttons">
+               <item>
+                <widget class="QLabel" name="label_hotkeys_hotkey">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Hotkeys</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>hotkeys_hotkey_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_10">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_hotkeys_hotkey_add">
+                 <property name="text">
+                  <string>Add</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-new.png</normaloff>:/application/icons/edit-new.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+N</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_hotkeys_hotkey_remove">
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Ctrl+Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QTableView" name="hotkeys_hotkey_view">
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SingleSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_11">
+            <layout class="QVBoxLayout" name="layout_hotkeys_actions">
+             <item>
+              <layout class="QHBoxLayout" name="layout_hotkeys_actions_buttons">
+               <item>
+                <widget class="QLabel" name="label_hotkeys_actions">
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Actions for hotkey</string>
+                 </property>
+                 <property name="buddy">
+                  <cstring>hotkeys_actions_view</cstring>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_11">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="button_hotkeys_actions_remove">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="text">
+                  <string>Remove</string>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="yonder.qrc">
+                   <normaloff>:/application/icons/edit-delete.png</normaloff>:/application/icons/edit-delete.png</iconset>
+                 </property>
+                 <property name="shortcut">
+                  <string>Del</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="HotkeysActionsView" name="hotkeys_actions_view">
+               <property name="editTriggers">
+                <set>QAbstractItemView::NoEditTriggers</set>
+               </property>
+               <property name="dragDropMode">
+                <enum>QAbstractItemView::DropOnly</enum>
+               </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
+               <property name="selectionMode">
+                <enum>QAbstractItemView::ExtendedSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <property name="showGrid">
+                <bool>false</bool>
+               </property>
+               <attribute name="horizontalHeaderStretchLastSection">
+                <bool>true</bool>
+               </attribute>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
+               <attribute name="verticalHeaderHighlightSections">
+                <bool>false</bool>
+               </attribute>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+           <widget class="QWidget" name="layoutWidget_12">
+            <layout class="QVBoxLayout" name="layout_hotkeys_library">
+             <item>
+              <layout class="QHBoxLayout" name="layout_hotkeys_library_buttons">
+               <item>
+                <widget class="QLabel" name="label_hotkey_library">
+                 <property name="enabled">
+                  <bool>true</bool>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>32</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <weight>75</weight>
+                   <bold>true</bold>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Available actions</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_12">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QToolBox" name="hotkeys_libraries_toolBox">
+               <widget class="QWidget" name="pageAtmosphere">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>315</width>
+                  <height>448</height>
+                 </rect>
+                </property>
+                <attribute name="icon">
+                 <iconset resource="yonder.qrc">
+                  <normaloff>:/application/icons/icon-atmosphere.png</normaloff>:/application/icons/icon-atmosphere.png</iconset>
+                </attribute>
+                <attribute name="label">
+                 <string>Atmosphere</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <item>
+                  <widget class="HotkeysLibraryAtmosphereView" name="hotkeys_library_atmosphere_view">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragOnly</enum>
+                   </property>
+                   <property name="alternatingRowColors">
+                    <bool>true</bool>
+                   </property>
+                   <property name="selectionBehavior">
+                    <enum>QAbstractItemView::SelectRows</enum>
+                   </property>
+                   <property name="showGrid">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="horizontalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>true</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="pageSfx">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>98</width>
+                  <height>97</height>
+                 </rect>
+                </property>
+                <attribute name="icon">
+                 <iconset resource="yonder.qrc">
+                  <normaloff>:/application/icons/icon-sfx.png</normaloff>:/application/icons/icon-sfx.png</iconset>
+                </attribute>
+                <attribute name="label">
+                 <string>Sfx</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_8">
+                 <item>
+                  <widget class="HotkeysLibrarySfxView" name="hotkeys_library_sfx_view">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragOnly</enum>
+                   </property>
+                   <property name="alternatingRowColors">
+                    <bool>true</bool>
+                   </property>
+                   <property name="showGrid">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="horizontalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>true</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="pageSingleshots">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>98</width>
+                  <height>97</height>
+                 </rect>
+                </property>
+                <attribute name="icon">
+                 <iconset resource="yonder.qrc">
+                  <normaloff>:/application/icons/icon-singleshot.png</normaloff>:/application/icons/icon-singleshot.png</iconset>
+                </attribute>
+                <attribute name="label">
+                 <string>Singleshots</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_9">
+                 <item>
+                  <widget class="HotkeysLibrarySingleshotView" name="hotkeys_library_singleshot_view">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragOnly</enum>
+                   </property>
+                   <property name="alternatingRowColors">
+                    <bool>true</bool>
+                   </property>
+                   <property name="showGrid">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="horizontalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>true</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="pageMusic">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>98</width>
+                  <height>97</height>
+                 </rect>
+                </property>
+                <attribute name="icon">
+                 <iconset resource="yonder.qrc">
+                  <normaloff>:/application/icons/icon-music.png</normaloff>:/application/icons/icon-music.png</iconset>
+                </attribute>
+                <attribute name="label">
+                 <string>Music</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_10">
+                 <item>
+                  <widget class="HotkeysLibraryMusicView" name="hotkeys_library_music_view">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragOnly</enum>
+                   </property>
+                   <property name="alternatingRowColors">
+                    <bool>true</bool>
+                   </property>
+                   <property name="showGrid">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="horizontalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>true</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+               <widget class="QWidget" name="pageSpecial">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>98</width>
+                  <height>97</height>
+                 </rect>
+                </property>
+                <attribute name="icon">
+                 <iconset resource="yonder.qrc">
+                  <normaloff>:/application/icons/icon-special.png</normaloff>:/application/icons/icon-special.png</iconset>
+                </attribute>
+                <attribute name="label">
+                 <string>Special actions</string>
+                </attribute>
+                <layout class="QHBoxLayout" name="horizontalLayout_11">
+                 <item>
+                  <widget class="HotkeysLibrarySpecialView" name="hotkeys_library_special_view">
+                   <property name="dragEnabled">
+                    <bool>true</bool>
+                   </property>
+                   <property name="dragDropMode">
+                    <enum>QAbstractItemView::DragOnly</enum>
+                   </property>
+                   <property name="alternatingRowColors">
+                    <bool>true</bool>
+                   </property>
+                   <property name="showGrid">
+                    <bool>false</bool>
+                   </property>
+                   <attribute name="horizontalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                   <attribute name="horizontalHeaderStretchLastSection">
+                    <bool>true</bool>
+                   </attribute>
+                   <attribute name="verticalHeaderVisible">
+                    <bool>false</bool>
+                   </attribute>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="layout_button_close">
+       <item>
+        <widget class="AGPreviewPushButton" name="preview_play_pause">
+         <property name="acceptDrops">
+          <bool>true</bool>
+         </property>
+         <property name="text">
+          <string>Drop to preview</string>
+         </property>
+         <property name="icon">
+          <iconset resource="yonder.qrc">
+           <normaloff>:/application/icons/media-playback-start.png</normaloff>
+           <normalon>:/application/icons/media-playback-stop.png</normalon>:/application/icons/media-playback-start.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSlider" name="preview_seek">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer_button_close">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button_close">
+         <property name="text">
+          <string>Close</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MusicPlaylistTracksView</class>
+   <extends>QTableView</extends>
+   <header>view/musicplaylisttracksview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>MusicLibraryView</class>
+   <extends>QTableView</extends>
+   <header>view/musiclibraryview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AtmosphereLibraryView</class>
+   <extends>QTableView</extends>
+   <header>view/atmospherelibraryview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AtmosphereObjectsTracksView</class>
+   <extends>QTableView</extends>
+   <header>view/atmosphereobjectstracksview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SfxLibraryView</class>
+   <extends>QTableView</extends>
+   <header>view/sfxlibraryview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SfxObjectsTracksView</class>
+   <extends>QTableView</extends>
+   <header>view/sfxobjectstracksview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysActionsView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeysactionsview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysLibraryAtmosphereView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeyslibraryatmosphereview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SingleshotLibraryView</class>
+   <extends>QTableView</extends>
+   <header>view/singleshotlibraryview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>SingleshotObjectsTracksView</class>
+   <extends>QTableView</extends>
+   <header>view/singleshotobjectstracksview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysLibrarySfxView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeyslibrarysfxview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysLibrarySingleshotView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeyslibrarysingleshotview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysLibraryMusicView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeyslibrarymusicview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>HotkeysLibrarySpecialView</class>
+   <extends>QTableView</extends>
+   <header>view/hotkeyslibraryspecialview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>AGPreviewPushButton</class>
+   <extends>QPushButton</extends>
+   <header>view/agpreviewpushbutton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QLineEditFilter</class>
+   <extends>QLineEdit</extends>
+   <header>view/qlineeditfilter.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="yonder.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>button_close</sender>
+   <signal>clicked()</signal>
+   <receiver>AmbienceEditor</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>936</x>
+     <y>725</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>AmbienceEditor</sender>
+   <signal>rejected()</signal>
+   <receiver>AmbienceEditor</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>494</x>
+     <y>374</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>494</x>
+     <y>374</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
