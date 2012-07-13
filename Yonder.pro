@@ -126,4 +126,12 @@ OTHER_FILES += \
     icon/edit-delete.png \
     icon/edit-clear.png \
     icon/document-new.png \
-    icon/audio-x-generic.png
+    icon/audio-x-generic.png \
+    data/style.css \
+    data/Ostrich Regular.ttf \
+    data/manual/yonder.png \
+    data/manual/sfx-concept.svg \
+    data/manual/sfx-concept.png \
+    data/manual/resourcebrowser.png \
+    data/manual/index.htm \
+    data/manual/ambienceeditor-hotkeys.png
