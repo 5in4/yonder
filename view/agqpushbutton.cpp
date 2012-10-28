@@ -5,6 +5,9 @@ AGQPushButton::AGQPushButton(int pos_in_array, QWidget *parent): QPushButton(par
     oid = 0;
     setPosInArray(pos_in_array);
     connect(this, SIGNAL(toggled(bool)), this, SLOT(emitToggled(bool)));
+
+    standard_style = "text-align: left;";
+    highlighted_style = QString("%1 color: red;").arg(standard_style);
 }
 
 
@@ -78,14 +81,24 @@ void AGQPushButton::setText(const QString &text)
 QString AGQPushButton::text() const
 {
     if (isRichText) {
-        QTextDocument richText;
-        richText.setHtml(htmlText);
-        //return richText.toPlainText();
+//        QTextDocument richText;
+//        richText.setHtml(htmlText);
+//        return richText.toPlainText();
         return QString("");
     } else {
         return QPushButton::text();
     }
 }
+
+
+QString AGQPushButton::label() {
+    if(isRichText) {
+        return htmlText;
+    } else {
+        return QPushButton::text();
+    }
+}
+
 
 void AGQPushButton::paintEvent(QPaintEvent *event)
 {
@@ -119,6 +132,7 @@ void AGQPushButton::paintEvent(QPaintEvent *event)
     }
 }
 
+
 QStyleOptionButton AGQPushButton::getStyleOption() const
 {
     QStyleOptionButton opt;
@@ -142,4 +156,14 @@ QStyleOptionButton AGQPushButton::getStyleOption() const
     opt.icon = icon();
     opt.iconSize = iconSize();
     return opt;
+}
+
+
+void AGQPushButton::setStandardStyle() {
+    setStyleSheet(standard_style);
+}
+
+
+void AGQPushButton::setHighlightedStyle() {
+    setStyleSheet(highlighted_style);
 }

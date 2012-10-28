@@ -3,15 +3,14 @@
 
 #include <QtCore>
 
-#include <vlc/vlc.h>
-
+#include <mediamanager.h>
 #include <soundmanager.h>
 
 class MusicManager : public SoundManager
 {
 Q_OBJECT
 public:
-    MusicManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent);
+    MusicManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent);
 
 public slots:
     bool enqueue();

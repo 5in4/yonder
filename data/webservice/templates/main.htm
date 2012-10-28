@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{ page_title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="static/jquery.mobile.min.css" rel="stylesheet">
+    <link href="static/screen.css" rel="stylesheet">
+    <script src="static/jquery.min.js"></script>
+    <script src="static/jquery.mobile.min.js"></script>
+    <script src="static/manager.js"></script>
+  </head>
+  <body data-role="page" data-update-interval="{{ update_interval }}">
+
+    <div data-role="header">
+      <h1>{{ webapp_title }}</h1>
+    </div>
+
+    <div data-role="content">
+      <fieldset id="hotkeys-list">
+        <legend>Hotkeys</legend>
+
+      </fieldset>
+
+      <fieldset id="atmosphere-list">
+        <legend>Atmosphere</legend>
+
+      </fieldset>
+
+      <fieldset id="singleshots-list">
+        <legend>Singleshots</legend>
+
+      </fieldset>
+
+      <fieldset id="sfx-list">
+        <legend>Sfx</legend>
+
+      </fieldset>
+
+      <label for="update-switch">Update interface</label>
+      <select name="update-switch" id="update-switch" data-role="slider">
+        <option value="on">On</option>
+        <option value="off">Off</option>
+      </select>
+    </div>
+  </body>
+</html>

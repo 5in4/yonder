@@ -1,17 +1,12 @@
-#include <resourcebrowser.h>
-#include <ui_resourcebrowser.h>
+#include "frameresourcebrowser.h"
+#include "ui_frameresourcebrowser.h"
 
-extern QString WEBADDRESS;
-
-ResourceBrowser::ResourceBrowser(QString config_path, QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::ResourceBrowser)
+FrameResourceBrowser::FrameResourceBrowser(QWidget *parent) :
+    FrameObject(parent),
+    ui(new Ui::FrameResourceBrowser)
 {
     ui->setupUi(this);
 
-    this->config_path = config_path;
-
-    QString db_absolute_name = QString("%1/yonder_resource.db").arg(config_path);
     QFile res_db_dump_raw(QString(":/database/dump/resource.sql"));
     res_db_dump_raw.open(QIODevice::ReadOnly);
 
@@ -57,17 +52,18 @@ ResourceBrowser::ResourceBrowser(QString config_path, QWidget *parent) :
     connect(ui->resource_data_view, SIGNAL(anchorClicked(QUrl)), this, SLOT(openPage(QUrl)));
 }
 
-void ResourceBrowser::openPage(QUrl url) {
+
+void FrameResourceBrowser::openPage(QUrl url) {
     QDesktopServices::openUrl(url);
 }
 
 
-void ResourceBrowser::openPage(QString url_string) {
+void FrameResourceBrowser::openPage(QString url_string) {
     openPage(QUrl(url_string));
 }
 
 
-void ResourceBrowser::itemClicked(QModelIndex index) {
+void FrameResourceBrowser::itemClicked(QModelIndex index) {
     QString resource_url = resource_model->index(index.row(), 1).data().toString();
     QString resource_title = resource_model->index(index.row(), 2).data().toString();
     QString resource_description = resource_model->index(index.row(), 3).data().toString();
@@ -77,7 +73,7 @@ void ResourceBrowser::itemClicked(QModelIndex index) {
 }
 
 
-void ResourceBrowser::applyFilter() {
+void FrameResourceBrowser::applyFilter() {
     QString filter;
     QStringList search_substrings = ui->lineedit_search->text().split(" ");
     foreach(QString sub, search_substrings) {
@@ -115,8 +111,7 @@ void ResourceBrowser::applyFilter() {
 }
 
 
-ResourceBrowser::~ResourceBrowser()
+FrameResourceBrowser::~FrameResourceBrowser()
 {
-    res_db.close();
     delete ui;
 }

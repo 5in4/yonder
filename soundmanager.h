@@ -10,15 +10,16 @@
 #include <taglib.h>
 #elif __linux__
 #include <taglib/taglib.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
 #else
 #include <taglib/taglib.h>
 #include <taglib/fileref.h>
 #include <taglib/tag.h>
 #endif
 
-#include <vlc/vlc.h>
-
 #include <agmediacontainer.h>
+#include <mediamanager.h>
 #include <model/librarymodel.h>
 #include <model/objectsmodel.h>
 #include <model/objectstracksmodel.h>
@@ -27,12 +28,10 @@ class SoundManager : public QObject
 {
 Q_OBJECT
 public:
-    explicit SoundManager(QString project_path, QString identifier, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent = 0);
+    explicit SoundManager(QString project_path, QString identifier, QSqlDatabase db, MediaManager *media, QObject *parent = 0);
     ~SoundManager();
 
     enum tag { ARTIST, ALBUM, TITLE };
-
-    libvlc_instance_t *inst;
 
     QSqlDatabase db;
 
@@ -49,7 +48,8 @@ public:
     QString objects_tracks;
     QStringList library_tracks;
     int channels;
-    QList<AGMediaContainer*> media_container;
+    MediaManager *media;
+    QList<MediaContainer *> container;
 
     LibraryModel *library_model;
     ObjectsModel *objects_model;
@@ -72,6 +72,7 @@ private:
 
 signals:
     void playbackError(int channel);
+    void loadingStatus(int now, int max);
 
 public slots:
 

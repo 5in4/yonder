@@ -12,6 +12,8 @@
 #include <QMenu>
 #include <QStylePainter>
 
+#include <QDebug>
+
 class AGQPushButton: public QPushButton
 {
     Q_OBJECT
@@ -30,7 +32,12 @@ public:
     // rich text
     void setHtml(const QString &text);
     void setText(const QString &text);
+    QString label();
     QString text() const;
+    QString htmlText;
+
+    QString standard_style;
+    QString highlighted_style;
 
 protected:
     void paintEvent(QPaintEvent *);
@@ -38,12 +45,13 @@ protected:
 public slots:
     void emitToggled(bool checked);
     void setUnChecked();
+    void setStandardStyle();
+    void setHighlightedStyle();
 
 signals:
     void toggled(int pos_in_array, bool checked);
 
 private:
-    QString htmlText;
     bool isRichText;
     QStyleOptionButton getStyleOption() const;
 

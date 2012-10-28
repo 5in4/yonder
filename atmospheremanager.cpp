@@ -1,10 +1,10 @@
-#include <atmospheremanager.h>
+#include "atmospheremanager.h"
 
 
 /*!
  * Performs default startup
  */
-AtmosphereManager::AtmosphereManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent): SoundManager(project_path, QString("atmosphere"), db, progress_bar, parent)
+AtmosphereManager::AtmosphereManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent): SoundManager(project_path, QString("atmosphere"), db, media, parent)
 {
     this->createTables();
 
@@ -42,13 +42,18 @@ void AtmosphereManager::createObjectsList() {
  */
 void AtmosphereManager::createChannels() {
     for(int i=0; i<this->objects.length(); i++) {
-        media_container.append(new AGMediaContainer(inst ,this));
-        media_container.at(i)->setOID(objects.at(i)[0].toInt());
-        media_container.at(i)->setChannel(i);
+//        media_container.append(new AGMediaContainer(inst ,this));
+//        media_container.at(i)->setOID(objects.at(i)[0].toInt());
+//        media_container.at(i)->setChannel(i);
+
+        container.append(media->createContainer());
+        container.at(i)->setOID(objects.at(i)[0].toInt());
+        container.at(i)->setChannel(i);
         channels++;
         //enqueue(media_container.at(i)->getChannel());
         //connect(media_container.at(i), SIGNAL(aboutToFinish(int)), this, SLOT(enqueue(int)));
-        connect(media_container.at(i), SIGNAL(finished(int)), this, SLOT(play(int)));
+        //connect(media_container.at(i), SIGNAL(finished(int)), this, SLOT(play(int)));
+        connect(container.at(i), SIGNAL(finished(int)), this, SLOT(play(int)));
     }
 
 }
@@ -58,7 +63,8 @@ void AtmosphereManager::createChannels() {
  * Changes channel state to opposite
  */
 void AtmosphereManager::playPause(int channel) {
-    if(media_container.at(channel)->state() == libvlc_Playing) {
+    if(container.at(channel)->isPlaying() == true) {
+//    if(media_container.at(channel)->state() == libvlc_Playing) {
         pause(channel);
     } else {
         play(channel);
@@ -70,14 +76,16 @@ void AtmosphereManager::playPause(int channel) {
  * Starts playing on channel
  */
 void AtmosphereManager::play(int channel) {
-    if(media_container.at(channel)->getCurrentFilename().isEmpty()) {
+    if(container.at(channel)->getCurrentFilename().isEmpty()) {
+//    if(media_container.at(channel)->getCurrentFilename().isEmpty()) {
         if(!enqueue(channel)) {
             qDebug() << identifier << "nothing to play on channel" << channel;
             emit playbackError(channel);
             return;
         }
     }
-    media_container.at(channel)->play();
+    container.at(channel)->play();
+    //media_container.at(channel)->play();
     qDebug() << identifier << "playing on channel" << channel;
 }
 
@@ -86,7 +94,8 @@ void AtmosphereManager::play(int channel) {
  * Pauses on channel
  */
 void AtmosphereManager::pause(int channel) {
-    media_container.at(channel)->pause();
+    container.at(channel)->pause();
+    //    media_container.at(channel)->pause();
     qDebug() << identifier << "pausing on channel" << channel;
 }
 
@@ -95,7 +104,8 @@ void AtmosphereManager::pause(int channel) {
  * Enqueues track on channel
  */
 bool AtmosphereManager::enqueue(int channel) {
-    objects_tracks_model->selectObject(media_container.at(channel)->getOID());
+    objects_tracks_model->selectObject(container.at(channel)->getOID());
+//    objects_tracks_model->selectObject(media_container.at(channel)->getOID());
     int tid = objects_tracks_model->selectRandomTrack();
     QString current_library_filter = library_model->filter();
     library_model->setFilter(QString("id=%1").arg(tid));
@@ -104,7 +114,8 @@ bool AtmosphereManager::enqueue(int channel) {
     if(choice_filename.isEmpty()) {
         return false;
     }
-    media_container.at(channel)->enqueue(absoluteFilePath(choice_filename));
+    container.at(channel)->loadFile(absoluteFilePath(choice_filename));
+//    media_container.at(channel)->enqueue(absoluteFilePath(choice_filename));
 //    if(media_container.at(channel)->virtual_state() == libvlc_Playing) {
 //        media_container.at(channel)->play();
 //    }

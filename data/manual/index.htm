@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Yonder Documentation</title>
+</head>
+<body>
+<h1>Concept</h1>
+<p>Yonder is a easy to use application to create realistic sound amtospheres for pen&paper roleplaying games.</p>
+<p>It differentiates between four basic types of events: <strong>Music,</strong> <strong>Atmosphere,</strong> <strong>Singleshots</strong> and <strong>Sfx.</strong> These types are individually mixed together to create the atmosphere suiting your needs. The exact purpose of each of these events will be described later.
+</p>
+<p>These four event types are always part of a project, which is located in a folder on your file system.
+</p>
+<p>Each event contains objects, which are a pool of tracks that belong together (think of playlists in media players like iTunes or Winamp).
+</p>
+<p>Yonder does not come with any sound files, but with a <strong>Resource Browser</strong> with links to online resources which makes your first steps at building your own sound database much easier.
+</p>
+<p><strong>Note:</strong> This is the very first version of Yonder. It is limited in its functionality, but provides the basic features needed for ambience sound generation. Features will improve in future releases.
+</p>
+
+<h1>Using Yonder</h1>
+    <h2>First start</h2>
+        <p>When starting Yonder for the first time, it will ask you for a project folder. Pick a empty folder where you want your project to be located. Inside the project folder, three subfolders will be created, one for your music files, one for atmospheres and one for singleshots and sfx files.
+        </p>
+        <p>Everything you need to run a project is located inside this project folder. If you want to open it from another computer, just copy this folder and you are ready to go.
+        </p>
+        <p>Copy the media files you want to use with your project to the according locations, Yonder will automatically add them to your project library when the <strong>Ambience Editor</strong> starts.
+        </p>
+        
+    <h2>Main Window</h2>
+        <h3>Hotkeys</h3>
+            <p>All your hotkeys are displayed here. Activate a hotkey by clicking on it or pressing the key-combination displayed on the button. When pressing down a hotkey, every action defined in <strong>Ambience Editor</strong> will be started and all special actions will be launched. After releasing the hotkey, all actions will be stopped and special actions will be launched again.</p>
+        <h3>Music</h3>
+            <p>In this section you can choose from which playlist music will be played. When a track is playing, its meta information and progress are displayed.</p>
+        <h3>Atmosphere</h3>
+            <p>For each defined atmosphere action, one button is being displayed. After activating a atmosphere action, all the tracks of this action will be looped at a random order. Each action always plays only one sound at a time, but you can start as many atmosphere actions as you want simultaniously.</p>
+            <p>This sound type is great for simulating long and looping sounds like wind, rain or ocean waves.</p>
+        <h3>Singleshots</h3>
+            <p>When a singleshot action is activated, one of the tracks assigned to this action plays one time. After the track has finished, the singleshot action deactivates itself.</p>
+            <p>Singleshots are particularly nice for events only occurring once, like big explosions or loud screams.</p>
+        <h3>Sfx</h3>
+            <p>One Sfx-object may contain several tracks which will play at a random time in a range you decide on. After a track from a Sfx-object finishes, it will start playing again in the random range.</p>
+            <p>The Sfx event type ist the most flexible amongst all others. With Sfx events you can easily simulate a battlefield, or a deep jungle with various different sound. If you put some time in configuring your Sfx events, your atmosphere will become much more realistic and credible.</p>
+
+    <h2>Ambience Editor</h2>
+        <p>Start the Ambience Editor by pressing <strong>Yonder => Ambience Editor</strong> in the menu bar or by hitting the hotkey <strong>Ctrl + E</strong>.</p>
+        <p>The editing area is basically the same for all event types and Hotkeys.</p>
+        <p>On the left pane you can see all the objects existing for this event type. Add or remove objects by clicking on the corresponding buttons above the list. You can always rename objects by doubleclicking on them.</p>
+        <p>On the right pane you can see the whole library for this event type (in the Hotkeys section, this is a bit different. Have a look at the Hotkeys section for further explanation!). There is a small box above the libraries, where you can search for a specific track.</p>
+        <p>The middle pane displays all tracks you added to an object.</p>
+        <p>To add a track to an object, drag it from the library to the middle pane.</p>
+        <p>If you want to remove tracks from a object, select them and hit remove.</p>
+        <p>To preview a track, you can always drag it to the <strong>preview button</strong> on the bottom left and it will start playing instantly. Press the preview button to pause or resume the preview.</p>
+        <h3>Sfx</h3>
+            <p>In the Sfx »tracks in object« section, you've got some more options to fine tune your sounds.</p>
+            <p>A sound in a object will wait for the number of seconds in the colum »pause« before it actually starts playing. To make it more random, you can provide a lower and a upper boundary, in which the pause will bi altered.</p>
+            <p><strong>Example:</strong> A sound has a pause of 10 seconds before it will start playing. You povide a lower boundary of 2 seconds and a upper boundary of 5 seconds. The actual pause of the sound will be somewhere between 8 and 15 seconds.</p>
+            <p>Admittedly, these options are somewhere basic for now, but will improve in future versions of Yonder.</p>
+        <h3>Hotkeys</h3>
+            <p>Admittedly, these options are somewhere basic for now, but will improve in future versions of Yonder.</p>
+            <p>Drag the objects and special actions you want to use with your hotkey to the middle pane.</p>
+            <p>When activating a hotkey, its contents will be processed in the order they appear, that means if you want to start playing music off a specific playlist, you will have to change the playlist first, and then start playing music. Otherwise Yonder will start playing from the previous playlist and change to the new one after that.</p>
+            <p>You may assign a shortcut of your choice to each hotkey. Type the shortcut in the second cloumn of your hotkey objects.</p>
+            <p>Provide shortcuts in the following format: <strong>modifier key + character</strong>. You may use as many modifiers and characters as you want, as long as they are concatenated with a <strong>+</strong> character. Capitalization does not matter.</p>
+            <p><strong>Note:</strong> If a shortcut is already taken by Yonder itself (like <strong>Ctrl + Q</strong>), it will be omitted.</p>
+            <p>Modifier keys are:</p>
+            <ul>
+                <li>Ctrl</li>
+                <li>Alt</li>
+                <li>Shift</li>
+                <li>Meta (also known as Windows/Super key)</li>
+            </ul>
+            <p><strong>Example:</strong> Shortcuts could be: <strong>Ctrl+S, Alt+T+I+K, Ctrl+Meta+Alt+N</strong></p>
+
+    <h2>Resource Browser</h2>
+        <p>The Resource Browser is a small database that helps you finding new music and sfx sounds for your projects.</p>
+        <p>Start the Resource Browser by pressing <strong>Yonder => Resource Browser</strong> in the menu bar or by hitting the hotkey <strong>Ctrl + R</strong>.</p>
+        <p>Its filtering options make it easy to find the right files for your project. You can enter a searchphrase if you've got an idea of what you are looking for, and filter by the type of sound you need.</p>
+        <p>If you know of any other good resource, please tell us about it on our forums at <a href="http://yonderfx.com/forums/">yonderfx.com!</a></p>
+
+    <h2>Tricks and tips</h2>
+        <ul>
+            <li>You don't need to copy all your soundfiles to your project folder, linking works, too. Unfortunately this makes your project unportable to other machines.</li>
+            <li>Tagging your soundfiles properly makes it much easier to find the by filtering. Nice tag editors are <a href="http://www.mp3tag.de/en/index.html">Mp3tag</a> for Windows and <a href="http://easytag.sourceforge.net/">EasyTag</a> for Linux.
+</li>
+        </ul>
+</body>

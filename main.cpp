@@ -1,9 +1,8 @@
 #include <QtGui/QApplication>
-#include <QtGui/QMessageBox>
 #include <ambiencegenerator.h>
 
 QString NAME = "Yonder";
-QString VERSION = "1.0.2";
+QString VERSION = "1.1";
 QString ACTION_KEY = "";
 QString AUTHOR = "Dominik Seemann";
 QString WEBADDRESS = "http://yonderfx.com/";

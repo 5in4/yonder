@@ -8,6 +8,9 @@ class ObjectsModel : public QSqlTableModel
 public:
     ObjectsModel(QString identifier);
 
+    bool removeRow(int row);
+    bool removeRow(int row, const QModelIndex &parent);
+
     bool addObject(QString name);
 };
 

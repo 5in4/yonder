@@ -5,8 +5,7 @@
 
 #include <QtCore>
 
-#include <vlc/vlc.h>
-
+#include <mediamanager.h>
 #include <soundmanager.h>
 
 
@@ -14,15 +13,15 @@ class SfxManager: public SoundManager
 {
 Q_OBJECT
 public:
-    SfxManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent);
+    SfxManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent);
 
     QList<QStringList> objects;
     QList<QStringList> objects_tracks;
-    QList<int> objects_status;
+    QList<bool> objects_status;
     QList<int> objects_range_start;
     QList<int> objects_range_stop;
 
-    QList<int> channels_status;
+    QList<bool> channels_status;
 
     QSignalMapper *mapper;
 

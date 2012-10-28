@@ -19,15 +19,21 @@
 #include <taglib/tag.h>
 #endif
 
-#include <view/agqpushbutton.h>
-#include <ambienceeditor.h>
-#include <resourcebrowser.h>
-#include <projectselector.h>
+#include <framestart.h>
+#include <framegenerator.h>
+#include <frameeditor.h>
+#include <frameresourcebrowser.h>
+#include <frameconfigure.h>
+#include <framehelp.h>
+
+#include <mediamanager.h>
 #include <atmospheremanager.h>
 #include <hotkeysmanager.h>
 #include <musicmanager.h>
 #include <sfxmanager.h>
 #include <singleshotmanager.h>
+
+#include <webapp.h>
 
 namespace Ui {
     class AmbienceGenerator;
@@ -41,18 +47,21 @@ public:
     explicit AmbienceGenerator(QSplashScreen *splash_screen, QWidget *parent = 0);
     ~AmbienceGenerator();
 
-    QProgressBar *progress_bar;
+    FrameStart *start_frame;
+    FrameGenerator *generator_frame;
+    FrameEditor *editor_frame;
+    FrameResourceBrowser *resource_frame;
+    FrameConfigure *configure_frame;
+    FrameHelp *help_frame;
 
+    MediaManager *media;
     AtmosphereManager *atmosphere;
     HotkeysManager *hotkeys;
     MusicManager *music;
     SfxManager *sfx;
     SingleshotManager *singleshot;
 
-    QList<AGQPushButton*> atmosphere_buttons;
-    QList<AGQPushButton*> sfx_buttons;
-    QList<AGQPushButton*> singleshot_buttons;
-    QList<AGQPushButton*> hotkeys_buttons;
+    Webapp *webapp;
 
     QString config_path;
     QString project_path;
@@ -63,46 +72,26 @@ public:
     Ui::AmbienceGenerator *ui;
 
 public slots:
-    void setProjectSlot();
+    void applyStylesheet();
     void ambienceEditor();
-    void resourceBrowser();
-    bool prepareExit();
     void openOnlineHelp();
-    void showAbout();
 
-    void atmosphereControl(int pos_in_array, bool checked);
-    void atmosphereCreateButtons();
-    void atmosphereSetVolume();
+    void setProject(QString project_path);
 
-    void musicSetPlaylist(int index);
-    void musicNext();
-    void musicSetVolume();
-    void musicSetSeek(int time, int length);
-    void musicTrackChanged();
-    void musicPlayPause();
-
-    void sfxControl(int pos_in_array, bool checked);
-    void sfxCreateButtons();
-    void sfxSetVolume();
-
-    void singleshotControl(int pos_in_array, bool checked);
-    void singleshotCreateButtons();
-    void singleshotSetVolume();
-
-    void hotkeysCreateButtons();
-    void hotkeysControl(int pos_in_array, bool checked);
+    void webappStart();
+    void webappStop();
+    void webappOpenUrl();
 
 private:
-    void closeEvent(QCloseEvent *event);
-    void setProject(QString project_path, bool force_dialog=false);
-
-    QSettings settings;
     QNetworkAccessManager *update_manager;
     QNetworkReply *update_reply;
 
 private slots:
     void checkUpdate();
     void checkUpdateProcess(QNetworkReply *rep);
+
+protected:
+    void resizeEvent(QResizeEvent *event);
 
 };
 

@@ -12,7 +12,7 @@ void AGHotkeyActionDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 
     QStyle *style = optionV4.widget? optionV4.widget->style() : QApplication::style();
 
-    QSqlQuery query(QSqlDatabase::database("res_db"));
+    QSqlQuery query(QSqlDatabase::database());
     QString query_string = QString("SELECT id, \"atmosphere_objects\" AS `table`, name FROM atmosphere_objects WHERE `table` = (SELECT section FROM hotkeys_objects_actions WHERE `id` = %1) AND `id` = (SELECT aid FROM hotkeys_objects_actions WHERE `id` = %1) UNION SELECT id, \"music_objects\" AS `table`, name FROM music_objects WHERE `table` = (SELECT section FROM hotkeys_objects_actions WHERE `id` = %1) AND `id` = (SELECT aid FROM hotkeys_objects_actions WHERE `id` = %1) UNION SELECT id, \"sfx_objects\" AS `table`, name FROM sfx_objects WHERE `table` = (SELECT section FROM hotkeys_objects_actions WHERE `id` = %1) AND `id` = (SELECT aid FROM hotkeys_objects_actions WHERE `id` = %1) UNION SELECT id, \"singleshot_objects\" AS `table`, name FROM singleshot_objects WHERE `table` = (SELECT section FROM hotkeys_objects_actions WHERE `id` = %1) AND `id` = (SELECT aid FROM hotkeys_objects_actions WHERE `id` = %1) UNION SELECT id, \"special_objects\" AS `table`, name FROM special_objects WHERE `table` = (SELECT section FROM hotkeys_objects_actions WHERE `id` = %1) AND `id` = (SELECT aid FROM hotkeys_objects_actions WHERE `id` = %1)").arg(index.data().toInt());
     query.prepare(query_string);
     query.exec();

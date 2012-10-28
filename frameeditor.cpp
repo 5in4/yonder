@@ -1,8 +1,9 @@
-#include <ambienceeditor.h>
-#include <ui_ambienceeditor.h>
+#include "frameeditor.h"
+#include "ui_frameeditor.h"
 
-AmbienceEditor::AmbienceEditor(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot, HotkeysManager *hotkeys, QWidget *parent) : QDialog(parent),
-    ui(new Ui::AmbienceEditor)
+FrameEditor::FrameEditor(MediaManager *media, QWidget *parent) :
+    FrameObject(parent),
+    ui(new Ui::FrameEditor)
 {
     ui->setupUi(this);
 
@@ -12,20 +13,44 @@ AmbienceEditor::AmbienceEditor(AtmosphereManager *atmosphere, SfxManager *sfx, M
     ui->button_singleshot_library_refresh->hide();
     ui->button_music_library_refresh->hide();
 
-    QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
 
-    restoreGeometry(settings.value("EditorWindow/geometry").toByteArray());
     ui->tabs_ambienceeditor->setCurrentIndex(settings.value("EditorWindow/tab_active", 0).toInt());
 
     // Splitters
-    ui->splitter_atmosphere->restoreState(settings.value("EditorWindow/atmosphere_splitter").toByteArray());
-    ui->splitter_sfx->restoreState(settings.value("EditorWindow/sfx_splitter").toByteArray());
-    ui->splitter_singleshots->restoreState(settings.value("EditorWindow/singleshots_splitter").toByteArray());
-    ui->splitter_music->restoreState(settings.value("EditorWindow/music_splitter").toByteArray());
-    ui->splitter_hotkeys->restoreState(settings.value("EditorWindow/hotkeys_splitter").toByteArray());
-    ui->hotkeys_libraries_toolBox->setCurrentIndex(settings.value("EditorWindow/hotkeys_toolbox", 0).toInt());
+    ui->splitter_atmosphere->restoreState(settings.value("EditorFrame/atmosphere_splitter").toByteArray());
+    ui->splitter_sfx->restoreState(settings.value("EditorFrame/sfx_splitter").toByteArray());
+    ui->splitter_singleshots->restoreState(settings.value("EditorFrame/singleshots_splitter").toByteArray());
+    ui->splitter_music->restoreState(settings.value("EditorFrame/music_splitter").toByteArray());
+    ui->splitter_hotkeys->restoreState(settings.value("EditorFrame/hotkeys_splitter").toByteArray());
+    ui->hotkeys_libraries_toolBox->setCurrentIndex(settings.value("EditorFrame/hotkeys_toolbox", 0).toInt());
 
+    // Preview
+    media_preview = media->createContainer();
+    connect(ui->preview_play_pause, SIGNAL(toggled(bool)), this, SLOT(previewPlayPause(bool)));
+    connect(ui->preview_play_pause, SIGNAL(fileDropped(QString,int)), this, SLOT(previewEnqueue(QString,int)));
+    connect(media_preview, SIGNAL(finished(int)), this, SLOT(previewStop(int)));
+    //connect(media_preview, SIGNAL(trackPosition(int,int)), this, SLOT(previewSetSeek(int,int)));
+}
+
+FrameEditor::~FrameEditor()
+{
+    QSettings settings;
+    settings.setValue("EditorFrame/geometry", this->saveGeometry());
+    settings.setValue("EditorFrame/atmosphere_splitter", ui->splitter_atmosphere->saveState());
+    settings.setValue("EditorFrame/sfx_splitter", ui->splitter_sfx->saveState());
+    settings.setValue("EditorFrame/singleshots_splitter", ui->splitter_singleshots->saveState());
+    settings.setValue("EditorFrame/music_splitter", ui->splitter_music->saveState());
+    settings.setValue("EditorFrame/hotkeys_splitter", ui->splitter_hotkeys->saveState());
+    settings.setValue("EditorFrame/tab_active", ui->tabs_ambienceeditor->currentIndex());
+    settings.setValue("EditorFrame/hotkeys_toolbox", ui->hotkeys_libraries_toolBox->currentIndex());
+    settings.sync();
+    delete ui;
+}
+
+
+
+void FrameEditor::setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot, HotkeysManager *hotkeys) {
     // Atmosphere
     this->atmosphere = atmosphere;
     connect(ui->button_atmosphere_object_add, SIGNAL(clicked()), this, SLOT(atmosphereObjectAdd()));
@@ -48,6 +73,7 @@ AmbienceEditor::AmbienceEditor(AtmosphereManager *atmosphere, SfxManager *sfx, M
 
     ui->atmosphere_library_view->setModel(this->atmosphere->library_model);
     ui->atmosphere_library_view->setItemDelegateForColumn(0, new AGTagByIDDelegate(this->atmosphere->identifier, ui->atmosphere_library_view));
+
     ui->atmosphere_library_view->hideColumn(1);
     ui->atmosphere_library_view->hideColumn(2);
     ui->atmosphere_library_view->hideColumn(3);
@@ -187,32 +213,9 @@ AmbienceEditor::AmbienceEditor(AtmosphereManager *atmosphere, SfxManager *sfx, M
     ui->hotkeys_library_singleshot_view->hideColumn(0);
     ui->hotkeys_library_special_view->setModel(this->hotkeys->special_model);
     ui->hotkeys_library_special_view->hideColumn(0);
-
-    // Preview
-    inst = libvlc_new(0, NULL);
-    media_preview = new AGMediaContainer(inst, this);
-    connect(ui->preview_play_pause, SIGNAL(toggled(bool)), this, SLOT(previewPlayPause(bool)));
-    connect(ui->preview_play_pause, SIGNAL(fileDropped(QString,int)), this, SLOT(previewEnqueue(QString,int)));
-    connect(media_preview, SIGNAL(finished(int)), this, SLOT(previewStop(int)));
-    connect(media_preview, SIGNAL(trackPosition(int,int)), this, SLOT(previewSetSeek(int,int)));
 }
 
-
-void AmbienceEditor::accept() {
-    QSettings settings;
-    settings.setValue("EditorWindow/geometry", this->saveGeometry());
-    settings.setValue("EditorWindow/atmosphere_splitter", ui->splitter_atmosphere->saveState());
-    settings.setValue("EditorWindow/sfx_splitter", ui->splitter_sfx->saveState());
-    settings.setValue("EditorWindow/singleshots_splitter", ui->splitter_singleshots->saveState());
-    settings.setValue("EditorWindow/music_splitter", ui->splitter_music->saveState());
-    settings.setValue("EditorWindow/hotkeys_splitter", ui->splitter_hotkeys->saveState());
-    settings.setValue("EditorWindow/tab_active", ui->tabs_ambienceeditor->currentIndex());
-    settings.setValue("EditorWindow/hotkeys_toolbox", ui->hotkeys_libraries_toolBox->currentIndex());
-}
-
-
-
-void AmbienceEditor::atmosphereObjectAdd() {
+void FrameEditor::atmosphereObjectAdd() {
     bool ok;
     QString object_name = QInputDialog::getText(this, tr("New Atmosphere Set"), tr("Atmosphere Set name"), QLineEdit::Normal, QString(), &ok);
     if(ok && !object_name.isEmpty()) {
@@ -221,7 +224,7 @@ void AmbienceEditor::atmosphereObjectAdd() {
 }
 
 
-void AmbienceEditor::atmosphereObjectRemove() {
+void FrameEditor::atmosphereObjectRemove() {
     if(this->ui->atmosphere_objects_view->currentIndex().row() != -1) {
         if(QMessageBox::question(this, tr("Delete Atmosphere Set"), tr("Delete Atmosphere Set?"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
             QSqlQuery remove_object_tracks(QString("DELETE FROM %1 WHERE oid = :oid").arg(atmosphere->objects_tracks_identifier));
@@ -233,7 +236,7 @@ void AmbienceEditor::atmosphereObjectRemove() {
             remove_object_hotkeys.bindValue(":aid", atmosphere->objects_model->index(ui->atmosphere_objects_view->currentIndex().row(), 0).data());
             qDebug() << "atmosphere hotkeys removed:" << remove_object_hotkeys.exec();
 
-            this->atmosphere->objects_model->removeRow(this->ui->atmosphere_objects_view->currentIndex().row());
+            atmosphere->objects_model->removeRow(ui->atmosphere_objects_view->currentIndex().row());
 
             atmosphere->objects_tracks_model->select();
         }
@@ -241,7 +244,7 @@ void AmbienceEditor::atmosphereObjectRemove() {
 }
 
 
-void AmbienceEditor::atmosphereUiRefresh() {
+void FrameEditor::atmosphereUiRefresh() {
     int oid = this->atmosphere->objects_model->record(this->ui->atmosphere_objects_view->currentIndex().row()).value(0).toInt();
     this->atmosphere->objects_tracks_model->selectObject(oid);
     this->ui->atmosphere_library_view->resizeColumnsToContents();
@@ -249,7 +252,7 @@ void AmbienceEditor::atmosphereUiRefresh() {
 }
 
 
-void AmbienceEditor::atmosphereObjectsTracksRemove() {
+void FrameEditor::atmosphereObjectsTracksRemove() {
     QModelIndexList selected_indices = this->ui->atmosphere_tracks_view->getSelectedIndexes();
     atmosphere->objects_tracks_model->database().transaction();
     for(int i=0; i<selected_indices.length(); ++i) {
@@ -260,16 +263,17 @@ void AmbienceEditor::atmosphereObjectsTracksRemove() {
 }
 
 
-void AmbienceEditor::singleshotObjectAdd() {
+void FrameEditor::singleshotObjectAdd() {
     bool ok;
     QString object_name = QInputDialog::getText(this, tr("New singleshot Set"), tr("Singleshot Set name"), QLineEdit::Normal, QString(), &ok);
     if(ok && !object_name.isEmpty()) {
         this->singleshot->objects_model->addObject(object_name);
     }
+//    this->singleshot->createObjectsList();
 }
 
 
-void AmbienceEditor::singleshotObjectRemove() {
+void FrameEditor::singleshotObjectRemove() {
     if(this->ui->singleshot_objects_view->currentIndex().row() != -1) {
         if(QMessageBox::question(this, tr("Delete singleshot Set"), tr("Delete singleshot Set?"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
             QSqlQuery remove_object_tracks(QString("DELETE FROM %1 WHERE oid = :oid").arg(singleshot->objects_tracks_identifier));
@@ -289,7 +293,7 @@ void AmbienceEditor::singleshotObjectRemove() {
 }
 
 
-void AmbienceEditor::singleshotUiRefresh() {
+void FrameEditor::singleshotUiRefresh() {
     int oid = this->singleshot->objects_model->record(this->ui->singleshot_objects_view->currentIndex().row()).value(0).toInt();
     this->singleshot->objects_tracks_model->selectObject(oid);
     this->ui->singleshot_library_view->resizeColumnsToContents();
@@ -297,7 +301,7 @@ void AmbienceEditor::singleshotUiRefresh() {
 }
 
 
-void AmbienceEditor::singleshotObjectsTracksRemove() {
+void FrameEditor::singleshotObjectsTracksRemove() {
     QModelIndexList selected_indices = this->ui->singleshot_tracks_view->getSelectedIndexes();
     singleshot->objects_tracks_model->database().transaction();
     for(int i=0; i<selected_indices.length(); ++i) {
@@ -308,7 +312,7 @@ void AmbienceEditor::singleshotObjectsTracksRemove() {
 }
 
 
-void AmbienceEditor::sfxObjectAdd() {
+void FrameEditor::sfxObjectAdd() {
     bool ok;
     QString object_name = QInputDialog::getText(this, tr("New Sfx Set"), tr("Sfx Set name"), QLineEdit::Normal, QString(), &ok);
     if(ok && !object_name.isEmpty()) {
@@ -317,7 +321,7 @@ void AmbienceEditor::sfxObjectAdd() {
 }
 
 
-void AmbienceEditor::sfxObjectRemove() {
+void FrameEditor::sfxObjectRemove() {
     if(this->ui->sfx_objects_view->currentIndex().row() != -1) {
         if(QMessageBox::question(this, tr("Delete Sfx Set"), tr("Delete Sfx Set?"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
             QSqlQuery remove_object_tracks(QString("DELETE FROM %1 WHERE oid = :oid").arg(sfx->objects_tracks_identifier));
@@ -338,7 +342,7 @@ void AmbienceEditor::sfxObjectRemove() {
 }
 
 
-void AmbienceEditor::sfxObjectsTracksRemove() {
+void FrameEditor::sfxObjectsTracksRemove() {
     QModelIndexList selected_indices = this->ui->sfx_tracks_view->getSelectedIndexes();
     sfx->objects_tracks_model->database().transaction();
     for(int i=0; i<selected_indices.length(); ++i) {
@@ -349,7 +353,7 @@ void AmbienceEditor::sfxObjectsTracksRemove() {
 }
 
 
-void AmbienceEditor::sfxObjectsTrackCheck(QModelIndex i1, QModelIndex i2) {
+void FrameEditor::sfxObjectsTrackCheck(QModelIndex i1, QModelIndex i2) {
     int track_offset = sfx->objects_tracks_model->index(i1.row(), 3).data().toInt();
     int track_lower_boundary = sfx->objects_tracks_model->index(i1.row(), 4).data().toInt();
     if(i1.column() == 4 && i1.data().toInt() > track_offset) { // lower boundary offset
@@ -363,7 +367,7 @@ void AmbienceEditor::sfxObjectsTrackCheck(QModelIndex i1, QModelIndex i2) {
 }
 
 
-void AmbienceEditor::sfxUiRefresh() {
+void FrameEditor::sfxUiRefresh() {
     int oid = this->sfx->objects_model->record(this->ui->sfx_objects_view->currentIndex().row()).value(0).toInt();
     this->sfx->objects_tracks_model->selectObject(oid);
     this->ui->sfx_library_view->resizeColumnsToContents();
@@ -372,7 +376,7 @@ void AmbienceEditor::sfxUiRefresh() {
 }
 
 
-void AmbienceEditor::musicPlaylistAdd() {
+void FrameEditor::musicPlaylistAdd() {
     bool ok;
     QString playlist_name = QInputDialog::getText(this, tr("New playlist"), tr("Playlist name"), QLineEdit::Normal, QString(), &ok);
     if(ok && !playlist_name.isEmpty()) {
@@ -381,7 +385,7 @@ void AmbienceEditor::musicPlaylistAdd() {
 }
 
 
-void AmbienceEditor::musicPlaylistRemove() {
+void FrameEditor::musicPlaylistRemove() {
     if(this->ui->music_playlists_view->currentIndex().row() != -1) {
         if(QMessageBox::question(this, tr("Delete playlist"), tr("Delete playlist?"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
             QSqlQuery remove_object_tracks(QString("DELETE FROM %1 WHERE oid = :oid").arg(music->objects_tracks_identifier));
@@ -401,7 +405,7 @@ void AmbienceEditor::musicPlaylistRemove() {
 }
 
 
-void AmbienceEditor::musicPlaylistsTracksRemove() {
+void FrameEditor::musicPlaylistsTracksRemove() {
    QModelIndexList selected_indices = this->ui->music_tracks_view->getSelectedIndexes();
    music->objects_tracks_model->database().transaction();
    for(int i=0; i<selected_indices.length(); ++i) {
@@ -412,7 +416,7 @@ void AmbienceEditor::musicPlaylistsTracksRemove() {
 }
 
 
-void AmbienceEditor::musicUiRefresh() {
+void FrameEditor::musicUiRefresh() {
     int oid = this->music->objects_model->record(this->ui->music_playlists_view->currentIndex().row()).value(0).toInt();
     this->music->objects_tracks_model->selectObject(oid);
     this->ui->music_library_view->resizeColumnsToContents();
@@ -420,7 +424,7 @@ void AmbienceEditor::musicUiRefresh() {
 }
 
 
-void AmbienceEditor::hotkeysHotkeyAdd() {
+void FrameEditor::hotkeysHotkeyAdd() {
     bool ok;
     QString object_name = QInputDialog::getText(this, tr("New hotkey"), tr("Set hotkey name"), QLineEdit::Normal, QString(), &ok);
     if(ok && !object_name.isEmpty()) {
@@ -429,7 +433,7 @@ void AmbienceEditor::hotkeysHotkeyAdd() {
 }
 
 
-void AmbienceEditor::hotkeysHotkeyRemove() {
+void FrameEditor::hotkeysHotkeyRemove() {
     if(this->ui->hotkeys_hotkey_view->currentIndex().row() != -1) {
         if(QMessageBox::question(this, tr("Delete hotkey"), tr("Delete hotkey?"), QMessageBox::No, QMessageBox::Yes) == QMessageBox::Yes) {
             QSqlQuery remove_object_tracks(QString("DELETE FROM %1 WHERE hid = :hid").arg(hotkeys->actions_identifier));
@@ -444,7 +448,7 @@ void AmbienceEditor::hotkeysHotkeyRemove() {
 }
 
 
-void AmbienceEditor::hotkeysUiRefresh() {
+void FrameEditor::hotkeysUiRefresh() {
     int oid = this->hotkeys->hotkeys_model->record(this->ui->hotkeys_hotkey_view->currentIndex().row()).value(0).toInt();
     hotkeys->actions_model->setFilter(QString("hid = \"%1\"").arg(oid));
     hotkeys->actions_model->select();
@@ -453,7 +457,7 @@ void AmbienceEditor::hotkeysUiRefresh() {
 }
 
 
-void AmbienceEditor::hotkeysHotkeyActionsRemove() {
+void FrameEditor::hotkeysHotkeyActionsRemove() {
     QModelIndexList selected_indices = this->ui->hotkeys_actions_view->getSelectedIndexes();
     hotkeys->actions_model->database().transaction();
     for(int i=0; i<selected_indices.length(); ++i) {
@@ -470,7 +474,7 @@ void AmbienceEditor::hotkeysHotkeyActionsRemove() {
 /*
  * Look which library item is active, then play
  */
-void AmbienceEditor::previewPlayPause(bool state) {
+void FrameEditor::previewPlayPause(bool state) {
     if(media_preview->getCurrentFilename().isEmpty()) {
         ui->preview_play_pause->setChecked(false);
     }
@@ -481,7 +485,7 @@ void AmbienceEditor::previewPlayPause(bool state) {
     media_preview->pause();
 }
 
-void AmbienceEditor::previewEnqueue(QString mime, int tid) {
+void FrameEditor::previewEnqueue(QString mime, int tid) {
     QSqlQuery query_preview;
     QString library;
     QString path;
@@ -508,23 +512,18 @@ void AmbienceEditor::previewEnqueue(QString mime, int tid) {
     QString preview_file = QString("%1%2").arg(path, query_preview.value(0).toString());
     qDebug() << preview_file;
 //    media_preview->stop();
-    media_preview->enqueue(preview_file);
+    media_preview->loadFile(preview_file);
     media_preview->setVolume(100);
     ui->preview_play_pause->setChecked(true);
 }
 
-void AmbienceEditor::previewStop(int channel) {
+void FrameEditor::previewStop(int channel) {
     ui->preview_play_pause->setChecked(false);
     ui->preview_seek->setValue(0);
 }
 
 
-void AmbienceEditor::previewSetSeek(int time, int length) {
+void FrameEditor::previewSetSeek(int time, int length) {
     ui->preview_seek->setMaximum(length);
     ui->preview_seek->setValue(time);
-}
-
-AmbienceEditor::~AmbienceEditor()
-{
-    delete ui;
 }

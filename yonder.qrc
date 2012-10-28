@@ -29,8 +29,31 @@
         <file alias="icon-singleshot-start.png">icon/icon-singleshot-start.png</file>
         <file alias="icon-special.png">icon/icon-special.png</file>
         <file alias="splash.png">icon/splash.png</file>
+        <file alias="webapp-running.png">icon/webapp-running.png</file>
     </qresource>
     <qresource prefix="/database/dump">
         <file alias="resource.sql">data/resource.sql</file>
+    </qresource>
+    <qresource prefix="/application">
+        <file alias="style.css">data/style.css</file>
+        <file alias="ostrich_regular.ttf">data/Ostrich Regular.ttf</file>
+        <file alias="fmod-logo.svg">data/fmod-logo.svg</file>
+        <file alias="qt-logo.svg">data/qt-logo.svg</file>
+    </qresource>
+    <qresource prefix="/manual">
+        <file alias="index.htm">data/manual/index.htm</file>
+    </qresource>
+    <qresource prefix="/webservice/templates">
+        <file alias="main.htm">data/webservice/templates/main.htm</file>
+    </qresource>
+    <qresource prefix="/webservice/static">
+        <file alias="bootstrap-responsive.min.css">data/webservice/static/bootstrap/css/bootstrap-responsive.min.css</file>
+        <file alias="bootstrap.min.js">data/webservice/static/bootstrap/js/bootstrap.min.js</file>
+        <file alias="bootstrap.min.css">data/webservice/static/bootstrap/css/bootstrap.min.css</file>
+        <file alias="screen.css">data/webservice/static/screen.css</file>
+        <file alias="manager.js">data/webservice/static/manager.js</file>
+        <file alias="jquery.min.js">data/webservice/static/jquery-1.8.2.min.js</file>
+        <file alias="jquery.mobile.min.css">data/webservice/static/jquery.mobile-1.2.0.min.css</file>
+        <file alias="jquery.mobile.min.js">data/webservice/static/jquery.mobile-1.2.0.min.js</file>
     </qresource>
 </RCC>

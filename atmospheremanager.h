@@ -3,15 +3,14 @@
 
 #include <QtCore>
 
-#include <vlc/vlc.h>
-
+#include <mediamanager.h>
 #include <soundmanager.h>
 
 class AtmosphereManager: public SoundManager
 {
 Q_OBJECT
 public:
-    AtmosphereManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent);
+    AtmosphereManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent);
 
     void createChannels();
 

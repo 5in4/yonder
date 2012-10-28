@@ -1,6 +1,6 @@
-#include <hotkeysmanager.h>
+#include "hotkeysmanager.h"
 
-HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton *> atmosphere_buttons, QList<AGQPushButton *> sfx_buttons, QList<AGQPushButton *> singleshot_buttons, QComboBox *musicComboBoxSelectPlaylist, QPushButton *musicButtonNext, QPushButton *musicButtonPlayPause, QObject *parent) : QObject(parent)
+HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton *> atmosphere_buttons, QList<AGQPushButton *> sfx_buttons, QList<AGQPushButton *> singleshot_buttons, QListView *musicComboBoxSelectPlaylist, AGQPushButton *musicButtonNext, AGQPushButton *musicButtonPlayPause, QObject *parent) : QObject(parent)
 {
     this->music = music;
     this->atmosphere_buttons = atmosphere_buttons;
@@ -26,9 +26,11 @@ HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPu
     special_model->setTable(special_identifier);
     special_model->select();
 
-    qDebug() << hotkeys_identifier << "instance summoned";
+    qDebug() << QString("Manager hotkeys summoned");
 
     createHotkeysList();
+    connect(hotkeys_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createHotkeysList()));
+
 }
 
 bool HotkeysManager::updateDatabase(QString identifier, QString sql) {
@@ -73,9 +75,79 @@ void HotkeysManager::createHotkeysList() {
 }
 
 
-void HotkeysManager::getHotkeyButtons(QList<AGQPushButton *> hotkeys_buttons) {
+void HotkeysManager::getHotkeyButtons(QList<HotkeysPushButton *> hotkeys_buttons) {
     this->hotkeys_buttons = hotkeys_buttons;
 }
+
+
+void HotkeysManager::highlightButtons(int oid, bool highlight) {
+    QSqlQuery query;
+    QString object = QString("%1").arg(oid);
+    query.prepare(QString("SELECT `section`, `aid` FROM \"%1\" WHERE hid=\"%2\"").arg(actions_identifier, object));
+    query.exec();
+    while(query.next()) {
+        if(query.value(0).toString() == "atmosphere_objects") {
+            for(int i=0; i<atmosphere_buttons.length(); i++) {
+                if(atmosphere_buttons.at(i)->getOID() == query.value(1).toInt()) {
+                    if(highlight) {
+                        atmosphere_buttons.at(i)->setHighlightedStyle();
+                    } else {
+                        atmosphere_buttons.at(i)->setStandardStyle();
+                    }
+                }
+            }
+        } else if(query.value(0).toString() == "sfx_objects") {
+            for(int i=0; i<sfx_buttons.length(); i++) {
+                if(sfx_buttons.at(i)->getOID() == query.value(1).toInt()) {
+                    if(highlight) {
+                        sfx_buttons.at(i)->setHighlightedStyle();
+                    } else {
+                        sfx_buttons.at(i)->setStandardStyle();
+                    }
+
+                }
+            }
+        } else if(query.value(0).toString() == "singleshot_objects") {
+            for(int i=0; i<singleshot_buttons.length(); i++) {
+                if(singleshot_buttons.at(i)->getOID() == query.value(1).toInt()) {
+                    if(highlight) {
+                        singleshot_buttons.at(i)->setHighlightedStyle();
+                    } else {
+                        singleshot_buttons.at(i)->setStandardStyle();
+                    }
+                }
+            }
+
+        } else if(query.value(0).toString() == "special_objects") {
+            int special = query.value(1).toInt();
+
+            if(special == 1) {
+                if(highlight) {
+                    musicButtonPlayPause->setHighlightedStyle();
+                } else {
+                    musicButtonPlayPause->setStandardStyle();
+                }
+            } else if (special == 2) {
+//                musicButtonPlayPause->setChecked(false);
+            } else if (special == 3) {
+//                musicButtonPlayPause->setChecked(checked);
+            } else if (special == 4) {
+                for(int i=0; i<atmosphere_buttons.length(); i++) {
+//                    atmosphere_buttons.at(i)->setChecked(false);
+                }
+            } else if (special == 5) {
+                for(int i=0; i<singleshot_buttons.length(); i++) {
+//                    singleshot_buttons.at(i)->setChecked(false);
+                }
+            } else if (special == 6) {
+                for(int i=0; i<sfx_buttons.length(); i++) {
+//                    sfx_buttons.at(i)->setChecked(false);
+                }
+            }
+        }
+    }
+}
+
 
 void HotkeysManager::callHotkey(int oid, bool checked) {
     bool uncheck = true;
@@ -106,13 +178,14 @@ void HotkeysManager::callHotkey(int oid, bool checked) {
                 }
             }
         } else if(query.value(0).toString() == "music_objects" && checked == true) {
-            int row = 0;
+            QModelIndex row;
             for(int i=0; i < musicComboBoxSelectPlaylist->model()->rowCount(); i++) {
                 if(musicComboBoxSelectPlaylist->model()->index(i, 0).data().toInt() == query.value(1).toInt()) {
-                    row = musicComboBoxSelectPlaylist->model()->index(i, 0).row();
+                    row = musicComboBoxSelectPlaylist->model()->index(i, 0);
                     break;
                 }
             }
+            //musicComboBoxSelectPlaylist->selectionModel()->select(row, QItemSelectionModel::Select);
             musicComboBoxSelectPlaylist->setCurrentIndex(row);
 
         } else if(query.value(0).toString() == "special_objects" && checked == true) {

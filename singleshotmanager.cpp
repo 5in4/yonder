@@ -1,11 +1,11 @@
-#include <singleshotmanager.h>
+#include "singleshotmanager.h"
 
 
 /*!
  * Performs default startup
  */
-SingleshotManager::SingleshotManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent) :
-    SoundManager(project_path, QString("singleshot"), db, progress_bar, parent)
+SingleshotManager::SingleshotManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent) :
+    SoundManager(project_path, QString("singleshot"), db, media, parent)
 {
     this->path = QString("%1/%2").arg(this->project_path, "sfx");
     this->library_identifier = QString("sfx_library");
@@ -18,7 +18,6 @@ SingleshotManager::SingleshotManager(QString project_path, QSqlDatabase db, QPro
     createObjectsList();
     connect(objects_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createObjectsList()));
 }
-
 
 /*!
  * Creates list of all known objects
@@ -44,9 +43,9 @@ void SingleshotManager::createObjectsList() {
  */
 void SingleshotManager::createChannels() {
     for(int i=0; i<this->objects.length(); i++) {
-        media_container.append(new AGMediaContainer(inst, this));
-        media_container.at(i)->setOID(objects.at(i)[0].toInt());
-        media_container.at(i)->setChannel(i);
+        container.append(media->createContainer());
+        container.at(i)->setOID(objects.at(i)[0].toInt());
+        container.at(i)->setChannel(i);
         channels++;
     }
 
@@ -57,7 +56,7 @@ void SingleshotManager::createChannels() {
  * Changes channel state to opposite
  */
 void SingleshotManager::playPause(int channel) {
-    if(media_container.at(channel)->state() == libvlc_Playing) {
+    if(container.at(channel)->isPlaying() == true) {
         pause(channel);
     } else {
         play(channel);
@@ -70,7 +69,7 @@ void SingleshotManager::playPause(int channel) {
  */
 void SingleshotManager::play(int channel) {
     if(enqueue(channel)) {
-        media_container.at(channel)->play();
+        container.at(channel)->play();
         qDebug() << identifier << "playing on channel" << channel;
     } else {
         qDebug() << identifier << "nothing to play on channel" << channel;
@@ -83,7 +82,7 @@ void SingleshotManager::play(int channel) {
  * Pauses on channel
  */
 void SingleshotManager::pause(int channel) {
-    media_container.at(channel)->pause();
+    container.at(channel)->pause();
     qDebug() << identifier << "pausing on channel" << channel;
 }
 
@@ -92,7 +91,7 @@ void SingleshotManager::pause(int channel) {
  * Stops on channel and erases queue
  */
 void SingleshotManager::stop(int channel) {
-    media_container.at(channel)->stop();
+    container.at(channel)->stop();
 }
 
 
@@ -100,7 +99,7 @@ void SingleshotManager::stop(int channel) {
  * Enqueues track on channel
  */
 bool SingleshotManager::enqueue(int channel) {
-    objects_tracks_model->selectObject(media_container.at(channel)->getOID());
+    objects_tracks_model->selectObject(container.at(channel)->getOID());
     int tid = objects_tracks_model->selectRandomTrack();
     QString current_library_filter = library_model->filter();
     library_model->setFilter(QString("id=%1").arg(tid));
@@ -109,6 +108,6 @@ bool SingleshotManager::enqueue(int channel) {
     if(choice_filename.isEmpty()) {
         return false;
     }
-    media_container.at(channel)->enqueue(absoluteFilePath(choice_filename));
+    container.at(channel)->loadFile(absoluteFilePath(choice_filename));
     return true;
 }

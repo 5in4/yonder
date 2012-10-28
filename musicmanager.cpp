@@ -1,10 +1,10 @@
-#include <musicmanager.h>
+#include "musicmanager.h"
 
 
 /*!
  * Performs default startup
  */
-MusicManager::MusicManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent): SoundManager(project_path, QString("music"), db, progress_bar, parent)
+MusicManager::MusicManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent): SoundManager(project_path, QString("music"), db, media, parent)
 {
     this->createTables();
 
@@ -14,8 +14,7 @@ MusicManager::MusicManager(QString project_path, QSqlDatabase db, QProgressBar *
 
     this->rescanLibrary();
     this->createChannels(1);
-    //connect(media_container.at(0), SIGNAL(aboutToFinish(int)), this, SLOT(enqueue()));
-    connect(media_container.at(0), SIGNAL(finished(int)), this, SLOT(play()));
+    connect(container.at(0), SIGNAL(finished(int)), this, SLOT(play()));
 }
 
 
@@ -23,7 +22,7 @@ MusicManager::MusicManager(QString project_path, QSqlDatabase db, QProgressBar *
  * Switches play/pause state
  */
 void MusicManager::playPause() {
-    if(media_container.at(0)->state() == libvlc_Playing) {
+    if(container.at(0)->isPlaying() == true) {
         pause();
     } else {
         play();
@@ -35,14 +34,14 @@ void MusicManager::playPause() {
  * Plays on channel 0
  */
 void MusicManager::play() {
-    if(media_container.at(0)->state() == libvlc_Stopped || media_container.at(0)->state() == libvlc_Ended) {
+    if(container.at(0)->isPlaying() == false) {
         if(!enqueue()) {
             qDebug() << identifier << "nothing to play";
             emit playbackError(0);
             return;
         }
     }
-    media_container.at(0)->play();
+    container.at(0)->play();
     qDebug() << this->identifier << "state" << "\"playing\"";
 }
 
@@ -51,7 +50,7 @@ void MusicManager::play() {
  * Pauses channel 0
  */
 void MusicManager::pause() {
-    media_container.at(0)->pause();
+    container.at(0)->pause();
     qDebug() << this->identifier << "state" << "\"paused\"";
 }
 
@@ -61,16 +60,16 @@ void MusicManager::pause() {
  */
 void MusicManager::next() {
     bool resume;
-    if(media_container.at(0)->state() == libvlc_Playing) {
+    if(container.at(0)->isPlaying() == true) {
         resume = true;
     } else {
         resume = false;
     }
 
-    media_container.at(0)->stop();
+    container.at(0)->stop();
     enqueue();
     if(resume) {
-        media_container.at(0)->play();
+        container.at(0)->play();
     }
 }
 
@@ -88,6 +87,6 @@ bool MusicManager::enqueue() {
     }
     this->library_model->setFilter(current_library_filter);
 
-    media_container.at(0)->enqueue(absoluteFilePath(choice_filename));
+    container.at(0)->loadFile(absoluteFilePath(choice_filename));
     return true;
 }

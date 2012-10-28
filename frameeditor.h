@@ -1,44 +1,42 @@
-#ifndef AMBIENCEEDITOR_H
-#define AMBIENCEEDITOR_H
+#ifndef FRAMEEDITOR_H
+#define FRAMEEDITOR_H
 
-#include <QtCore>
-#include <QtGui>
-
-#include <vlc/vlc.h>
-
+#include <frameobject.h>
 #include <delegate/aghotkeyactiondelegate.h>
 #include <agmediacontainer.h>
 #include <delegate/agtagbyiddelegate.h>
 #include <delegate/qdoublespinboxdelegate.h>
+#include <mediamanager.h>
 #include <atmospheremanager.h>
 #include <sfxmanager.h>
 #include <singleshotmanager.h>
 #include <hotkeysmanager.h>
 #include <musicmanager.h>
 
+
 namespace Ui {
-    class AmbienceEditor;
+class FrameEditor;
 }
 
-class AmbienceEditor : public QDialog
+class FrameEditor : public FrameObject
 {
     Q_OBJECT
-
+    
 public:
-    explicit AmbienceEditor(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot, HotkeysManager *hotkeys, QWidget *parent = 0);
-    ~AmbienceEditor();
-
+    explicit FrameEditor(MediaManager *media, QWidget *parent = 0);
+    ~FrameEditor();
+    
     AtmosphereManager *atmosphere;
     SfxManager *sfx;
     MusicManager *music;
     HotkeysManager *hotkeys;
     SingleshotManager *singleshot;
 
-    libvlc_instance_t *inst;
-    AGMediaContainer *media_preview;
+    MediaContainer *media_preview;
 
 public slots:
-    void accept();
+
+    void setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot, HotkeysManager *hotkeys);
 
     void atmosphereObjectAdd();
     void atmosphereObjectRemove();
@@ -72,8 +70,7 @@ public slots:
     void previewSetSeek(int time, int length);
 
 private:
-    Ui::AmbienceEditor *ui;
-
+    Ui::FrameEditor *ui;
 };
 
-#endif // AMBIENCEEDITOR_H
+#endif // FRAMEEDITOR_H

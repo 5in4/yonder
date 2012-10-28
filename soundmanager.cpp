@@ -1,11 +1,11 @@
-#include <soundmanager.h>
+#include "soundmanager.h"
 
+extern QString NAME;
 extern QString ACCEPTED_MIMETYPES;
 
-SoundManager::SoundManager(QString project_path, QString identifier, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent) : QObject(parent)
+SoundManager::SoundManager(QString project_path, QString identifier, QSqlDatabase db, MediaManager *media, QObject *parent) : QObject(parent)
 {
-    inst = libvlc_new(0, NULL);
-
+    this->media = media;
     this->project_path = project_path;
     this->identifier = identifier;
     this->db = db;
@@ -16,9 +16,9 @@ SoundManager::SoundManager(QString project_path, QString identifier, QSqlDatabas
 
     this->path = QString("%1/%2").arg(this->project_path, this->identifier);
 
-    this->progress_bar = progress_bar;
+    qDebug() << QString("Manager %1 summoned").arg(identifier);
 
-    qDebug() << this->identifier << "instance summoned";
+    progress_bar = media->progress_bar;
 }
 
 void SoundManager::createTables() {
@@ -49,7 +49,7 @@ bool SoundManager::updateDatabase(QString identifier, QString sql) {
 bool SoundManager::createChannels(int channels) {
     for(int i=0; i<channels; i++) {
         this->channels = channels;
-        media_container.append(new AGMediaContainer(inst, this));
+        container.append(media->createContainer());
         }
     return true;
 }
@@ -59,16 +59,11 @@ bool SoundManager::createChannels(int channels) {
  * Adjusts volume of each created channel
  */
 bool SoundManager::setVolume(unsigned int volume) {
-    int i;
-    /*for(i=0; i<this->channels; i++) {
-        this->media_output[i]->setVolume(volume);
-    }*/
-
-    // testing
-    for(i=0; i<media_container.length(); i++) {
-        media_container.at(i)->setVolume(volume);
+    float v = volume / 100.0;
+    QList<MediaContainer *>::const_iterator k;
+    for(k=container.constBegin(); k != container.constEnd(); ++k) {
+        (*k)->setVolume(v);
     }
-    //qDebug() << identifier << "volume" << volume << "on" << i << "objects";
     return true;
 }
 
@@ -99,14 +94,16 @@ bool SoundManager::rescanLibrary() {
     QStringList files(scanLibraryDirectory(this->path));
 
     int p = 0;
-    progress_bar->setRange(0, files.count());
-    progress_bar->show();
+    int p_max = files.count();
+    progress_bar->setMinimum(p);
+    progress_bar->setMaximum(p_max);
 
     for(int m=0; m<files.count(); m++) {
         qApp->processEvents();
 
-        p++;
-        progress_bar->setValue(p);
+//        p++;
+//        emit loadingStatus(p, p_max);
+        progress_bar->setValue(p++);
 
         db.transaction();
         if(!library_tracks.contains(files.at(m))) {
@@ -149,11 +146,7 @@ bool SoundManager::rescanLibrary() {
             qDebug() << identifier << query.value(1).toString() << "updated";
         }
     }
-    //library_model->select();
-
-    progress_bar->hide();
     progress_bar->setValue(0);
-
 }
 
 
@@ -230,12 +223,7 @@ QString SoundManager::relativeFilePath(QString absolute) {
 }
 
 
-
 SoundManager::~SoundManager() {
-    for(int i=0; i<media_container.length(); i++) {
-        delete media_container.at(i);
-    }
-    delete inst;
     delete objects_tracks_model;
     delete objects_model;
     delete library_model;

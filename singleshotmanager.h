@@ -3,15 +3,14 @@
 
 #include <QtCore>
 
-#include <vlc/vlc.h>
-
+#include <mediamanager.h>
 #include <soundmanager.h>
 
 class SingleshotManager : public SoundManager
 {
     Q_OBJECT
 public:
-    explicit SingleshotManager(QString project_path, QSqlDatabase db, QProgressBar *progress_bar, QObject *parent = 0);
+    explicit SingleshotManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent = 0);
 
     void createChannels();
 
