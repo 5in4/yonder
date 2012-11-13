@@ -98,8 +98,8 @@ void MediaContainer::checkFinished() {
         if(!isPlaying()) {
             playing_file.clear();
             file_loaded =false;
+            sound->release();
             emit finished(channel_nr);
-            //FMOD_ErrorString(sound->release()); crash
         }
     }
 }

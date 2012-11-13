@@ -26,11 +26,11 @@ FrameEditor::FrameEditor(MediaManager *media, QWidget *parent) :
     ui->hotkeys_libraries_toolBox->setCurrentIndex(settings.value("EditorFrame/hotkeys_toolbox", 0).toInt());
 
     // Preview
-    media_preview = media->createContainer();
+    media_preview = new MediaContainer(media->system, this);
     connect(ui->preview_play_pause, SIGNAL(toggled(bool)), this, SLOT(previewPlayPause(bool)));
     connect(ui->preview_play_pause, SIGNAL(fileDropped(QString,int)), this, SLOT(previewEnqueue(QString,int)));
     connect(media_preview, SIGNAL(finished(int)), this, SLOT(previewStop(int)));
-    //connect(media_preview, SIGNAL(trackPosition(int,int)), this, SLOT(previewSetSeek(int,int)));
+    connect(media_preview, SIGNAL(trackPosition(int,int)), this, SLOT(previewSetSeek(int,int)));
 }
 
 FrameEditor::~FrameEditor()
@@ -475,10 +475,13 @@ void FrameEditor::hotkeysHotkeyActionsRemove() {
  * Look which library item is active, then play
  */
 void FrameEditor::previewPlayPause(bool state) {
+    qDebug() << "previewplaypause";
+    qDebug() << media_preview->getCurrentFilename();
     if(media_preview->getCurrentFilename().isEmpty()) {
         ui->preview_play_pause->setChecked(false);
     }
     if(state == true && !media_preview->getCurrentFilename().isEmpty()) {
+        qDebug() << "preview start";
         media_preview->play();
         return;
     }
@@ -511,10 +514,10 @@ void FrameEditor::previewEnqueue(QString mime, int tid) {
     query_preview.first();
     QString preview_file = QString("%1%2").arg(path, query_preview.value(0).toString());
     qDebug() << preview_file;
-//    media_preview->stop();
-    media_preview->loadFile(preview_file);
+    qDebug() << media_preview->loadFile(preview_file);
     media_preview->setVolume(100);
-    ui->preview_play_pause->setChecked(true);
+    media_preview->play();
+//    ui->preview_play_pause->setChecked(true);
 }
 
 void FrameEditor::previewStop(int channel) {
