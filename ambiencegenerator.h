@@ -1,23 +1,10 @@
 #ifndef AMBIENCEGENERATOR_H
 #define AMBIENCEGENERATOR_H
 
-#include <QtCore>
-#include <QtGui>
-#include <QtSql>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
 #include <qmath.h>
-
-#ifdef __WIN32
-#include <taglib.h>
-#elif __linux__
-#include <taglib/taglib.h>
-#else
-#include <taglib/taglib.h>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
-#endif
 
 #include <framestart.h>
 #include <framegenerator.h>
@@ -54,20 +41,22 @@ public:
     FrameConfigure *configure_frame;
     FrameHelp *help_frame;
 
-    MediaManager *media;
-    AtmosphereManager *atmosphere;
-    HotkeysManager *hotkeys;
-    MusicManager *music;
-    SfxManager *sfx;
-    SingleshotManager *singleshot;
+    QPointer<MediaManager> media;
+    QPointer<AtmosphereManager> atmosphere;
+    QPointer<HotkeysManager> hotkeys;
+    QPointer<MusicManager> music;
+    QPointer<SfxManager> sfx;
+    QPointer<SingleshotManager> singleshot;
 
-    Webapp *webapp;
+    QPointer<Webapp> webapp;
 
     QString config_path;
     QString project_path;
     QSqlDatabase db;
 
     QSplashScreen *splash_screen;
+
+    bool project_set = false;
 
     Ui::AmbienceGenerator *ui;
 
@@ -77,6 +66,7 @@ public slots:
     void openOnlineHelp();
 
     void setProject(QString project_path);
+    void refreshProject();
 
     void webappStart();
     void webappStop();
@@ -91,7 +81,6 @@ private slots:
     void checkUpdateProcess(QNetworkReply *rep);
 
 protected:
-    void resizeEvent(QResizeEvent *event);
 
 };
 

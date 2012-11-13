@@ -16,6 +16,7 @@ FrameConfigure::FrameConfigure(QWidget *parent) :
     ui->webapp_active->setChecked(settings.value("Settings/webapp_active", 0).toBool());
     ui->webapp_port->setValue(settings.value("Settings/webapp_port", 8888).toInt());
     ui->webapp_sync->setChecked(settings.value("Settings/webapp_sync", 1).toBool());
+    ui->webapp_sync->hide();
     ui->webapp_refresh->setValue(settings.value("Settings/webapp_refresh_interval", 10).toInt());
 
     connect(ui->check_update, SIGNAL(stateChanged(int)), this, SLOT(saveSettings()));

@@ -3,7 +3,7 @@
 Webapp::Webapp(int port, int slots_max, QString static_serve_path, QObject *parent) :
     QFrontDesk(port, slots_max, static_serve_path, parent)
 {
-    setTemplateDirs(QStringList() << ":webservice/");
+    //setTemplateDirs(QStringList() << ":webservice/");
 }
 
 QString Webapp::routing(QString route, Arguments *arg) {
@@ -90,12 +90,17 @@ QVariant Webapp::toJsonHelper(QJsonObject buttonlist) {
 }
 
 QString Webapp::routeRoot(Arguments *arg) {
-    Template t = loadTemplate("templates/main.htm");
-    Context c;
-    c.insert("page_title", "Yonder Remote Control");
-    c.insert("webapp_title", "Yonder Remote Control");
-    c.insert("update_interval", "1000");
-    return t->render(&c);
+    QSettings settings;
+
+    QFile template_file(":/webservice/templates/main.htm");
+    if(!template_file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return QString("");
+    }
+    QString template_string = QString(template_file.readAll());
+    template_string.replace("{{ page_title }}", tr("Yonder Remote Control"));
+    template_string.replace("{{ webapp_title }}", tr("Yonder Remote Control"));
+    template_string.replace("{{ update_interval }}", settings.value("Settings/webapp_refresh_interval", 10000).toString());
+    return template_string;
 }
 
 

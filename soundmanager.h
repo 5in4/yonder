@@ -6,18 +6,6 @@
 #include <QtSql>
 #include <qapplication.h>
 
-#ifdef __WIN32
-#include <taglib.h>
-#elif __linux__
-#include <taglib/taglib.h>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
-#else
-#include <taglib/taglib.h>
-#include <taglib/fileref.h>
-#include <taglib/tag.h>
-#endif
-
 #include <agmediacontainer.h>
 #include <mediamanager.h>
 #include <model/librarymodel.h>
@@ -30,8 +18,6 @@ Q_OBJECT
 public:
     explicit SoundManager(QString project_path, QString identifier, QSqlDatabase db, MediaManager *media, QObject *parent = 0);
     ~SoundManager();
-
-    enum tag { ARTIST, ALBUM, TITLE };
 
     QSqlDatabase db;
 

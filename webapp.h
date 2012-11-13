@@ -2,7 +2,6 @@
 #define WEBAPP_H
 
 #include <qfrontdesk.h>
-
 #include <qjson_p.h>
 #include <qjsonobject.h>
 #include <qjsonvalue.h>

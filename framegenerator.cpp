@@ -27,10 +27,6 @@ FrameGenerator::FrameGenerator(QWidget *parent) :
     music_next->setStandardStyle();
     ui->music_control_layout->addWidget(music_next);
 
-    music_select_playlist = new QListView(this);
-    music_select_playlist->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->music_select_layout->addWidget(music_select_playlist);
-
     QSettings settings;
 
     ui->atmosphereVolume->setValue(settings.value("Settings/atmosphere_volume", 50).toInt());
@@ -40,8 +36,8 @@ FrameGenerator::FrameGenerator(QWidget *parent) :
 
     // s&s
     connect(ui->atmosphereVolume, SIGNAL(valueChanged(int)), this, SLOT(atmosphereSetVolume()));
-    connect(music_select_playlist, SIGNAL(activated(QModelIndex)), this, SLOT(musicSetPlaylist(QModelIndex)));
-    connect(music_select_playlist, SIGNAL(clicked(QModelIndex)), this, SLOT(musicSetPlaylist(QModelIndex)));
+    connect(ui->music_select_playlist, SIGNAL(activated(QModelIndex)), this, SLOT(musicSetPlaylist(QModelIndex)));
+    connect(ui->music_select_playlist, SIGNAL(clicked(QModelIndex)), this, SLOT(musicSetPlaylist(QModelIndex)));
     connect(music_next, SIGNAL(clicked()), this, SLOT(musicNext()));
     connect(music_play_pause, SIGNAL(toggled(bool)), this, SLOT(musicPlayPause()));
     connect(ui->musicVolume, SIGNAL(valueChanged(int)), this, SLOT(musicSetVolume()));
@@ -82,7 +78,7 @@ void FrameGenerator::setSoundManagers(AtmosphereManager *atmosphere, SfxManager 
 
     connect(music->container.at(0), SIGNAL(starting(int)), this, SLOT(musicTrackChanged()));
 
-    //connect(music->media_container.at(0), SIGNAL(trackPosition(int, int)), this, SLOT(musicSetSeek(int,int)));
+    connect(music->container.at(0), SIGNAL(trackPosition(int, int)), this, SLOT(musicSetSeek(int,int)));
 
     singleshotSetVolume();
     atmosphereSetVolume();
@@ -97,16 +93,17 @@ void FrameGenerator::refreshSoundUi() {
     sfxCreateButtons();
     singleshotCreateButtons();
 
-    music_select_playlist->setModel(music->objects_model);
-    music_select_playlist->setModelColumn(1);
+    ui->music_select_playlist->setModel(music->objects_model);
+    ui->music_select_playlist->setModelColumn(1);
     musicSetPlaylist(0);
+    emit soundUiRefreshed();
 }
 
 
 void FrameGenerator::setHotkeysManager(HotkeysManager *hotkeys) {
     this->hotkeys = hotkeys;
     hotkeysCreateButtons();
-    hotkeys->getHotkeyButtons(hotkeys_buttons);
+    this->hotkeys->getHotkeyButtons(hotkeys_buttons);
 }
 
 
@@ -338,11 +335,29 @@ void FrameGenerator::musicPlayPause() {
 
 void FrameGenerator::musicTrackChanged() {
     qDebug() << "trackchange";
-    QString title(music->getTag(music->relativeFilePath(music->container.at(0)->getCurrentFilename()), music->TITLE));
-    QString artist(music->getTag(music->relativeFilePath(music->container.at(0)->getCurrentFilename()), music->ARTIST));
-    QString album(music->getTag(music->relativeFilePath(music->container.at(0)->getCurrentFilename()), music->ALBUM));
-    QString music_tag_label = this->tr("<b>%1</b> by <i>%2</i> from <i>%3</i>").arg(title, artist, album);
-    ui->musicTagLabel->setText(music_tag_label);
+    QStringList tag = music->container.at(0)->getTagList();
+
+    QString title;
+    QString artist;
+    QString album;
+
+    if(tag.first().isEmpty()) {
+        QFileInfo tag_file(music->container.at(0)->getCurrentFilename());
+        title = tag_file.fileName();
+    } else {
+        title = tr("<b>%1</b> ").arg(tag.first());
+    }
+
+    if(!tag.at(1).isEmpty()) {
+        artist = tr("by <i>%2</i> ").arg(tag.at(1));
+    }
+
+    if(!tag.last().isEmpty()) {
+        album = tr("from <i>%3</i>").arg(tag.last());
+    }
+
+
+    ui->musicTagLabel->setText(QString("%1%2%3").arg(title, artist, album));
 }
 
 void FrameGenerator::musicSetPlaylist(QModelIndex index) {

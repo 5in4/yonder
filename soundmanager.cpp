@@ -101,14 +101,15 @@ bool SoundManager::rescanLibrary() {
     for(int m=0; m<files.count(); m++) {
         qApp->processEvents();
 
-//        p++;
-//        emit loadingStatus(p, p_max);
         progress_bar->setValue(p++);
 
         db.transaction();
         if(!library_tracks.contains(files.at(m))) {
             QFileInfo file_info(absoluteFilePath(files.at(m)));
-            library_model->addTrack(files.at(m), file_info.lastModified(), getTag(files.at(m), ARTIST), getTag(files.at(m), ALBUM), getTag(files.at(m), TITLE));
+            MediaContainer *mc = new MediaContainer(media->system, this);
+            mc->loadFile(absoluteFilePath(files.at(m)));
+            QStringList tag = mc->getTagList();
+            library_model->addTrack(files.at(m), file_info.lastModified(), tag.at(1), tag.last(), tag.first());
         }
         db.commit();
         library_model->select();
@@ -141,12 +142,16 @@ bool SoundManager::rescanLibrary() {
         if(file_modified > last_modified) {
             QString file_mod_string = QString("%1").arg(file_modified);
             QSqlQuery inner_query;
-            QString inner_query_string = QString("UPDATE %1 SET `last-change` = \"%2\", `artist` = \"%3\", `album` = \"%4\", `title` = \"%5\" WHERE `id` = \"%6\"").arg(library_identifier, file_mod_string, getTag(query.value(1).toString(), ARTIST), getTag(query.value(1).toString(), ALBUM), getTag(query.value(1).toString(), TITLE), query.value(0).toString());
+            MediaContainer *mc = new MediaContainer(media->system, this);
+            mc->loadFile(file);
+            QStringList tag = mc->getTagList();
+            QString inner_query_string = QString("UPDATE %1 SET `last-change` = \"%2\", `artist` = \"%3\", `album` = \"%4\", `title` = \"%5\" WHERE `id` = \"%6\"").arg(library_identifier, file_mod_string, tag.at(1), tag.last(), tag.first(), query.value(0).toString());
             inner_query.exec(inner_query_string);
             qDebug() << identifier << query.value(1).toString() << "updated";
         }
     }
     progress_bar->setValue(0);
+    return true;
 }
 
 
@@ -181,29 +186,8 @@ QStringList SoundManager::scanLibraryDirectory(QString dir) {
  * Returns tag for file for chosen field.
  */
 QString SoundManager::getTag(QString file, int field) {
-    QString full_path = absoluteFilePath(file);
-
-    #ifdef _WIN32
-        TagLib::FileRef file_tag(reinterpret_cast<const wchar_t*>(full_path.constData()));
-    #else
-        TagLib::FileRef file_tag(full_path.toAscii());
-    #endif
-
-    QString tag;
-    TagLib::String field_taglib = "";
-    if(file_tag.isNull() == false) {
-        if(field == ARTIST) {
-            field_taglib = file_tag.tag()->artist();
-        } else if(field == ALBUM) {
-            field_taglib = file_tag.tag()->album();
-        } else if(field == TITLE) {
-            field_taglib = file_tag.tag()->title();
-        }
-        tag = TStringToQString(field_taglib);
-    } else {
-        tag = QString();
-    }
-    return tag;
+    qDebug() << "SoundManaget::getTag DEPRECATED DONT USE";
+    return QString("");
 }
 
 

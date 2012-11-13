@@ -108,6 +108,6 @@ bool SingleshotManager::enqueue(int channel) {
     if(choice_filename.isEmpty()) {
         return false;
     }
-    container.at(channel)->loadFile(absoluteFilePath(choice_filename));
+    container.at(channel)->loadFile(absoluteFilePath(choice_filename), false);
     return true;
 }

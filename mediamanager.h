@@ -1,11 +1,13 @@
 #include <QObject>
 #include <QList>
+#include <QStringList>
 #include <QTimer>
 #include <QProgressBar>
 #include <QDebug>
 
 #ifdef __WIN32
-
+#include <fmod.hpp>
+#include <fmod_errors.h>
 #elif __linux__
 #include <fmodex/fmod.hpp>
 #include <fmodex/fmod_errors.h>
@@ -31,11 +33,12 @@ public:
 
     QTimer *delay_timer;
 
-    bool loadFile(QString path, bool stream=false);
+    bool loadFile(QString path, bool stream=true);
     bool isPlaying();
     bool isPlayingVirtual();
     bool setVolume(float volume);
     QString getCurrentFilename();
+    QStringList getTagList();
 
     int getChannel();
     void setChannel(int channel_nr);

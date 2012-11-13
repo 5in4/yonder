@@ -191,7 +191,7 @@ void SfxManager::playDelayed(int cid) {
     query.exec();
 
     if (query.first() && channel.at(4).toInt() == true) {
-        container.at(cid)->loadFile(absoluteFilePath(query.value(0).toString()));
+        container.at(cid)->loadFile(absoluteFilePath(query.value(0).toString()), false);
         container.at(cid)->play(start);
     }
 }

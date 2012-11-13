@@ -34,7 +34,7 @@ void MediaManager::fmodLoop() {
 
 
 MediaContainer* MediaManager::createContainer() {
-    container.append(new MediaContainer(system));
+    container.append(new MediaContainer(system, this));
     return container.last();
 }
 
@@ -60,6 +60,8 @@ MediaContainer::MediaContainer(FMOD::System *system, QObject *parent) :
 
 
 bool MediaContainer::loadFile(QString path, bool stream) {
+    // while releasing is broke, force streaming
+    stream = true;
     if(stream == false) {
         result = system->createSound(path.toAscii(), FMOD_DEFAULT, 0, &sound);
         if(result == FMOD_OK) {
@@ -84,13 +86,21 @@ bool MediaContainer::loadFile(QString path, bool stream) {
 
 
 void MediaContainer::checkFinished() {
-//  emit trackPosition(sound->);
-//    sound->getLength();
-//    sound->get
-    if(!isPlaying() && playing_virtual == true) {
-        playing_file.clear();
-        emit finished(channel_nr);
-        qDebug() << "emitting finished";
+    if(playing_virtual == true) {
+        unsigned int len;
+        unsigned int pos;
+        FMOD_RESULT rs = sound->getLength(&len, FMOD_TIMEUNIT_MS);
+        FMOD_RESULT rc = channel->getPosition(&pos, FMOD_TIMEUNIT_MS);
+        if(rs == FMOD_OK && rc == FMOD_OK) {
+            emit trackPosition(pos, len);
+        }
+
+        if(!isPlaying()) {
+            playing_file.clear();
+            file_loaded =false;
+            emit finished(channel_nr);
+            //FMOD_ErrorString(sound->release()); crash
+        }
     }
 }
 
@@ -110,6 +120,35 @@ QString MediaContainer::getCurrentFilename() {
 }
 
 
+QStringList MediaContainer::getTagList() {
+    QStringList tag_list;
+    QString title;
+    QString artist;
+    QString album;
+    if(file_loaded) {
+        FMOD_TAG tag;
+        int num_tags;
+        int num_tags_updated;
+        sound->getNumTags(&num_tags, &num_tags_updated);
+        for(int i=0; i <= num_tags; i++) {
+            sound->getTag(0, i, &tag);
+            if(QString((char *)tag.name) == "TITLE") {
+                title = QString((char *)tag.data);
+            } else if (QString((char *)tag.name) == "ARTIST") {
+                artist = QString((char *)tag.data);
+            } else if(QString((char *)tag.name) == "ALBUM") {
+                album = QString((char *)tag.data);
+            }
+        }
+    }
+    tag_list.append(title.trimmed());
+    tag_list.append(artist.trimmed());
+    tag_list.append(album.trimmed());
+    qDebug() << tag_list;
+    return tag_list;
+}
+
+
 bool MediaContainer::isPlaying() {
     bool playing;
     channel->isPlaying(&playing);
@@ -125,6 +164,7 @@ bool MediaContainer::isPlayingVirtual() {
 bool MediaContainer::play() {
     if(file_loaded == true) {
         system->playSound(FMOD_CHANNEL_FREE, sound, true, &channel);
+        channel->setVolume(volume);
         channel->setPaused(false);
         emit starting(channel_nr);
         playing_virtual = true;
@@ -136,13 +176,13 @@ bool MediaContainer::play() {
 
 bool MediaContainer::play(int msec_delay) {
     delay_timer->start(msec_delay);
+    return true;
 }
 
 
 void MediaContainer::pause() {
     playing_virtual = false;
     channel->setPaused(true);
-
 }
 
 
@@ -174,5 +214,5 @@ void MediaContainer::setOID(int oid) {
 
 
 MediaContainer::~MediaContainer() {
-    delete sound;
+
 }

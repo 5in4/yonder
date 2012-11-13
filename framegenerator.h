@@ -69,6 +69,9 @@ public slots:
     void setSoundManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot);
     void setHotkeysManager(HotkeysManager *hotkeys);
     void refreshSoundUi();
+
+signals:
+    void soundUiRefreshed();
     
 private:
     Ui::FrameGenerator *ui;
