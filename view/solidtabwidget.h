@@ -55,6 +55,8 @@ public:
     SolidTabButton* webapp_running;
     SolidTabButton* quit_button;
 
+    int tab_active;
+
     int widget_width;
 
     int addTab(FrameObject *page, const QString &label);

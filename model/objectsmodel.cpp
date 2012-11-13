@@ -16,6 +16,7 @@ bool ObjectsModel::addObject(QString name) {
 
     // This should be emitted by itself. It isn't.
     emit dataChanged(index(rowCount(), columnCount()), index(rowCount(), columnCount()));
+    return true;
 }
 
 // This should be emitted by itself. It isn't.

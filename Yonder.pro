@@ -2,20 +2,33 @@ CONFIG += warn_off
 QT += core gui sql network
 
 win32 {
-    LIBS += C:/lib/taglib-1.7/taglib/libtag.dll.a
-    INCLUDEPATH += C:/lib/taglib-1.7/include
+    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib
+    INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include
+    DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include
 }
 
 unix:!macx {
-    LIBS += -L/usr/lib/ -ltag -lgrantlee_core -lfmodex
+    LIBS += -L/usr/lib/ -ltag -lfmodex
     INCLUDEPATH += /usr/include
     DEPENDPATH += /usr/include
 }
 
 macx {
-    LIBS += -L/usr/local/lib -ltag -grantlee_core -L$$PWD/../fmod/osx/api/lib/ -lfmodex
+    LIBS += -L/usr/local/lib -ltag -L$$PWD/../fmod/osx/api/lib/ -lfmodex
     INCLUDEPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
     DEPENDPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
+}
+
+unix {
+#libqjson
+LIBS += -L$$PWD/../auxiliary/qjson-backport-build/ -lqjson-backport
+INCLUDEPATH += $$PWD/../auxiliary/qjson-backport
+DEPENDPATH += $$PWD/../auxiliary/qjson-backport-build
+
+#libqfrontdesk
+LIBS += -L$$PWD/../auxiliary/qfrontdesk-build/ -lqfrontdesk
+INCLUDEPATH += $$PWD/../auxiliary/QFrontDesk
+DEPENDPATH += $$PWD/../auxiliary/qfrontdesk-build
 }
 
 
@@ -118,12 +131,3 @@ RESOURCES += \
 
 RC_FILE = yonder.rc
 
-#libqjson
-LIBS += -L$$PWD/../aux/qjson-backport-build/ -lqjson-backport
-INCLUDEPATH += $$PWD/../aux/qjson-backport
-DEPENDPATH += $$PWD/../aux/qjson-backport-build
-
-#libqfrontdesk
-LIBS += -L$$PWD/../aux/qfrontdesk-build/ -lqfrontdesk
-INCLUDEPATH += $$PWD/../aux/qfrontdesk
-DEPENDPATH += $$PWD/../aux/qfrontdesk-build

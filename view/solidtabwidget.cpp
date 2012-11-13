@@ -16,6 +16,7 @@ SolidTabWidget::SolidTabWidget(QWidget *parent) :
     progress_bar->setMinimum(0);
     progress_bar->setMaximum(0);
     progress_bar->setValue(0);
+    progress_bar->hide();
 
     applyStylesheet(true);
 
@@ -91,15 +92,25 @@ void SolidTabWidget::updateUi(int position) {
 //        }
 //    }
 
+    // Set to position, if it's new
+    if(tab_active != position) {
+        for(int i=0; tabs.count() > i; i++) {
+            if(tabs.at(i)->getPage()->isVisible()) {
+                tabs.at(i)->getPage()->setVisible(false);
+            }
+        }
+
+        tabs.at(position)->getPage()->setVisible(true);
+        emit tabActivated(tabs.at(position)->getPage());
+    }
+
+    // Set all buttons to correct state
     for(int i=0; tabs.count() > i; i++) {
         tabs.at(i)->setChecked(false);
-        if(tabs.at(i)->getPage()->isVisible()) {
-            tabs.at(i)->getPage()->setVisible(false);
-        }
     }
     tabs.at(position)->setChecked(true);
-    tabs.at(position)->getPage()->setVisible(true);
-    emit tabActivated(tabs.at(position)->getPage());
+
+    tab_active = position;
 }
 
 

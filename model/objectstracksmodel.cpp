@@ -51,6 +51,7 @@ bool ObjectsTracksModel::removeTrackFromObject(QModelIndex model_index, bool isS
     query.bindValue(":tid", field2.data());
     qDebug() << identifier << field1.data().toString() << field2.data().toString();
     query.exec();
+    return true;
 }
 
 Qt::ItemFlags ObjectsTracksModel::flags(const QModelIndex &index) const
