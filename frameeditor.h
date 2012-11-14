@@ -66,7 +66,7 @@ public slots:
 
     void previewPlayPause(bool state);
     void previewEnqueue(QString mime, int tid);
-    void previewStop(int channel);
+    void previewStop();
     void previewSetSeek(int time, int length);
 
 private:

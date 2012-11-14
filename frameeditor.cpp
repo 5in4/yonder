@@ -26,11 +26,13 @@ FrameEditor::FrameEditor(MediaManager *media, QWidget *parent) :
     ui->hotkeys_libraries_toolBox->setCurrentIndex(settings.value("EditorFrame/hotkeys_toolbox", 0).toInt());
 
     // Preview
-    media_preview = new MediaContainer(media->system, this);
+    //media_preview = new MediaContainer(media->system, this);
+    media_preview = media->createContainer();
     connect(ui->preview_play_pause, SIGNAL(toggled(bool)), this, SLOT(previewPlayPause(bool)));
     connect(ui->preview_play_pause, SIGNAL(fileDropped(QString,int)), this, SLOT(previewEnqueue(QString,int)));
-    connect(media_preview, SIGNAL(finished(int)), this, SLOT(previewStop(int)));
+    connect(media_preview, SIGNAL(finished(int)), this, SLOT(previewStop()));
     connect(media_preview, SIGNAL(trackPosition(int,int)), this, SLOT(previewSetSeek(int,int)));
+    connect(this, SIGNAL(deactivated()), this, SLOT(previewStop()));
 }
 
 FrameEditor::~FrameEditor()
@@ -475,13 +477,10 @@ void FrameEditor::hotkeysHotkeyActionsRemove() {
  * Look which library item is active, then play
  */
 void FrameEditor::previewPlayPause(bool state) {
-    qDebug() << "previewplaypause";
-    qDebug() << media_preview->getCurrentFilename();
     if(media_preview->getCurrentFilename().isEmpty()) {
         ui->preview_play_pause->setChecked(false);
     }
     if(state == true && !media_preview->getCurrentFilename().isEmpty()) {
-        qDebug() << "preview start";
         media_preview->play();
         return;
     }
@@ -492,6 +491,8 @@ void FrameEditor::previewEnqueue(QString mime, int tid) {
     QSqlQuery query_preview;
     QString library;
     QString path;
+
+    ui->preview_play_pause->setChecked(false);
 
     if(mime == "application/sg-music-library-reference") {
         library = music->library_identifier;
@@ -515,12 +516,11 @@ void FrameEditor::previewEnqueue(QString mime, int tid) {
     QString preview_file = QString("%1%2").arg(path, query_preview.value(0).toString());
     qDebug() << preview_file;
     qDebug() << media_preview->loadFile(preview_file);
-    media_preview->setVolume(100);
-    media_preview->play();
-//    ui->preview_play_pause->setChecked(true);
+    qDebug() << media_preview->setVolume(1.0);
+    ui->preview_play_pause->setChecked(true);
 }
 
-void FrameEditor::previewStop(int channel) {
+void FrameEditor::previewStop() {
     ui->preview_play_pause->setChecked(false);
     ui->preview_seek->setValue(0);
 }

@@ -6,6 +6,14 @@
 #include <QtSql>
 #include <qapplication.h>
 
+#ifdef Q_OS_WIN
+#include <taglib.h>
+#else
+#include <taglib/taglib.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+#endif
+
 #include <agmediacontainer.h>
 #include <mediamanager.h>
 #include <model/librarymodel.h>
@@ -46,7 +54,7 @@ public:
     bool createChannels(int channels);
     bool setVolume(unsigned int volume);
     bool updateDatabase(QString identifier, QString sql);
-    QString getTag(QString file, int field);
+    QStringList getTagList(QString file);
     QString absoluteFilePath(QString relative);
     QString relativeFilePath(QString absolute);
 

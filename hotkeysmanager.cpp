@@ -185,8 +185,12 @@ void HotkeysManager::callHotkey(int oid, bool checked) {
                     break;
                 }
             }
-            //musicComboBoxSelectPlaylist->selectionModel()->select(row, QItemSelectionModel::Select);
+//            musicComboBoxSelectPlaylist->selectionModel()->setCurrentIndex(row, QItemSelectionModel::Select);
             musicComboBoxSelectPlaylist->setCurrentIndex(row);
+            musicComboBoxSelectPlaylist->update(row);
+
+//            musicComboBoxSelectPlaylist->selectionModel()->select(row, QItemSelectionModel::Select);
+
 
         } else if(query.value(0).toString() == "special_objects" && checked == true) {
             //legend:
@@ -198,13 +202,11 @@ void HotkeysManager::callHotkey(int oid, bool checked) {
             //6: stop sfx
             int special = query.value(1).toInt();
 
-            if(special == 1) {
+            if(special == 1 || special == 3) {
                 musicButtonPlayPause->setChecked(true);
             } else if (special == 2) {
                 musicButtonPlayPause->setChecked(false);
                 music->enqueue();
-            } else if (special == 3) {
-                musicButtonPlayPause->setChecked(checked);
             } else if (special == 4) {
                 for(int i=0; i<atmosphere_buttons.length(); i++) {
                     atmosphere_buttons.at(i)->setChecked(false);
@@ -217,6 +219,12 @@ void HotkeysManager::callHotkey(int oid, bool checked) {
                 for(int i=0; i<sfx_buttons.length(); i++) {
                     sfx_buttons.at(i)->setChecked(false);
                 }
+
+            }
+        } else if(query.value(0).toString() == "special_objects" && checked == false) {
+            int special = query.value(1).toInt();
+            if (special == 3) {
+                musicButtonPlayPause->setChecked(false);
             }
         }
     }

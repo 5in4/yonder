@@ -1,6 +1,8 @@
 #ifndef AMBIENCEGENERATOR_H
 #define AMBIENCEGENERATOR_H
 
+#include <QMainWindow>
+#include <QSplashScreen>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 

@@ -65,19 +65,14 @@ AmbienceGenerator::AmbienceGenerator(QSplashScreen *splash_screen, QWidget *pare
     connect(start_frame, SIGNAL(acceptedProjectFolder(QString)), this, SLOT(setProject(QString)));
     setProject(settings.value("Settings/last_project_path", "").toString());
 
-
-
     connect(generator_frame, SIGNAL(deactivated()), this, SLOT(webappStop()));
-    //connect(generator_frame, SIGNAL(activated()), this, SLOT(webappStart()));
     connect(generator_frame, SIGNAL(activated()), generator_frame, SLOT(refreshSoundUi()));
     connect(generator_frame, SIGNAL(soundUiRefreshed()), this, SLOT(refreshProject()));
 
+    generator_frame->refreshSoundUi();
 
     // Pause everything when editor is launched
     connect(editor_frame, SIGNAL(activated()), this, SLOT(ambienceEditor()));
-
-    // Reload project when editor is deactivated. Loop indefinately
-    //connect(editor_frame, SIGNAL(deactivated()), this, SLOT(reloadProject()));
 
     // Set style. Signals for changed settings while running
     applyStylesheet();
@@ -128,9 +123,11 @@ void AmbienceGenerator::setProject(QString project_path) {
         ui->frame_sidebar->setActive(0);
         return;
     }
-    //ui->frame_sidebar->setTabEnabled(1, false);
-    //ui->frame_sidebar->setTabEnabled(2, false);
+    ui->frame_sidebar->setTabEnabled(1, false);
+    ui->frame_sidebar->setTabEnabled(2, false);
     this->project_path = project_path;
+
+    webappStop();
 
     QSettings settings;
     settings.setValue("Settings/last_project_path", project_path);
@@ -170,17 +167,7 @@ void AmbienceGenerator::setProject(QString project_path) {
     singleshot = new SingleshotManager(project_path, db, media, this);
 
     generator_frame->setSoundManagers(atmosphere, sfx, music, singleshot);
-    generator_frame->refreshSoundUi();
-
-    if(!hotkeys) {
-        delete hotkeys;
-    }
-    hotkeys = new HotkeysManager(db, music, generator_frame->atmosphere_buttons, generator_frame->sfx_buttons, generator_frame->singleshot_buttons, generator_frame->music_select_playlist, generator_frame->music_next, generator_frame->music_play_pause, this);
-    generator_frame->setHotkeysManager(hotkeys);
-
-    editor_frame->setManagers(atmosphere, sfx, music, singleshot, hotkeys);
-
-    webappStart();
+    //generator_frame->refreshSoundUi();
 
     ui->frame_sidebar->setTabEnabled(1, true);
     ui->frame_sidebar->setTabEnabled(2, true);
@@ -197,6 +184,8 @@ void AmbienceGenerator::refreshProject() {
     }
     hotkeys = new HotkeysManager(db, music, generator_frame->atmosphere_buttons, generator_frame->sfx_buttons, generator_frame->singleshot_buttons, generator_frame->music_select_playlist, generator_frame->music_next, generator_frame->music_play_pause, this);
     generator_frame->setHotkeysManager(hotkeys);
+    editor_frame->setManagers(atmosphere, sfx, music, singleshot, hotkeys);
+
     webappStart();
 }
 
@@ -204,23 +193,20 @@ void AmbienceGenerator::refreshProject() {
 void AmbienceGenerator::webappStart() {
     QSettings settings;
     if(!webapp) {
-        delete webapp;
-    }
-    webapp = new Webapp(settings.value("Settings/webapp_port").toInt(), 10, QString(":webservice/static"), this);
-    if(settings.value("Settings/webapp_active").toBool() && settings.value("Settings/webapp_port").toInt() != 0) {
-        webapp->setHotkeysManager(hotkeys);
-        ui->frame_sidebar->webapp_running->setToolTip(tr("Open webapp in browser\nAddress:%1").arg(webapp->getUrl()));
-        ui->frame_sidebar->webapp_running->show();
-        webapp->setActive(true);
+        webapp = new Webapp(settings.value("Settings/webapp_port").toInt(), 10, QString(":webservice/static"), this);
+        if(settings.value("Settings/webapp_active").toBool() && settings.value("Settings/webapp_port").toInt() != 0) {
+            webapp->setHotkeysManager(hotkeys);
+            ui->frame_sidebar->webapp_running->setToolTip(tr("Open webapp in browser\nAddress:%1").arg(webapp->getUrl()));
+            ui->frame_sidebar->webapp_running->show();
+            webapp->setActive(true);
+        }
     }
 }
 
 
 void AmbienceGenerator::webappStop() {
     ui->frame_sidebar->webapp_running->hide();
-    qDebug() << webapp;
     if(webapp) {
-        qDebug() << "hai";
         webapp->setActive(false);
         webapp->deleteLater();
     }

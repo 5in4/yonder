@@ -27,6 +27,8 @@ FrameGenerator::FrameGenerator(QWidget *parent) :
     music_next->setStandardStyle();
     ui->music_control_layout->addWidget(music_next);
 
+    music_select_playlist = ui->music_select_playlist;
+
     QSettings settings;
 
     ui->atmosphereVolume->setValue(settings.value("Settings/atmosphere_volume", 50).toInt());
@@ -334,7 +336,6 @@ void FrameGenerator::musicPlayPause() {
 
 
 void FrameGenerator::musicTrackChanged() {
-    qDebug() << "trackchange";
     QStringList tag = music->container.at(0)->getTagList();
 
     QString title;

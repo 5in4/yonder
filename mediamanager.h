@@ -3,15 +3,21 @@
 #include <QStringList>
 #include <QTimer>
 #include <QProgressBar>
+#include <QFile>
+
 #include <QDebug>
 
-#ifdef __WIN32
+#ifdef Q_OS_WIN
 #include <fmod.hpp>
 #include <fmod_errors.h>
-#elif __linux__
+#endif
+
+#ifdef Q_OS_LINUX
 #include <fmodex/fmod.hpp>
 #include <fmodex/fmod_errors.h>
-#else
+#endif
+
+#ifdef Q_OS_MAC
 #include <fmod.hpp>
 #include <fmod_errors.h>
 #endif

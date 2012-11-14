@@ -62,8 +62,15 @@ MediaContainer::MediaContainer(FMOD::System *system, QObject *parent) :
 bool MediaContainer::loadFile(QString path, bool stream) {
     // while releasing is broke, force streaming
     stream = true;
+
+    #ifdef Q_OS_WIN
+        const wchar_t * encoded_name = reinterpret_cast<const wchar_t *>(path.utf16());
+    #else
+        const char * encoded_name = QFile::encodeName(path).constData();
+    #endif
+
     if(stream == false) {
-        result = system->createSound(path.toAscii(), FMOD_DEFAULT, 0, &sound);
+        result = system->createSound(encoded_name, FMOD_DEFAULT, 0, &sound);
         if(result == FMOD_OK) {
             file_loaded = true;
             playing_file = path;
@@ -73,9 +80,10 @@ bool MediaContainer::loadFile(QString path, bool stream) {
             return false;
         }
     } else {
-        result = system->createStream(path.toAscii(), FMOD_DEFAULT, 0, &sound);
+        result = system->createStream(encoded_name, FMOD_DEFAULT, 0, &sound);
         if(result == FMOD_OK) {
             file_loaded = true;
+            playing_file = path;
             return true;
         } else {
             file_loaded = false;
