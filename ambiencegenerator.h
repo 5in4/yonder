@@ -24,6 +24,7 @@
 
 #include <webapp.h>
 
+
 namespace Ui {
     class AmbienceGenerator;
 }
@@ -58,7 +59,7 @@ public:
 
     QSplashScreen *splash_screen;
 
-    bool project_set = false;
+    bool project_set;
 
     Ui::AmbienceGenerator *ui;
 

@@ -195,11 +195,7 @@ QStringList SoundManager::getTagList(QString file) {
 
     qDebug() << file;
 
-    #ifdef Q_OS_WIN
-        const wchar_t * encoded_name = reinterpret_cast<const wchar_t *>(file.utf16());
-    #else
-        const char * encoded_name = QFile::encodeName(file).constData();
-    #endif
+    const char * encoded_name = QFile::encodeName(file).constData();
 
     TagLib::FileRef file_tag(encoded_name);
 

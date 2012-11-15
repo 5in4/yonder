@@ -4,6 +4,12 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#ifdef Q_OS_WIN
+#include <taglib.h>
+#else
+#include <taglib/taglib.h>
+#endif
+
 #include <frameobject.h>
 
 namespace Ui {

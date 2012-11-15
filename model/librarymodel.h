@@ -6,7 +6,6 @@
 #include <QDateTime>
 #include <QStringList>
 
-//debug
 #include <QDebug>
 #include <QSqlError>
 

@@ -1,10 +1,9 @@
 CONFIG += warn_off
 QT += core gui sql network
-
 win32 {
-    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib
-    INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include
-    DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include
+    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib C:/lib/taglib/tag.lib
+    INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
+    DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
 }
 
 unix:!macx {
@@ -130,4 +129,5 @@ RESOURCES += \
     yonder.qrc \
 
 RC_FILE = yonder.rc
+
 

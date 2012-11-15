@@ -1,9 +1,17 @@
 #ifndef AGTAGBYIDDELEGATE_H
 #define AGTAGBYIDDELEGATE_H
 
-#include <QtCore>
-#include <QtSql>
-#include <QtGui>
+//#include <QtCore>
+//#include <QtSql>
+//#include <QtGui>
+#include <QTableView>
+#include <QStyledItemDelegate>
+#include <QApplication>
+#include <QTextDocument>
+#include <QTextOption>
+#include <QSqlQuery>
+#include <QAbstractTextDocumentLayout>
+#include <QPainter>
 
 class AGTagByIDDelegate : public QStyledItemDelegate
 {

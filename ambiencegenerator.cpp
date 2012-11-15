@@ -17,7 +17,7 @@ AmbienceGenerator::AmbienceGenerator(QSplashScreen *splash_screen, QWidget *pare
     QSettings settings;
     config_path = QDir(QFileInfo(settings.fileName()).absoluteDir()).absolutePath();
 
-
+    project_set = false;
 
     this->splash_screen = splash_screen;
 

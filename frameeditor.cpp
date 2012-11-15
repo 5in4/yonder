@@ -514,9 +514,8 @@ void FrameEditor::previewEnqueue(QString mime, int tid) {
 
     query_preview.first();
     QString preview_file = QString("%1%2").arg(path, query_preview.value(0).toString());
-    qDebug() << preview_file;
-    qDebug() << media_preview->loadFile(preview_file);
-    qDebug() << media_preview->setVolume(1.0);
+    media_preview->loadFile(preview_file);
+    media_preview->setVolume(1.0);
     ui->preview_play_pause->setChecked(true);
 }
 

@@ -42,6 +42,7 @@
     </qresource>
     <qresource prefix="/manual">
         <file alias="index.htm">data/manual/index.htm</file>
+        <file>data/manual/sfx-concept.png</file>
     </qresource>
     <qresource prefix="/webservice/templates">
         <file alias="main.htm">data/webservice/templates/main.htm</file>

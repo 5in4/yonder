@@ -1,12 +1,12 @@
 #ifndef OBJECTSTRACKSMODEL_H
 #define OBJECTSTRACKSMODEL_H
 
-#include <iostream>
-#include <cstdlib>
-#include <QtCore>
+#include <QTime>
 #include <QSqlTableModel>
 #include <QSqlQuery>
+
 #include <QSqlError>
+#include <QDebug>
 
 class ObjectsTracksModel : public QSqlTableModel
 {

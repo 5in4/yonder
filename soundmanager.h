@@ -8,6 +8,8 @@
 
 #ifdef Q_OS_WIN
 #include <taglib.h>
+#include <tag.h>
+#include <fileref.h>
 #else
 #include <taglib/taglib.h>
 #include <taglib/fileref.h>

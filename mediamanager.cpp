@@ -62,12 +62,7 @@ MediaContainer::MediaContainer(FMOD::System *system, QObject *parent) :
 bool MediaContainer::loadFile(QString path, bool stream) {
     // while releasing is broke, force streaming
     stream = true;
-
-    #ifdef Q_OS_WIN
-        const wchar_t * encoded_name = reinterpret_cast<const wchar_t *>(path.utf16());
-    #else
-        const char * encoded_name = QFile::encodeName(path).constData();
-    #endif
+    const char * encoded_name = QFile::encodeName(path).constData();
 
     if(stream == false) {
         result = system->createSound(encoded_name, FMOD_DEFAULT, 0, &sound);
