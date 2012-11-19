@@ -1,9 +1,12 @@
 CONFIG += warn_off
 QT += core gui sql network
 win32 {
-    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib C:/lib/taglib/tag.lib
+    LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
     INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
     DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
+#    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib C:/lib/taglib/tag.lib
+#    INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
+#    DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
 }
 
 unix:!macx {

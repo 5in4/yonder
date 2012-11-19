@@ -8,17 +8,17 @@
 #include <QDebug>
 
 #ifdef Q_OS_WIN
-#include <fmod.hpp>
+#include <fmod.h>
 #include <fmod_errors.h>
 #endif
 
 #ifdef Q_OS_LINUX
-#include <fmodex/fmod.hpp>
+#include <fmodex/fmod.h>
 #include <fmodex/fmod_errors.h>
 #endif
 
 #ifdef Q_OS_MAC
-#include <fmod.hpp>
+#include <fmod.h>
 #include <fmod_errors.h>
 #endif
 
@@ -29,13 +29,13 @@ class MediaContainer : public QObject
 {
     Q_OBJECT
 public:
-    explicit MediaContainer(FMOD::System *system, QObject *parent = 0);
+    explicit MediaContainer(FMOD_SYSTEM *system, QObject *parent = 0);
     ~MediaContainer();
 
     FMOD_RESULT result;
-    FMOD::System *system;
-    FMOD::Channel *channel;
-    FMOD::Sound *sound;
+    FMOD_SYSTEM *system;
+    FMOD_CHANNEL *channel;
+    FMOD_SOUND *sound;
 
     QTimer *delay_timer;
 
@@ -87,7 +87,7 @@ public:
     explicit MediaManager(QProgressBar *progress_bar, QObject *parent = 0);
 
     FMOD_RESULT result;
-    FMOD::System *system;
+    FMOD_SYSTEM *system;
 
     QList<MediaContainer*> container;
     MediaContainer *createContainer();

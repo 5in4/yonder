@@ -90,14 +90,22 @@ void FrameGenerator::setSoundManagers(AtmosphereManager *atmosphere, SfxManager 
 
 
 void FrameGenerator::refreshSoundUi() {
-    qDebug() << "refreshing ui";
-    atmosphereCreateButtons();
-    sfxCreateButtons();
-    singleshotCreateButtons();
+    refreshSoundUi(true);
+}
 
-    ui->music_select_playlist->setModel(music->objects_model);
-    ui->music_select_playlist->setModelColumn(1);
-    musicSetPlaylist(0);
+void FrameGenerator::refreshSoundUi(bool project_set) {
+    qDebug() << "refreshing ui";
+    if(project_set) {
+        atmosphereCreateButtons();
+        sfxCreateButtons();
+        singleshotCreateButtons();
+
+        ui->music_select_playlist->setModel(music->objects_model);
+        ui->music_select_playlist->setModelColumn(1);
+        musicSetPlaylist(0);
+    } else {
+        qDebug() << "Generators not summoned, skipping button creation";
+    }
     emit soundUiRefreshed();
 }
 

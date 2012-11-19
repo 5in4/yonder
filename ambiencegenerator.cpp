@@ -69,7 +69,7 @@ AmbienceGenerator::AmbienceGenerator(QSplashScreen *splash_screen, QWidget *pare
     connect(generator_frame, SIGNAL(activated()), generator_frame, SLOT(refreshSoundUi()));
     connect(generator_frame, SIGNAL(soundUiRefreshed()), this, SLOT(refreshProject()));
 
-    generator_frame->refreshSoundUi();
+    generator_frame->refreshSoundUi(project_set);
 
     // Pause everything when editor is launched
     connect(editor_frame, SIGNAL(activated()), this, SLOT(ambienceEditor()));
@@ -167,7 +167,6 @@ void AmbienceGenerator::setProject(QString project_path) {
     singleshot = new SingleshotManager(project_path, db, media, this);
 
     generator_frame->setSoundManagers(atmosphere, sfx, music, singleshot);
-    //generator_frame->refreshSoundUi();
 
     ui->frame_sidebar->setTabEnabled(1, true);
     ui->frame_sidebar->setTabEnabled(2, true);
@@ -179,14 +178,12 @@ void AmbienceGenerator::setProject(QString project_path) {
 }
 
 void AmbienceGenerator::refreshProject() {
-    if(!hotkeys) {
-        delete hotkeys;
+    if(project_set) {
+        hotkeys = new HotkeysManager(db, music, generator_frame->atmosphere_buttons, generator_frame->sfx_buttons, generator_frame->singleshot_buttons, generator_frame->music_select_playlist, generator_frame->music_next, generator_frame->music_play_pause, this);
+        generator_frame->setHotkeysManager(hotkeys);
+        editor_frame->setManagers(atmosphere, sfx, music, singleshot, hotkeys);
+        webappStart();
     }
-    hotkeys = new HotkeysManager(db, music, generator_frame->atmosphere_buttons, generator_frame->sfx_buttons, generator_frame->singleshot_buttons, generator_frame->music_select_playlist, generator_frame->music_next, generator_frame->music_play_pause, this);
-    generator_frame->setHotkeysManager(hotkeys);
-    editor_frame->setManagers(atmosphere, sfx, music, singleshot, hotkeys);
-
-    webappStart();
 }
 
 

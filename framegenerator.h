@@ -69,6 +69,7 @@ public slots:
     void setSoundManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot);
     void setHotkeysManager(HotkeysManager *hotkeys);
     void refreshSoundUi();
+    void refreshSoundUi(bool project_set);
 
 signals:
     void soundUiRefreshed();

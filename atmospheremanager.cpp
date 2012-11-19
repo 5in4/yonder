@@ -77,7 +77,6 @@ void AtmosphereManager::playPause(int channel) {
  */
 void AtmosphereManager::play(int channel) {
     if(container.at(channel)->getCurrentFilename().isEmpty()) {
-//    if(media_container.at(channel)->getCurrentFilename().isEmpty()) {
         if(!enqueue(channel)) {
             qDebug() << identifier << "nothing to play on channel" << channel;
             emit playbackError(channel);
@@ -85,7 +84,6 @@ void AtmosphereManager::play(int channel) {
         }
     }
     container.at(channel)->play();
-    //media_container.at(channel)->play();
     qDebug() << identifier << "playing on channel" << channel;
 }
 

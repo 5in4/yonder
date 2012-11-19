@@ -3,12 +3,13 @@
 MediaManager::MediaManager(QProgressBar *progress_bar, QObject *parent) :
     QObject(parent)
 {
-    result = FMOD::System_Create(&system);
+
+    result = FMOD_System_Create(&system);
     if(result != FMOD_OK) {
         qDebug() << "FMOD error" << FMOD_ErrorString(result);
     }
 
-    result = system->init(1000, FMOD_INIT_NORMAL, 0);
+    result = FMOD_System_Init(system, 1000, FMOD_INIT_NORMAL, 0);
     if(result != FMOD_OK) {
         qDebug() << "FMOD error" << FMOD_ErrorString(result);
     }
@@ -29,7 +30,7 @@ void MediaManager::fmodLoop() {
 
     }
 
-    system->update();
+    FMOD_System_Update(system);
 }
 
 
@@ -42,7 +43,7 @@ MediaContainer* MediaManager::createContainer() {
 
 
 
-MediaContainer::MediaContainer(FMOD::System *system, QObject *parent) :
+MediaContainer::MediaContainer(FMOD_SYSTEM *system, QObject *parent) :
     QObject(parent)
 {
     this->system = system;
@@ -65,7 +66,7 @@ bool MediaContainer::loadFile(QString path, bool stream) {
     const char * encoded_name = QFile::encodeName(path).constData();
 
     if(stream == false) {
-        result = system->createSound(encoded_name, FMOD_DEFAULT, 0, &sound);
+        result = FMOD_System_CreateSound(system, encoded_name, FMOD_DEFAULT, 0, &sound);
         if(result == FMOD_OK) {
             file_loaded = true;
             playing_file = path;
@@ -75,7 +76,7 @@ bool MediaContainer::loadFile(QString path, bool stream) {
             return false;
         }
     } else {
-        result = system->createStream(encoded_name, FMOD_DEFAULT, 0, &sound);
+        result = FMOD_System_CreateStream(system, encoded_name, FMOD_DEFAULT, 0, &sound);
         if(result == FMOD_OK) {
             file_loaded = true;
             playing_file = path;
@@ -92,8 +93,8 @@ void MediaContainer::checkFinished() {
     if(playing_virtual == true) {
         unsigned int len;
         unsigned int pos;
-        FMOD_RESULT rs = sound->getLength(&len, FMOD_TIMEUNIT_MS);
-        FMOD_RESULT rc = channel->getPosition(&pos, FMOD_TIMEUNIT_MS);
+        FMOD_RESULT rs = FMOD_Sound_GetLength(sound, &len, FMOD_TIMEUNIT_MS);
+        FMOD_RESULT rc = FMOD_Channel_GetPosition(channel, &pos, FMOD_TIMEUNIT_MS);
         if(rs == FMOD_OK && rc == FMOD_OK) {
             emit trackPosition(pos, len);
         }
@@ -101,7 +102,7 @@ void MediaContainer::checkFinished() {
         if(!isPlaying()) {
             playing_file.clear();
             file_loaded =false;
-            sound->release();
+            FMOD_Sound_Release(sound);
             emit finished(channel_nr);
         }
     }
@@ -113,7 +114,7 @@ bool MediaContainer::setVolume(float volume) {
         return false;
     } else {
         this->volume = volume;
-        channel->setVolume(volume);
+        FMOD_Channel_SetVolume(channel, volume);
     }
 }
 
@@ -132,9 +133,9 @@ QStringList MediaContainer::getTagList() {
         FMOD_TAG tag;
         int num_tags;
         int num_tags_updated;
-        sound->getNumTags(&num_tags, &num_tags_updated);
+        FMOD_Sound_GetNumTags(sound, &num_tags, &num_tags_updated);
         for(int i=0; i <= num_tags; i++) {
-            sound->getTag(0, i, &tag);
+            FMOD_Sound_GetTag(sound, 0, i, &tag);
             if(QString((char *)tag.name) == "TITLE") {
                 title = QString((char *)tag.data);
             } else if (QString((char *)tag.name) == "ARTIST") {
@@ -153,8 +154,8 @@ QStringList MediaContainer::getTagList() {
 
 
 bool MediaContainer::isPlaying() {
-    bool playing;
-    channel->isPlaying(&playing);
+    FMOD_BOOL playing;
+    FMOD_Channel_IsPlaying(channel, &playing);
     return playing;
 }
 
@@ -166,9 +167,9 @@ bool MediaContainer::isPlayingVirtual() {
 
 bool MediaContainer::play() {
     if(file_loaded == true) {
-        system->playSound(FMOD_CHANNEL_FREE, sound, true, &channel);
-        channel->setVolume(volume);
-        channel->setPaused(false);
+        FMOD_System_PlaySound(system, FMOD_CHANNEL_FREE, sound, true, &channel);
+        FMOD_Channel_SetVolume(channel, volume);
+        FMOD_Channel_SetPaused(channel, false);
         emit starting(channel_nr);
         playing_virtual = true;
         return true;
@@ -185,13 +186,13 @@ bool MediaContainer::play(int msec_delay) {
 
 void MediaContainer::pause() {
     playing_virtual = false;
-    channel->setPaused(true);
+    FMOD_Channel_SetPaused(channel, true);
 }
 
 
 void MediaContainer::stop() {
     playing_virtual = false;
-    channel->stop();
+    FMOD_Channel_Stop(channel);
 
 }
 

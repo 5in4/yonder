@@ -40,8 +40,8 @@ public:
     QString path;
 
     QStringList accepted_mimetypes;
-    QString objects;
-    QString objects_tracks;
+//    QString objects;
+//    QString objects_tracks;
     QStringList library_tracks;
     int channels;
     MediaManager *media;
