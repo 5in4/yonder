@@ -19,6 +19,7 @@ macx {
     LIBS += -L/usr/local/lib -ltag -L$$PWD/../fmod/osx/api/lib/ -lfmodex
     INCLUDEPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
     DEPENDPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
+    QMAKE_POST_LINK += ../src/osx_postbuild
 }
 
 unix {

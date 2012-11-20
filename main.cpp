@@ -54,8 +54,8 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
 
-    a.setOrganizationName(NAME);
-    a.setOrganizationDomain(WEBADDRESS);
+    a.setOrganizationName("yonderfx.com");
+    a.setOrganizationDomain("com.yonderfx");
     a.setApplicationName(NAME);
 
     QPixmap splash(":/application/icons/splash.png");

@@ -1,0 +1,4 @@
+#!/bin/sh
+/Applications/QtSDK/Desktop/Qt/4.8.1/gcc/bin/macdeployqt ../build-osx/yonder.app
+cd ../build-osx/yonder.app/Contents/MacOS/
+install_name_tool -change ./libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib yonder

@@ -86,7 +86,6 @@ bool MusicManager::enqueue() {
         return false;
     }
     this->library_model->setFilter(current_library_filter);
-
     container.at(0)->loadFile(absoluteFilePath(choice_filename));
     return true;
 }

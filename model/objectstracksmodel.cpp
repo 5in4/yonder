@@ -19,10 +19,9 @@ void ObjectsTracksModel::selectObject(int oid) {
 int ObjectsTracksModel::selectRandomTrack() {
     int seed = QTime::currentTime().msec();
     qsrand(seed);
-    #ifdef _WIN32
     qrand();
-    #endif
     int row = int( qrand() / (RAND_MAX + 1.0) * rowCount());
+    qDebug() << "QRAND" << row;
     return this->data(index(row, 1)).toInt();
 }
 
