@@ -1,0 +1,11 @@
+#!/bin/bash
+arch=`uname -m`
+dirname=`dirname $0`
+tmp="${dirname#?}"
+
+if [ "${dirname%$tmp}" != "/" ]; then
+dirname=$PWD/$dirname
+fi
+LD_LIBRARY_PATH=$dirname/lib-$arch
+export LD_LIBRARY_PATH
+$dirname/yonder-$arch "$@"

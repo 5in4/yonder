@@ -1,4 +1,7 @@
 #!/bin/sh
-/Applications/QtSDK/Desktop/Qt/4.8.1/gcc/bin/macdeployqt ../build-osx/yonder.app
-cd ../build-osx/yonder.app/Contents/MacOS/
-install_name_tool -change ./libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib yonder
+/Applications/QtSDK/Desktop/Qt/4.8.1/gcc/bin/macdeployqt yonder.app
+cp ../src/data/Info.plist yonder.app/Contents
+cp ../src/data/yonder.icns yonder.app/Contents/Resources
+install_name_tool -change ./libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib yonder.app/Contents/MacOS/yonder
+hdiutil create -format UDBZ -quiet -srcfolder yonder.app yonder.dmg
+#rm -r yonder.app

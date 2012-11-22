@@ -7,20 +7,8 @@
 
 #include <QDebug>
 
-#ifdef Q_OS_WIN
 #include <fmod.h>
 #include <fmod_errors.h>
-#endif
-
-#ifdef Q_OS_LINUX
-#include <fmodex/fmod.h>
-#include <fmodex/fmod_errors.h>
-#endif
-
-#ifdef Q_OS_MAC
-#include <fmod.h>
-#include <fmod_errors.h>
-#endif
 
 #ifndef MEDIACONTAINER_H
 #define MEDIACONTAINER_H

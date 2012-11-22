@@ -1,0 +1,9 @@
+#!/bin/sh
+arch=`uname -m`
+mv yonder yonder-$arch
+cp ../src/data/yonder yonder
+cp ../auxiliary/qfrontdesk-build/libqfrontdesk* ./lib-$arch
+cp ../auxiliary/qjson-backport-build/libqjson* ./lib-$arch
+cp ../fmod/linux/api/lib/* ./lib-$arch
+rm *L.so
+rm *.dylib

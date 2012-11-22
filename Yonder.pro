@@ -4,15 +4,20 @@ win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
     INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
     DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
-#    LIBS += C:/lib/qfrontdesk/release/qfrontdesk.lib C:/lib/qjsonbackport/release/qjson-backport.lib C:/lib/fmod/lib/fmodex_vc.lib C:/lib/taglib/tag.lib
-#    INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
-#    DEPENDPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
 }
 
 unix:!macx {
-    LIBS += -L/usr/lib/ -ltag -lfmodex
-    INCLUDEPATH += /usr/include
-    DEPENDPATH += /usr/include
+    *-g++-32 {
+    LIBS += -L$$PWD/../fmod/linux/api/lib -lfmodex
+    }
+#    *-g++-64 {
+    LIBS += -L$$PWD/../fmod/linux/api/lib -lfmodex64
+#    }
+
+    LIBS += -L/usr/lib/ -ltag
+    INCLUDEPATH += /usr/include $$PWD/../fmod/linux/api/inc
+    DEPENDPATH += /usr/include $$PWD/../fmod/linux/api/inc
+    QMAKE_POST_LINK += ../src/linux_postbuild
 }
 
 macx {

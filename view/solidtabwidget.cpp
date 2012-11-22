@@ -3,8 +3,9 @@
 SolidTabWidget::SolidTabWidget(QWidget *parent) :
     QFrame(parent)
 {
-    this->widget_width = 110;
+    widget_width = 110;
     sidebar_layout = new QVBoxLayout(this);
+    tab_active = -1;
 
     webapp_running = new SolidTabButton(widget_width, this);
     webapp_running->setText("Webapp\nrunning");
