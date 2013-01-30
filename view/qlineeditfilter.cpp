@@ -9,8 +9,6 @@
 //http://labs.qt.nokia.com/2007/06/06/lineedit-with-a-clear-button/
 
 #include "qlineeditfilter.h"
-#include <QToolButton>
-#include <QStyle>
 
 QLineEditFilter::QLineEditFilter(QWidget *parent)
     : QLineEdit(parent)

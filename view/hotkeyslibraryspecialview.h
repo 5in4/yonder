@@ -1,8 +1,9 @@
 #ifndef HOTKEYSLIBRARYSPECIALVIEW_H
 #define HOTKEYSLIBRARYSPECIALVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class HotkeysLibrarySpecialView : public QTableView
 {

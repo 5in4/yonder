@@ -1,5 +1,7 @@
 CONFIG += warn_off
-QT += core gui sql network
+QT += sql network widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
 win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
     INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
@@ -7,17 +9,10 @@ win32 {
 }
 
 unix:!macx {
-    *-g++-32 {
-    LIBS += -L$$PWD/../fmod/linux/api/lib -lfmodex
-    }
-#    *-g++-64 {
-    LIBS += -L$$PWD/../fmod/linux/api/lib -lfmodex64
-#    }
-
-    LIBS += -L/usr/lib/ -ltag
-    INCLUDEPATH += /usr/include $$PWD/../fmod/linux/api/inc
-    DEPENDPATH += /usr/include $$PWD/../fmod/linux/api/inc
-    QMAKE_POST_LINK += ../src/linux_postbuild
+    LIBS += -L/usr/lib/ -ltag -lfmodex
+    INCLUDEPATH += /usr/include
+    DEPENDPATH += /usr/include
+    #QMAKE_POST_LINK += ../src/linux_postbuild
 }
 
 macx {
@@ -28,11 +23,6 @@ macx {
 }
 
 unix {
-#libqjson
-LIBS += -L$$PWD/../auxiliary/qjson-backport-build/ -lqjson-backport
-INCLUDEPATH += $$PWD/../auxiliary/qjson-backport
-DEPENDPATH += $$PWD/../auxiliary/qjson-backport-build
-
 #libqfrontdesk
 LIBS += -L$$PWD/../auxiliary/qfrontdesk-build/ -lqfrontdesk
 INCLUDEPATH += $$PWD/../auxiliary/QFrontDesk
@@ -42,10 +32,10 @@ DEPENDPATH += $$PWD/../auxiliary/qfrontdesk-build
 
 TARGET = yonder
 TEMPLATE = app
-SOURCES += main.cpp ambiencegenerator.cpp soundmanager.cpp \
+VERSION = 1.1.1
+SOURCES += main.cpp soundmanager.cpp \
     musicmanager.cpp \
     hotkeysmanager.cpp \
-    agmediacontainer.cpp \
     singleshotmanager.cpp \
     atmospheremanager.cpp \
     sfxmanager.cpp \
@@ -83,11 +73,12 @@ SOURCES += main.cpp ambiencegenerator.cpp soundmanager.cpp \
     framegenerator.cpp \
     webapp.cpp \
     mediamanager.cpp \
-    view/hotkeyspushbutton.cpp
-HEADERS += ambiencegenerator.h soundmanager.h \
+    view/hotkeyspushbutton.cpp \
+    yondergui.cpp \
+    yondercore.cpp
+HEADERS += soundmanager.h \
     musicmanager.h \
     hotkeysmanager.h \
-    agmediacontainer.h \
     singleshotmanager.h \
     atmospheremanager.h \
     sfxmanager.h \
@@ -125,14 +116,17 @@ HEADERS += ambiencegenerator.h soundmanager.h \
     framegenerator.h \
     webapp.h \
     mediamanager.h \
-    view/hotkeyspushbutton.h
-FORMS += ambiencegenerator.ui \
+    view/hotkeyspushbutton.h \
+    yondergui.h \
+    yondercore.h
+FORMS += \
     framestart.ui \
     frameresourcebrowser.ui \
     framehelp.ui \
     frameconfigure.ui \
     frameeditor.ui \
-    framegenerator.ui
+    framegenerator.ui \
+    yondergui.ui
 
 RESOURCES += \
     yonder.qrc \

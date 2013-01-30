@@ -1,8 +1,9 @@
 #ifndef HOTKEYSLIBRARYSFXVIEW_H
 #define HOTKEYSLIBRARYSFXVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class HotkeysLibrarySfxView : public QTableView
 {

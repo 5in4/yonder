@@ -1,8 +1,11 @@
 #ifndef SINGLESHOTOBJECTSTRACKSVIEW_H
 #define SINGLESHOTOBJECTSTRACKSVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
+#include <QDragEnterEvent>
+#include <QMouseEvent>
 
 #include <model/objectstracksmodel.h>
 

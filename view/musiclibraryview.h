@@ -1,8 +1,9 @@
 #ifndef MUSICLIBRARYVIEW_H
 #define MUSICLIBRARYVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class MusicLibraryView: public QTableView
 {

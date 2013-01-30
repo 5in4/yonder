@@ -1,8 +1,9 @@
 #ifndef SINGLESHOTLIBRARYVIEW_H
 #define SINGLESHOTLIBRARYVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class SingleshotLibraryView : public QTableView
 {

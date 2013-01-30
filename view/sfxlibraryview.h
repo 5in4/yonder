@@ -1,8 +1,9 @@
 #ifndef SFXLIBRARYVIEW_H
 #define SFXLIBRARYVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class SfxLibraryView : public QTableView
 {

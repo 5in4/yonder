@@ -1,8 +1,9 @@
 #ifndef HOTKEYSLIBRARYATMOSPHEREVIEW_H
 #define HOTKEYSLIBRARYATMOSPHEREVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class HotkeysLibraryAtmosphereView : public QTableView
 {

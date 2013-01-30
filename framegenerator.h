@@ -9,11 +9,7 @@
 #include <view/agqpushbutton.h>
 #include <view/hotkeyspushbutton.h>
 
-#include <atmospheremanager.h>
-#include <sfxmanager.h>
-#include <singleshotmanager.h>
-#include <hotkeysmanager.h>
-#include <musicmanager.h>
+#include <yondercore.h>
 
 namespace Ui {
 class FrameGenerator;
@@ -22,20 +18,16 @@ class FrameGenerator;
 class FrameGenerator : public FrameObject
 {
     Q_OBJECT
-    
+
 public:
-    explicit FrameGenerator(QWidget *parent = 0);
+    explicit FrameGenerator(YonderCore *core, QWidget *parent = 0);
     ~FrameGenerator();
 
     AGQPushButton *music_play_pause;
     AGQPushButton *music_next;
     QListView *music_select_playlist;
 
-    AtmosphereManager *atmosphere;
-    HotkeysManager *hotkeys;
-    MusicManager *music;
-    SfxManager *sfx;
-    SingleshotManager *singleshot;
+    YonderCore *core;
 
     QList<AGQPushButton*> atmosphere_buttons;
     QList<AGQPushButton*> sfx_buttons;
@@ -66,14 +58,12 @@ public slots:
     void hotkeysCreateButtons();
     void hotkeysControl(int pos_in_array, bool checked);
 
-    void setSoundManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot);
-    void setHotkeysManager(HotkeysManager *hotkeys);
-    void refreshSoundUi();
-    void refreshSoundUi(bool project_set);
+    void refreshUi();
+    void refreshUi(bool project_set);
 
 signals:
-    void soundUiRefreshed();
-    
+    void uiRefreshed();
+
 private:
     Ui::FrameGenerator *ui;
 };

@@ -1,8 +1,6 @@
 #ifndef MUSICMANAGER_H
 #define MUSICMANAGER_H
 
-#include <QtCore>
-
 #include <mediamanager.h>
 #include <soundmanager.h>
 

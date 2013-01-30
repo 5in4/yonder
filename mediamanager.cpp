@@ -1,6 +1,6 @@
 #include "mediamanager.h"
 
-MediaManager::MediaManager(QProgressBar *progress_bar, QObject *parent) :
+MediaManager::MediaManager(QObject *parent) :
     QObject(parent)
 {
 
@@ -17,8 +17,6 @@ MediaManager::MediaManager(QProgressBar *progress_bar, QObject *parent) :
     fmod_timer = new QTimer(this);
     connect(fmod_timer, SIGNAL(timeout()), this, SLOT(fmodLoop()));
     fmod_timer->start(10);
-
-    this->progress_bar = progress_bar;
 
 }
 

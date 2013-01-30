@@ -1,8 +1,10 @@
 #ifndef MUSICPLAYLISTTRACKSVIEW_H
 #define MUSICPLAYLISTTRACKSVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
+#include <QDragEnterEvent>
 
 #include <model/objectstracksmodel.h>
 

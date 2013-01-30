@@ -76,12 +76,12 @@ void SfxManager::createChannels() {
         query.bindValue(":oid", oid);
         query.exec();
 
-        int j;
-        if(objects_range_start.isEmpty()) {
-            j = 0;
-        } else {
-            j = objects_range_start.last() + 1;
-        }
+//        int j;
+//        if(objects_range_start.isEmpty()) {
+//            j = 0;
+//        } else {
+//            j = objects_range_start.last() + 1;
+//        }
 
         objects_range_start.append(objects_tracks.length());
 

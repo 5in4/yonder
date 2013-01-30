@@ -1,8 +1,6 @@
 #ifndef SINGLESHOTMANAGER_H
 #define SINGLESHOTMANAGER_H
 
-#include <QtCore>
-
 #include <mediamanager.h>
 #include <soundmanager.h>
 

@@ -1,8 +1,9 @@
 #ifndef HOTKEYSLIBRARYSINGLESHOTVIEW_H
 #define HOTKEYSLIBRARYSINGLESHOTVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class HotkeysLibrarySingleshotView : public QTableView
 {

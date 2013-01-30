@@ -7,8 +7,8 @@
 
 #include <QDebug>
 
-#include <fmod.h>
-#include <fmod_errors.h>
+#include <fmodex/fmod.h>
+#include <fmodex/fmod_errors.h>
 
 #ifndef MEDIACONTAINER_H
 #define MEDIACONTAINER_H
@@ -72,20 +72,18 @@ class MediaManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit MediaManager(QProgressBar *progress_bar, QObject *parent = 0);
+    explicit MediaManager(QObject *parent = 0);
 
     FMOD_RESULT result;
     FMOD_SYSTEM *system;
 
     QList<MediaContainer*> container;
     MediaContainer *createContainer();
-    
+
     QTimer *fmod_timer;
 
-    QProgressBar *progress_bar;
-
 signals:
-    
+
 public slots:
     void fmodLoop();
 };

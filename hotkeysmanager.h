@@ -1,11 +1,14 @@
 #ifndef HOTKEYSMANAGER_H
 #define HOTKEYSMANAGER_H
 
-#include <QtCore>
 #include <QtSql>
 #include <QKeySequence>
 
+#include <atmospheremanager.h>
 #include <musicmanager.h>
+#include <sfxmanager.h>
+#include <singleshotmanager.h>
+
 #include <view/agqpushbutton.h>
 #include <view/hotkeyspushbutton.h>
 #include <model/objectsmodel.h>
@@ -15,8 +18,12 @@ class HotkeysManager : public QObject
     Q_OBJECT
 public:
     explicit HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton*> atmosphere_buttons, QList<AGQPushButton*> sfx_buttons, QList<AGQPushButton*> singleshot_buttons, QListView* musicComboBoxSelectPlaylist, AGQPushButton* musicButtonNext, AGQPushButton* musicButtonPlayPause, QObject *parent = 0);
+    explicit HotkeysManager(QSqlDatabase db, AtmosphereManager *atmosphere, MusicManager *music, SfxManager *sfx, SingleshotManager *singleshot, QObject *parent = 0);
 
-    MusicManager *music;
+    QPointer<AtmosphereManager> atmosphere;
+    QPointer<MusicManager> music;
+    QPointer<SfxManager> sfx;
+    QPointer<SingleshotManager> singleshot;
 
     QList<AGQPushButton*> atmosphere_buttons;
     QList<AGQPushButton*> sfx_buttons;

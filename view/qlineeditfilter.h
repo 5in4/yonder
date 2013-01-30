@@ -10,6 +10,8 @@
 #ifndef QLINEEDITFILTER_H
 #define QLINEEDITFILTER_H
 
+#include <QToolButton>
+#include <QStyle>
 #include <QLineEdit>
 
 class QToolButton;

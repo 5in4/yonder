@@ -1,5 +1,9 @@
 #include "hotkeysmanager.h"
 
+HotkeysManager::HotkeysManager(QSqlDatabase db, AtmosphereManager *atmosphere, MusicManager *music, SfxManager *sfx, SingleshotManager *singleshot, QObject *parent) {
+
+}
+
 HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton *> atmosphere_buttons, QList<AGQPushButton *> sfx_buttons, QList<AGQPushButton *> singleshot_buttons, QListView *musicComboBoxSelectPlaylist, AGQPushButton *musicButtonNext, AGQPushButton *musicButtonPlayPause, QObject *parent) : QObject(parent)
 {
     this->music = music;

@@ -1,9 +1,11 @@
 #ifndef FRAMEEDITOR_H
 #define FRAMEEDITOR_H
 
+#include <QInputDialog>
+#include <QMessageBox>
+
 #include <frameobject.h>
 #include <delegate/aghotkeyactiondelegate.h>
-#include <agmediacontainer.h>
 #include <delegate/agtagbyiddelegate.h>
 #include <delegate/qdoublespinboxdelegate.h>
 #include <mediamanager.h>

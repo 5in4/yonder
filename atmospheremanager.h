@@ -1,8 +1,6 @@
 #ifndef ATMOSPHEREMANAGER_H
 #define ATMOSPHEREMANAGER_H
 
-#include <QtCore>
-
 #include <mediamanager.h>
 #include <soundmanager.h>
 

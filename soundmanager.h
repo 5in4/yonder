@@ -1,8 +1,6 @@
 #ifndef SOUNDMANAGER_H
 #define SOUNDMANAGER_H
 
-#include <QtCore>
-#include <QtGui/QProgressBar>
 #include <QtSql>
 #include <qapplication.h>
 
@@ -16,7 +14,6 @@
 #include <taglib/tag.h>
 #endif
 
-#include <agmediacontainer.h>
 #include <mediamanager.h>
 #include <model/librarymodel.h>
 #include <model/objectsmodel.h>
@@ -40,8 +37,6 @@ public:
     QString path;
 
     QStringList accepted_mimetypes;
-//    QString objects;
-//    QString objects_tracks;
     QStringList library_tracks;
     int channels;
     MediaManager *media;
@@ -59,9 +54,6 @@ public:
     QStringList getTagList(QString file);
     QString absoluteFilePath(QString relative);
     QString relativeFilePath(QString absolute);
-
-    // status information
-    QProgressBar *progress_bar;
 
 private:
     QStringList scanLibraryDirectory(QString dir);

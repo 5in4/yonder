@@ -1,8 +1,9 @@
 #ifndef HOTKEYSLIBRARYMUSICVIEW_H
 #define HOTKEYSLIBRARYMUSICVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class HotkeysLibraryMusicView : public QTableView
 {

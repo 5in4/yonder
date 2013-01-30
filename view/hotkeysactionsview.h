@@ -1,8 +1,9 @@
 #ifndef HOTKEYSACTIONSVIEW_H
 #define HOTKEYSACTIONSVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDragEnterEvent>
 
 class HotkeysActionsView : public QTableView
 {

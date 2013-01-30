@@ -1,8 +1,9 @@
 #ifndef ATMOSPHERELIBRARYVIEW_H
 #define ATMOSPHERELIBRARYVIEW_H
 
-#include <QtCore>
-#include <QtGui>
+#include <QTableView>
+#include <QMimeData>
+#include <QDrag>
 
 class AtmosphereLibraryView : public QTableView
 {

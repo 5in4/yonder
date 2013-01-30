@@ -189,11 +189,11 @@ void FrameEditor::setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, Mu
 
     connect(ui->button_hotkeys_hotkey_add, SIGNAL(clicked()), this, SLOT(hotkeysHotkeyAdd()));
     connect(ui->button_hotkeys_hotkey_remove, SIGNAL(clicked()), this, SLOT(hotkeysHotkeyRemove()));
-    ui->hotkeys_hotkey_view->setModel(this->hotkeys->hotkeys_model);
+    //ui->hotkeys_hotkey_view->setModel(this->hotkeys->hotkeys_model);
     ui->hotkeys_hotkey_view->hideColumn(0);
     connect(ui->hotkeys_hotkey_view, SIGNAL(clicked(QModelIndex)), this, SLOT(hotkeysUiRefresh()));
     ui->hotkeys_hotkey_view->selectRow(0);
-    hotkeysUiRefresh();
+    //hotkeysUiRefresh();
 
     ui->hotkeys_actions_view->setModel(this->hotkeys->actions_model);
     ui->hotkeys_actions_view->setItemDelegateForColumn(0, new AGHotkeyActionDelegate(this));

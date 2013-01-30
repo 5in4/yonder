@@ -3,8 +3,6 @@
 
 #include <cstdlib>
 
-#include <QtCore>
-
 #include <mediamanager.h>
 #include <soundmanager.h>
 

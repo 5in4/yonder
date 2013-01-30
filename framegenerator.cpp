@@ -8,11 +8,13 @@ extern QString AUTHOR;
 extern QString WEBADDRESS;
 extern QString ACCEPTED_MIMETYPES;
 
-FrameGenerator::FrameGenerator(QWidget *parent) :
+FrameGenerator::FrameGenerator(YonderCore *core, QWidget *parent) :
     FrameObject(parent),
     ui(new Ui::FrameGenerator)
 {
     ui->setupUi(this);
+
+    this->core = core;
 
     music_play_pause = new AGQPushButton(0, this);
     music_play_pause->setText(tr("Play/Pause"));
@@ -57,63 +59,40 @@ FrameGenerator::~FrameGenerator()
     settings.setValue("Settings/atmosphere_volume", ui->atmosphereVolume->value());
 
     settings.sync();
-
-    for(int i=0; i<atmosphere_buttons.length(); i++) {
-        delete atmosphere_buttons.at(i);
-    }
-    for(int i=0; i<sfx_buttons.length(); i++) {
-        delete sfx_buttons.at(i);
-    }
-    for(int i=0; i<singleshot_buttons.length(); i++) {
-        delete singleshot_buttons.at(i);
-    }
     delete ui;
 }
 
 
-void FrameGenerator::setSoundManagers(AtmosphereManager *atmosphere, SfxManager *sfx, MusicManager *music, SingleshotManager *singleshot) {
-    qDebug() << "refreshing Generator";
-    this->atmosphere = atmosphere;
-    this->music = music;
-    this->sfx = sfx;
-    this->singleshot = singleshot;
 
-    connect(music->container.at(0), SIGNAL(starting(int)), this, SLOT(musicTrackChanged()));
+void FrameGenerator::refreshUi() {
+    refreshUi(true);
+}
 
-    connect(music->container.at(0), SIGNAL(trackPosition(int, int)), this, SLOT(musicSetSeek(int,int)));
+void FrameGenerator::refreshUi(bool project_set) {
+    qDebug() << "refreshing ui";
+
+    connect(core->music->container.at(0), SIGNAL(starting(int)), this, SLOT(musicTrackChanged()));
+
+    connect(core->music->container.at(0), SIGNAL(trackPosition(int, int)), this, SLOT(musicSetSeek(int,int)));
 
     singleshotSetVolume();
     atmosphereSetVolume();
     musicSetVolume();
     sfxSetVolume();
-}
 
 
-void FrameGenerator::refreshSoundUi() {
-    refreshSoundUi(true);
-}
-
-void FrameGenerator::refreshSoundUi(bool project_set) {
-    qDebug() << "refreshing ui";
     if(project_set) {
         atmosphereCreateButtons();
         sfxCreateButtons();
         singleshotCreateButtons();
 
-        ui->music_select_playlist->setModel(music->objects_model);
+        ui->music_select_playlist->setModel(core->music->objects_model);
         ui->music_select_playlist->setModelColumn(1);
         musicSetPlaylist(0);
     } else {
         qDebug() << "Generators not summoned, skipping button creation";
     }
-    emit soundUiRefreshed();
-}
-
-
-void FrameGenerator::setHotkeysManager(HotkeysManager *hotkeys) {
-    this->hotkeys = hotkeys;
-    hotkeysCreateButtons();
-    this->hotkeys->getHotkeyButtons(hotkeys_buttons);
+    emit uiRefreshed();
 }
 
 
@@ -130,26 +109,26 @@ void FrameGenerator::hotkeysCreateButtons() {
 
     int row = 0;
     int col = 0;
-    int max = qSqrt(hotkeys->hotkeys.length());
+    int max = qSqrt(core->hotkeys->hotkeys.length());
 
-    for(int i=0; i < hotkeys->hotkeys.length(); i++) {
+    for(int i=0; i < core->hotkeys->hotkeys.length(); i++) {
         hotkeys_buttons.append(new HotkeysPushButton(i, this));
-        hotkeys_buttons.at(i)->setOID(hotkeys->hotkeys.at(i)[0].toInt());
+        hotkeys_buttons.at(i)->setOID(core->hotkeys->hotkeys.at(i)[0].toInt());
         hotkeys_buttons.at(i)->setCheckable(true);
-        hotkeys_buttons.at(i)->setObjectName(hotkeys->hotkeys.at(i)[1]);
+        hotkeys_buttons.at(i)->setObjectName(core->hotkeys->hotkeys.at(i)[1]);
         hotkeys_buttons.at(i)->setStandardStyle();
         //hotkeys_buttons.at(i)->setPalette(QPalette(QColor(250, 250, 100)));
         //hotkeys_buttons.at(i)->setIcon(QIcon::fromTheme("media-playback-start"));
 
-        connect(hotkeys_buttons.at(i), SIGNAL(highlightButtons(int,bool)), hotkeys, SLOT(highlightButtons(int,bool)));
+        connect(hotkeys_buttons.at(i), SIGNAL(highlightButtons(int,bool)), core->hotkeys, SLOT(highlightButtons(int,bool)));
 
         QString hk_btn_view;
-        if(hotkeys->hotkeys.at(i)[2] == "") {
+        if(core->hotkeys->hotkeys.at(i)[2] == "") {
             hk_btn_view = "%1";
-                    hotkeys_buttons.at(i)->setHtml(QString(hk_btn_view).arg(hotkeys->hotkeys.at(i)[1]));
+                    hotkeys_buttons.at(i)->setHtml(QString(hk_btn_view).arg(core->hotkeys->hotkeys.at(i)[1]));
         } else {
             hk_btn_view = "%1 <b>[%2%3]</b>";
-            hotkeys_buttons.at(i)->setHtml(QString(hk_btn_view).arg(hotkeys->hotkeys.at(i)[1], ACTION_KEY, hotkeys->hotkeys.at(i)[2]));
+            hotkeys_buttons.at(i)->setHtml(QString(hk_btn_view).arg(core->hotkeys->hotkeys.at(i)[1], ACTION_KEY, core->hotkeys->hotkeys.at(i)[2]));
         }
 
         ui->hotkeysButtonLayout->addWidget(hotkeys_buttons.at(i));
@@ -160,14 +139,14 @@ void FrameGenerator::hotkeysCreateButtons() {
             row++;
         }
 
-        hotkeys_buttons.at(i)->setShortcut(QKeySequence(QString("%1%2").arg(ACTION_KEY, hotkeys->hotkeys.at(i)[2])));
+        hotkeys_buttons.at(i)->setShortcut(QKeySequence(QString("%1%2").arg(ACTION_KEY, core->hotkeys->hotkeys.at(i)[2])));
         connect(hotkeys_buttons.at(i), SIGNAL(toggled(int,bool)), this, SLOT(hotkeysControl(int,bool)));
     }
 }
 
 
 void FrameGenerator::hotkeysControl(int pos_in_array, bool checked) {
-    hotkeys->callHotkey(hotkeys_buttons.at(pos_in_array)->getOID(), checked);
+    core->hotkeys->callHotkey(hotkeys_buttons.at(pos_in_array)->getOID(), checked);
 }
 
 
@@ -185,17 +164,17 @@ void FrameGenerator::atmosphereCreateButtons() {
 
     int row = 0;
     int col = 0;
-    int max = qSqrt(atmosphere->objects.length());
+    int max = qSqrt(core->atmosphere->objects.length());
 
-    for(int i=0; i < atmosphere->objects.length(); i++) {
+    for(int i=0; i < core->atmosphere->objects.length(); i++) {
         atmosphere_buttons.append(new AGQPushButton(i, this));
-        atmosphere_buttons.at(i)->setOID(atmosphere->objects.at(i)[0].toInt());
+        atmosphere_buttons.at(i)->setOID(core->atmosphere->objects.at(i)[0].toInt());
         atmosphere_buttons.at(i)->setCheckable(true);
         atmosphere_buttons.at(i)->setStandardStyle();
         atmosphere_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-atmosphere-start.png"));
         //atmosphere_buttons.at(i)->setPalette(QPalette(QColor(150, 200, 250)));
-        atmosphere_buttons.at(i)->setObjectName(atmosphere->objects.at(i)[1]);
-        atmosphere_buttons.at(i)->setText(atmosphere->objects.at(i)[1]);
+        atmosphere_buttons.at(i)->setObjectName(core->atmosphere->objects.at(i)[1]);
+        atmosphere_buttons.at(i)->setText(core->atmosphere->objects.at(i)[1]);
 
         ui->atmosphereButtonLayout->addWidget(atmosphere_buttons.at(i), row, col);
         if(col < max) {
@@ -212,15 +191,15 @@ void FrameGenerator::atmosphereCreateButtons() {
 
 void FrameGenerator::atmosphereControl(int pos_in_array, bool checked) {
     if(checked) {
-        atmosphere->play(pos_in_array);
+        core->atmosphere->play(pos_in_array);
     } else {
-        atmosphere->pause(pos_in_array);
+        core->atmosphere->pause(pos_in_array);
     }
 }
 
 
 void FrameGenerator::atmosphereSetVolume() {
-    atmosphere->setVolume(ui->atmosphereVolume->value());
+    core->atmosphere->setVolume(ui->atmosphereVolume->value());
 }
 
 
@@ -237,17 +216,17 @@ void FrameGenerator::sfxCreateButtons() {
 
     int row = 0;
     int col = 0;
-    int max = qSqrt(sfx->objects.length());
+    int max = qSqrt(core->sfx->objects.length());
 
-    for(int i=0; i < sfx->objects.length(); i++) {
+    for(int i=0; i < core->sfx->objects.length(); i++) {
         sfx_buttons.append(new AGQPushButton(i, this));
-        sfx_buttons.at(i)->setOID(sfx->objects.at(i)[0].toInt());
+        sfx_buttons.at(i)->setOID(core->sfx->objects.at(i)[0].toInt());
         sfx_buttons.at(i)->setCheckable(true);
         sfx_buttons.at(i)->setStandardStyle();
         sfx_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-sfx-start.png"));
         //sfx_buttons.at(i)->setPalette(QPalette(QColor(250, 150, 150)));
-        sfx_buttons.at(i)->setObjectName(sfx->objects.at(i)[1]);
-        sfx_buttons.at(i)->setText(sfx->objects.at(i)[1]);
+        sfx_buttons.at(i)->setObjectName(core->sfx->objects.at(i)[1]);
+        sfx_buttons.at(i)->setText(core->sfx->objects.at(i)[1]);
 
         ui->sfxButtonLayout->addWidget(sfx_buttons.at(i), row, col);
         if(col < max) {
@@ -263,14 +242,14 @@ void FrameGenerator::sfxCreateButtons() {
 
 void FrameGenerator::sfxControl(int pos_in_array, bool checked) {
     if(checked) {
-        sfx->play(pos_in_array);
+        core->sfx->play(pos_in_array);
     } else {
-        sfx->pause(pos_in_array);
+        core->sfx->pause(pos_in_array);
     }
 }
 
 void FrameGenerator::sfxSetVolume() {
-    sfx->setVolume(ui->sfxVolume->value());
+    core->sfx->setVolume(ui->sfxVolume->value());
 }
 
 
@@ -287,17 +266,17 @@ void FrameGenerator::singleshotCreateButtons() {
 
     int row = 0;
     int col = 0;
-    int max = qSqrt(singleshot->objects.length());
+    int max = qSqrt(core->singleshot->objects.length());
 
-    for(int i=0; i < singleshot->objects.length(); i++) {
+    for(int i=0; i < core->singleshot->objects.length(); i++) {
         singleshot_buttons.append(new AGQPushButton(i, this));
-        singleshot_buttons.at(i)->setOID(singleshot->objects.at(i)[0].toInt());
+        singleshot_buttons.at(i)->setOID(core->singleshot->objects.at(i)[0].toInt());
         singleshot_buttons.at(i)->setCheckable(true);
         singleshot_buttons.at(i)->setStandardStyle();
         singleshot_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-singleshot-start.png"));
         //singleshot_buttons.at(i)->setPalette(QPalette(QColor(200, 250, 200)));
-        singleshot_buttons.at(i)->setObjectName(singleshot->objects.at(i)[1]);
-        singleshot_buttons.at(i)->setText(singleshot->objects.at(i)[1]);
+        singleshot_buttons.at(i)->setObjectName(core->singleshot->objects.at(i)[1]);
+        singleshot_buttons.at(i)->setText(core->singleshot->objects.at(i)[1]);
 
         ui->singleshotButtonLayout->addWidget(singleshot_buttons.at(i), row, col);
         if(col < max) {
@@ -308,26 +287,26 @@ void FrameGenerator::singleshotCreateButtons() {
         }
 
         connect(singleshot_buttons.at(i), SIGNAL(toggled(int,bool)), this, SLOT(singleshotControl(int,bool)));
-        connect(singleshot->container.at(i), SIGNAL(finished(int)), singleshot_buttons.at(i), SLOT(setUnChecked()));
+        connect(core->singleshot->container.at(i), SIGNAL(finished(int)), singleshot_buttons.at(i), SLOT(setUnChecked()));
     }
 }
 
 
 void FrameGenerator::singleshotControl(int pos_in_array, bool checked) {
     if(checked) {
-        singleshot->play(pos_in_array);
+        core->singleshot->play(pos_in_array);
     } else {
-        singleshot->stop(pos_in_array);
+        core->singleshot->stop(pos_in_array);
     }
 }
 
 
 void FrameGenerator::singleshotSetVolume() {
-    singleshot->setVolume(ui->singleshotVolume->value());
+    core->singleshot->setVolume(ui->singleshotVolume->value());
 }
 
 void FrameGenerator::musicNext() {
-    music->next();
+    core->music->next();
 }
 
 
@@ -336,22 +315,22 @@ void FrameGenerator::musicNext() {
  */
 void FrameGenerator::musicPlayPause() {
     if(music_play_pause->isChecked()) {
-        music->play();
+        core->music->play();
     } else {
-        music->pause();
+        core->music->pause();
     }
 }
 
 
 void FrameGenerator::musicTrackChanged() {
-    QStringList tag = music->container.at(0)->getTagList();
+    QStringList tag = core->music->container.at(0)->getTagList();
 
     QString title;
     QString artist;
     QString album;
 
     if(tag.first().isEmpty()) {
-        QFileInfo tag_file(music->container.at(0)->getCurrentFilename());
+        QFileInfo tag_file(core->music->container.at(0)->getCurrentFilename());
         title = tag_file.fileName();
     } else {
         title = tr("<b>%1</b> ").arg(tag.first());
@@ -375,11 +354,11 @@ void FrameGenerator::musicSetPlaylist(QModelIndex index) {
 
 
 void FrameGenerator::musicSetPlaylist(int index) {
-    music->objects_tracks_model->selectObject(music->objects_model->data(music->objects_model->index(index, 0)).toInt());
+    core->music->objects_tracks_model->selectObject(core->music->objects_model->data(core->music->objects_model->index(index, 0)).toInt());
 }
 
 void FrameGenerator::musicSetVolume() {
-    music->setVolume(ui->musicVolume->value());
+    core->music->setVolume(ui->musicVolume->value());
 }
 
 

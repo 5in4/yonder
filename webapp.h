@@ -1,10 +1,10 @@
 #ifndef WEBAPP_H
 #define WEBAPP_H
 
+#include <QJsonObject>
+#include <QJsonValue>
+
 #include <qfrontdesk.h>
-#include <qjson_p.h>
-#include <qjsonobject.h>
-#include <qjsonvalue.h>
 
 #include <hotkeysmanager.h>
 

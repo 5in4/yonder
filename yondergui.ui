@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AmbienceGenerator</class>
- <widget class="QMainWindow" name="AmbienceGenerator">
+ <class>YonderGui</class>
+ <widget class="QMainWindow" name="YonderGui">
   <property name="geometry">
    <rect>
     <x>0</x>

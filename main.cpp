@@ -1,14 +1,15 @@
-#include <QtGui/QApplication>
-#include <ambiencegenerator.h>
+#include <QtWidgets>
+#include <yondercore.h>
+#include <yondergui.h>
 
 QString NAME = "Yonder";
-QString VERSION = "1.1";
+QString VERSION = "1.2";
 QString ACTION_KEY = "";
 QString AUTHOR = "Dominik Seemann";
-QString WEBADDRESS = "http://yonderfx.com/";
+QString WEBADDRESS = "http://yonderfx.com/"; // always with trailing slash!
 QString ACCEPTED_MIMETYPES = "mp3 ogg flac aac wav";
 
-void debugHandler(QtMsgType type, const char *msg)
+void debugHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     QByteArray err;
     QDateTime time = QDateTime::currentDateTime();
@@ -35,7 +36,7 @@ void debugHandler(QtMsgType type, const char *msg)
     debug_file.close();
 }
 
-void noHandler(QtMsgType type, const char *msg)
+void noHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
 
 }
@@ -43,11 +44,11 @@ void noHandler(QtMsgType type, const char *msg)
 int main(int argc, char *argv[])
 {
     if(argc > 1 && QString(argv[1]) == "debug") {
-        qInstallMsgHandler(debugHandler);
+        qInstallMessageHandler(debugHandler);
     } else if(argc > 1 && QString(argv[1]) == "debug-console") {
 
     } else {
-        qInstallMsgHandler(noHandler);
+        qInstallMessageHandler(noHandler);
     }
 
     qDebug() << QString("%1 %2").arg(NAME, VERSION);
@@ -61,7 +62,7 @@ int main(int argc, char *argv[])
     QPixmap splash(":/application/icons/splash.png");
     QSplashScreen *splash_screen = new QSplashScreen(splash);
     splash_screen->show();
-    AmbienceGenerator w(splash_screen);
+    YonderGui w(splash_screen);
     w.show();
     splash_screen->finish(&w);
 

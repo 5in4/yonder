@@ -17,8 +17,6 @@ SoundManager::SoundManager(QString project_path, QString identifier, QSqlDatabas
     this->path = QString("%1/%2").arg(this->project_path, this->identifier);
 
     qDebug() << QString("Manager %1 summoned").arg(identifier);
-
-    progress_bar = media->progress_bar;
 }
 
 void SoundManager::createTables() {
@@ -95,13 +93,12 @@ bool SoundManager::rescanLibrary() {
 
     int p = 0;
     int p_max = files.count();
-    progress_bar->setMinimum(p);
-    progress_bar->setMaximum(p_max);
+    emit loadingStatus(p, p_max);
 
     for(int m=0; m<files.count(); m++) {
         qApp->processEvents();
 
-        progress_bar->setValue(p++);
+        emit loadingStatus(p, p_max);
 
         db.transaction();
         if(!library_tracks.contains(files.at(m))) {
@@ -152,7 +149,7 @@ bool SoundManager::rescanLibrary() {
             qDebug() << identifier << query.value(1).toString() << "updated";
         }
     }
-    progress_bar->setValue(0);
+    loadingStatus(p, p_max);
     return true;
 }
 
