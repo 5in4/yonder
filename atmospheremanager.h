@@ -12,8 +12,6 @@ public:
 
     void createChannels();
 
-    QList<QStringList> objects;
-
 public slots:
     void createObjectsList();
     void playPause(int channel);

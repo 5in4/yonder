@@ -1,4 +1,4 @@
-#include <QtWidgets>
+#include <QtGui/QApplication>
 #include <yondercore.h>
 #include <yondergui.h>
 

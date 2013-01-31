@@ -14,7 +14,8 @@ AtmosphereManager::AtmosphereManager(QString project_path, QSqlDatabase db, Medi
 
     this->rescanLibrary();
     this->createObjectsList();
-    connect(this->objects_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createObjectsList()));
+    this->createChannels();
+    connect(this->objects_model, &ObjectsModel::dataChanged, this, &AtmosphereManager::createObjectsList);
 }
 
 
@@ -22,18 +23,16 @@ AtmosphereManager::AtmosphereManager(QString project_path, QSqlDatabase db, Medi
  * creates list of all known objects
  */
 void AtmosphereManager::createObjectsList() {
-    objects = QList<QStringList>();
+    this->objects = QList<int>();
+    this->objects_names = QStringList();
     QSqlQuery query;
     query.prepare(QString("SELECT `id`, `name` FROM \"%1\"").arg(objects_identifier));
     query.exec();
     while(query.next()) {
-        QStringList object;
-        object.append(query.value(0).toString()); // DIRRRTY
-        object.append(query.value(1).toString());
-        objects.append(object);
-        //qDebug() << identifier << "object add" << object;
+        objects.append(query.value(0).toInt()); // DIRRRTY
+        objects_names.append(query.value(1).toString());
     }
-    createChannels();
+
 }
 
 
@@ -42,17 +41,10 @@ void AtmosphereManager::createObjectsList() {
  */
 void AtmosphereManager::createChannels() {
     for(int i=0; i<this->objects.length(); i++) {
-//        media_container.append(new AGMediaContainer(inst ,this));
-//        media_container.at(i)->setOID(objects.at(i)[0].toInt());
-//        media_container.at(i)->setChannel(i);
-
         container.append(media->createContainer());
-        container.at(i)->setOID(objects.at(i)[0].toInt());
+        container.at(i)->setOID(objects.at(i));
         container.at(i)->setChannel(i);
         channels++;
-        //enqueue(media_container.at(i)->getChannel());
-        //connect(media_container.at(i), SIGNAL(aboutToFinish(int)), this, SLOT(enqueue(int)));
-        //connect(media_container.at(i), SIGNAL(finished(int)), this, SLOT(play(int)));
         connect(container.at(i), SIGNAL(finished(int)), this, SLOT(play(int)));
     }
 

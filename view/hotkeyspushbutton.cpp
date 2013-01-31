@@ -1,6 +1,6 @@
 #include "hotkeyspushbutton.h"
 
-HotkeysPushButton::HotkeysPushButton(int pos_in_array, QWidget *parent): AGQPushButton(pos_in_array, parent)
+HotkeysPushButton::HotkeysPushButton(int pos_in_array, QWidget *parent): YonderPushButton(pos_in_array, parent)
 {
 
 }

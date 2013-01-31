@@ -13,15 +13,15 @@ class Webapp : public QFrontDesk
     Q_OBJECT
 public:
     explicit Webapp(int port, int slots_max, QString static_serve_path = "", QObject *parent = 0);
-    
+
     HotkeysManager* hotkeys;
 
     QString routing(QString route, Arguments *arg);
 
     void setHotkeysManager(HotkeysManager *hotkeys);
 
-    QJsonObject getButtonsForManager(QList<AGQPushButton *> manager_buttons);
-    QJsonObject getButtonsStatesForManager(QList<AGQPushButton *> manager_buttons);
+    QJsonObject getButtonsForManager(QList<YonderPushButton *> manager_buttons);
+    QJsonObject getButtonsStatesForManager(QList<YonderPushButton *> manager_buttons);
     QJsonObject getButtonsForManager(QList<HotkeysPushButton *> manager_buttons);
     QJsonObject getButtonsStatesForManager(QList<HotkeysPushButton *> manager_buttons);
     QVariant toJsonHelper(QJsonObject buttonlist);
@@ -36,9 +36,9 @@ public:
 
 
 signals:
-    
+
 public slots:
-    
+
 };
 
 #endif // WEBAPP_H

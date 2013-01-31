@@ -232,3 +232,14 @@ SoundManager::~SoundManager() {
     delete objects_model;
     delete library_model;
 }
+
+
+//Refactored
+
+QList<int> SoundManager::getObjects() {
+    return objects;
+}
+
+QString SoundManager::getObjectName(int object_id) {
+    return objects_names.value(objects.indexOf(object_id));
+}

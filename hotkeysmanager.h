@@ -9,7 +9,7 @@
 #include <sfxmanager.h>
 #include <singleshotmanager.h>
 
-#include <view/agqpushbutton.h>
+#include <view/yonderpushbutton.h>
 #include <view/hotkeyspushbutton.h>
 #include <model/objectsmodel.h>
 
@@ -17,7 +17,7 @@ class HotkeysManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton*> atmosphere_buttons, QList<AGQPushButton*> sfx_buttons, QList<AGQPushButton*> singleshot_buttons, QListView* musicComboBoxSelectPlaylist, AGQPushButton* musicButtonNext, AGQPushButton* musicButtonPlayPause, QObject *parent = 0);
+    explicit HotkeysManager(QSqlDatabase db, MusicManager *music, QList<YonderPushButton *> atmosphere_buttons, QList<YonderPushButton *> sfx_buttons, QList<YonderPushButton *> singleshot_buttons, QListView* musicComboBoxSelectPlaylist, YonderPushButton *musicButtonNext, YonderPushButton *musicButtonPlayPause, QObject *parent = 0);
     explicit HotkeysManager(QSqlDatabase db, AtmosphereManager *atmosphere, MusicManager *music, SfxManager *sfx, SingleshotManager *singleshot, QObject *parent = 0);
 
     QPointer<AtmosphereManager> atmosphere;
@@ -25,14 +25,14 @@ public:
     QPointer<SfxManager> sfx;
     QPointer<SingleshotManager> singleshot;
 
-    QList<AGQPushButton*> atmosphere_buttons;
-    QList<AGQPushButton*> sfx_buttons;
-    QList<AGQPushButton*> singleshot_buttons;
+    QList<YonderPushButton*> atmosphere_buttons;
+    QList<YonderPushButton*> sfx_buttons;
+    QList<YonderPushButton*> singleshot_buttons;
     QList<HotkeysPushButton*> hotkeys_buttons;
 
     QListView* musicComboBoxSelectPlaylist;
-    AGQPushButton* musicButtonNext;
-    AGQPushButton* musicButtonPlayPause;
+    YonderPushButton* musicButtonNext;
+    YonderPushButton* musicButtonPlayPause;
 
     QSqlDatabase db;
     QString hotkeys_identifier;

@@ -1,3 +1,15 @@
+YonderGui {
+    /*background: rgb(83, 83, 83);*/
+}
+
+YonderPushButton {
+    background: rgb(68, 68, 68);
+    border: none;
+    color: white;
+    min-height: 36px;
+    min-width: 120px;
+}
+
 #frame_sidebar {
     background: rgb(68, 68, 68);
     border: none;
@@ -15,7 +27,7 @@
 }
 
 #frame_sidebar SolidTabButton:checked {
-    background: rgba(255, 255, 255, 20);
+    background: rgb(83, 83, 83);
 }
 
 #frame_sidebar SolidTabButton:disabled {

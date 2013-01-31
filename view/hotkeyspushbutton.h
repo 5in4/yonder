@@ -1,9 +1,9 @@
 #ifndef HOTKEYSPUSHBUTTON_H
 #define HOTKEYSPUSHBUTTON_H
 
-#include <view/agqpushbutton.h>
+#include <view/yonderpushbutton.h>
 
-class HotkeysPushButton: public AGQPushButton
+class HotkeysPushButton: public YonderPushButton
 {
     Q_OBJECT
 public:

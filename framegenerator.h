@@ -3,10 +3,11 @@
 
 #include <QPushButton>
 #include <QListView>
+#include <QGridLayout>
 
 #include <frameobject.h>
 
-#include <view/agqpushbutton.h>
+#include <view/yonderpushbutton.h>
 #include <view/hotkeyspushbutton.h>
 
 #include <yondercore.h>
@@ -23,15 +24,17 @@ public:
     explicit FrameGenerator(YonderCore *core, QWidget *parent = 0);
     ~FrameGenerator();
 
-    AGQPushButton *music_play_pause;
-    AGQPushButton *music_next;
+    void cleanGridLayout(QGridLayout *layout);
+
+    YonderPushButton *music_play_pause;
+    YonderPushButton *music_next;
     QListView *music_select_playlist;
 
     YonderCore *core;
 
-    QList<AGQPushButton*> atmosphere_buttons;
-    QList<AGQPushButton*> sfx_buttons;
-    QList<AGQPushButton*> singleshot_buttons;
+    QList<YonderPushButton*> atmosphere_buttons;
+    QList<YonderPushButton*> sfx_buttons;
+    QList<YonderPushButton*> singleshot_buttons;
     QList<HotkeysPushButton*> hotkeys_buttons;
 
 public slots:

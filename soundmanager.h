@@ -55,8 +55,18 @@ public:
     QString absoluteFilePath(QString relative);
     QString relativeFilePath(QString absolute);
 
+    //refactoring
+    QList<int> getObjects(); // returns var objects
+    QString getObjectName(int object_id);
+
+    QList<int> objects;
+    QStringList objects_names;
+
 private:
     QStringList scanLibraryDirectory(QString dir);
+
+    //refactoring
+
 
 signals:
     void playbackError(int channel);

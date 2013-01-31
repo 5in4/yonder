@@ -1,5 +1,5 @@
-#ifndef AGQPUSHBUTTON_H
-#define AGQPUSHBUTTON_H
+#ifndef YONDERPUSHBUTTON_H
+#define YONDERPUSHBUTTON_H
 
 #include <QPushButton>
 #include <QString>
@@ -14,11 +14,11 @@
 
 #include <QDebug>
 
-class AGQPushButton: public QPushButton
+class YonderPushButton: public QPushButton
 {
     Q_OBJECT
 public:
-    AGQPushButton(int pos_in_array, QWidget *parent);
+    YonderPushButton(int pos_in_array, QWidget *parent);
 
     int pos_in_array;
     int oid;
@@ -47,6 +47,7 @@ public slots:
     void setUnChecked();
     void setStandardStyle();
     void setHighlightedStyle();
+    void setProgress(int percent);
 
 signals:
     void toggled(int pos_in_array, bool checked);
@@ -57,4 +58,4 @@ private:
 
 };
 
-#endif // AGQPUSHBUTTON_H
+#endif // YONDERPUSHBUTTON_H

@@ -42,6 +42,14 @@
      </item>
      <item>
       <widget class="QTextBrowser" name="helpBrowser">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="autoFormatting">
+        <set>QTextEdit::AutoBulletList</set>
+       </property>
        <property name="source">
         <url>
          <string>qrc:/manual/index.htm</string>

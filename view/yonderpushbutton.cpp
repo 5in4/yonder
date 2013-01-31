@@ -1,20 +1,20 @@
-#include "agqpushbutton.h"
+#include "yonderpushbutton.h"
 
-AGQPushButton::AGQPushButton(int pos_in_array, QWidget *parent): QPushButton(parent)
+YonderPushButton::YonderPushButton(int pos_in_array, QWidget *parent): QPushButton(parent)
 {
     oid = 0;
     setPosInArray(pos_in_array);
     connect(this, SIGNAL(toggled(bool)), this, SLOT(emitToggled(bool)));
 
-    standard_style = "text-align: left;";
-    highlighted_style = QString("%1 color: red;").arg(standard_style);
+    standard_style = "";//text-align: left;";
+    highlighted_style = QString("%1 background-color: red;").arg(standard_style);
 }
 
 
 /*!
  * Return position of object in the array it is created in
  */
-int AGQPushButton::getPosInArray() {
+int YonderPushButton::getPosInArray() {
     return pos_in_array;
 }
 
@@ -22,7 +22,7 @@ int AGQPushButton::getPosInArray() {
 /*!
  * Set position of object in the array it is created in
  */
-void AGQPushButton::setPosInArray(int pos_in_array) {
+void YonderPushButton::setPosInArray(int pos_in_array) {
     this->pos_in_array = pos_in_array;
 }
 
@@ -30,7 +30,7 @@ void AGQPushButton::setPosInArray(int pos_in_array) {
 /*!
  * Return object ID
  */
-int AGQPushButton::getOID() {
+int YonderPushButton::getOID() {
     return oid;
 }
 
@@ -38,7 +38,7 @@ int AGQPushButton::getOID() {
 /*!
  * Set object ID
  */
-void AGQPushButton::setOID(int oid) {
+void YonderPushButton::setOID(int oid) {
     this->oid = oid;
 }
 
@@ -46,7 +46,7 @@ void AGQPushButton::setOID(int oid) {
 /*!
  * Special toggled signal wich also emits pos_in_array
  */
-void AGQPushButton::emitToggled(bool checked) {
+void YonderPushButton::emitToggled(bool checked) {
     emit toggled(pos_in_array, checked);
 }
 
@@ -54,14 +54,14 @@ void AGQPushButton::emitToggled(bool checked) {
 /*!
  * Static unchecking without arguments slot
  */
-void AGQPushButton::setUnChecked() {
+void YonderPushButton::setUnChecked() {
     this->setChecked(false);
 }
 
 
 // Rich text styling
 
-void AGQPushButton::setHtml(const QString &text)
+void YonderPushButton::setHtml(const QString &text)
 {
     htmlText = text;
     isRichText = true;
@@ -71,14 +71,14 @@ void AGQPushButton::setHtml(const QString &text)
 //    setPalette(palette);
 }
 
-void AGQPushButton::setText(const QString &text)
+void YonderPushButton::setText(const QString &text)
 {
     isRichText = false;
     QPushButton::setText(text);
 }
 
 
-QString AGQPushButton::text() const
+QString YonderPushButton::text() const
 {
     if (isRichText) {
 //        QTextDocument richText;
@@ -91,7 +91,7 @@ QString AGQPushButton::text() const
 }
 
 
-QString AGQPushButton::label() {
+QString YonderPushButton::label() {
     if(isRichText) {
         return htmlText;
     } else {
@@ -100,7 +100,7 @@ QString AGQPushButton::label() {
 }
 
 
-void AGQPushButton::paintEvent(QPaintEvent *event)
+void YonderPushButton::paintEvent(QPaintEvent *event)
 {
     if (isRichText) {
         QStylePainter p(this);
@@ -133,7 +133,7 @@ void AGQPushButton::paintEvent(QPaintEvent *event)
 }
 
 
-QStyleOptionButton AGQPushButton::getStyleOption() const
+QStyleOptionButton YonderPushButton::getStyleOption() const
 {
     QStyleOptionButton opt;
     opt.initFrom(this);
@@ -159,11 +159,15 @@ QStyleOptionButton AGQPushButton::getStyleOption() const
 }
 
 
-void AGQPushButton::setStandardStyle() {
+void YonderPushButton::setStandardStyle() {
     setStyleSheet(standard_style);
 }
 
 
-void AGQPushButton::setHighlightedStyle() {
+void YonderPushButton::setHighlightedStyle() {
     setStyleSheet(highlighted_style);
+}
+
+void YonderPushButton::setProgress(int percent) {
+    //border-bottom: 2px solid qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:0.495 rgba(255, 255, 255, 255), stop:0.505 rgba(255, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));
 }

@@ -16,16 +16,16 @@ FrameGenerator::FrameGenerator(YonderCore *core, QWidget *parent) :
 
     this->core = core;
 
-    music_play_pause = new AGQPushButton(0, this);
+    music_play_pause = new YonderPushButton(0, this);
     music_play_pause->setText(tr("Play/Pause"));
-    music_play_pause->setIcon(QIcon(":/application/icons/media-playback-start.png"));
+//    music_play_pause->setIcon(QIcon(":/application/icons/media-playback-start.png"));
     music_play_pause->setCheckable(true);
     music_play_pause->setStandardStyle();
     ui->music_control_layout->addWidget(music_play_pause);
 
-    music_next = new AGQPushButton(0, this);
+    music_next = new YonderPushButton(0, this);
     music_next->setText(tr("Next"));
-    music_next->setIcon(QIcon(":/application/icons/media-skip-forward.png"));
+//    music_next->setIcon(QIcon(":/application/icons/media-skip-forward.png"));
     music_next->setStandardStyle();
     ui->music_control_layout->addWidget(music_next);
 
@@ -149,32 +149,30 @@ void FrameGenerator::hotkeysControl(int pos_in_array, bool checked) {
     core->hotkeys->callHotkey(hotkeys_buttons.at(pos_in_array)->getOID(), checked);
 }
 
-
-void FrameGenerator::atmosphereCreateButtons() {
-    while(ui->atmosphereButtonLayout->count() > 0) {
-        ui->atmosphereButtonLayout->removeItem(ui->atmosphereButtonLayout->takeAt(0));
+void FrameGenerator::cleanGridLayout(QGridLayout *layout) {
+    while(layout->count() > 0) {
+        layout->removeItem(layout->takeAt(0));
     }
     this->repaint();
 
-    while(atmosphere_buttons.length() > 0) {
-        delete atmosphere_buttons.last();
-        atmosphere_buttons.removeLast();
-    }
+}
 
-
+void FrameGenerator::atmosphereCreateButtons() {
+    this->cleanGridLayout(ui->atmosphereButtonLayout);
+    atmosphere_buttons = QList<YonderPushButton*>();
     int row = 0;
     int col = 0;
-    int max = qSqrt(core->atmosphere->objects.length());
+    int max = qSqrt(core->atmosphere->getObjects().length());
 
-    for(int i=0; i < core->atmosphere->objects.length(); i++) {
-        atmosphere_buttons.append(new AGQPushButton(i, this));
-        atmosphere_buttons.at(i)->setOID(core->atmosphere->objects.at(i)[0].toInt());
+    for(int i=0; i < core->atmosphere->getObjects().length(); i++) {
+        int oid = core->atmosphere->getObjects().at(i);
+        atmosphere_buttons.append(new YonderPushButton(i, this));
+        atmosphere_buttons.at(i)->setOID(oid);
         atmosphere_buttons.at(i)->setCheckable(true);
         atmosphere_buttons.at(i)->setStandardStyle();
-        atmosphere_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-atmosphere-start.png"));
-        //atmosphere_buttons.at(i)->setPalette(QPalette(QColor(150, 200, 250)));
-        atmosphere_buttons.at(i)->setObjectName(core->atmosphere->objects.at(i)[1]);
-        atmosphere_buttons.at(i)->setText(core->atmosphere->objects.at(i)[1]);
+//        atmosphere_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-atmosphere-start.png"));
+        atmosphere_buttons.at(i)->setObjectName(core->atmosphere->getObjectName(oid));
+        atmosphere_buttons.at(i)->setText(core->atmosphere->getObjectName(oid));
 
         ui->atmosphereButtonLayout->addWidget(atmosphere_buttons.at(i), row, col);
         if(col < max) {
@@ -184,7 +182,7 @@ void FrameGenerator::atmosphereCreateButtons() {
             row++;
         }
 
-        connect(atmosphere_buttons.at(i), SIGNAL(toggled(int,bool)), this, SLOT(atmosphereControl(int,bool)));
+        connect(atmosphere_buttons.at(i), &YonderPushButton::toggled, this, &FrameGenerator::atmosphereControl);
     }
 }
 
@@ -204,26 +202,19 @@ void FrameGenerator::atmosphereSetVolume() {
 
 
 void FrameGenerator::sfxCreateButtons() {
-    while(ui->sfxButtonLayout->count() > 0) {
-        ui->sfxButtonLayout->removeItem(ui->sfxButtonLayout->takeAt(0));
-    }
-    this->repaint();
-
-    while(sfx_buttons.length() > 0) {
-        delete sfx_buttons.last();
-        sfx_buttons.removeLast();
-    }
+    this->cleanGridLayout(ui->sfxButtonLayout);
+    sfx_buttons = QList<YonderPushButton*>();
 
     int row = 0;
     int col = 0;
     int max = qSqrt(core->sfx->objects.length());
 
     for(int i=0; i < core->sfx->objects.length(); i++) {
-        sfx_buttons.append(new AGQPushButton(i, this));
+        sfx_buttons.append(new YonderPushButton(i, this));
         sfx_buttons.at(i)->setOID(core->sfx->objects.at(i)[0].toInt());
         sfx_buttons.at(i)->setCheckable(true);
         sfx_buttons.at(i)->setStandardStyle();
-        sfx_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-sfx-start.png"));
+//        sfx_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-sfx-start.png"));
         //sfx_buttons.at(i)->setPalette(QPalette(QColor(250, 150, 150)));
         sfx_buttons.at(i)->setObjectName(core->sfx->objects.at(i)[1]);
         sfx_buttons.at(i)->setText(core->sfx->objects.at(i)[1]);
@@ -269,11 +260,11 @@ void FrameGenerator::singleshotCreateButtons() {
     int max = qSqrt(core->singleshot->objects.length());
 
     for(int i=0; i < core->singleshot->objects.length(); i++) {
-        singleshot_buttons.append(new AGQPushButton(i, this));
+        singleshot_buttons.append(new YonderPushButton(i, this));
         singleshot_buttons.at(i)->setOID(core->singleshot->objects.at(i)[0].toInt());
         singleshot_buttons.at(i)->setCheckable(true);
         singleshot_buttons.at(i)->setStandardStyle();
-        singleshot_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-singleshot-start.png"));
+//        singleshot_buttons.at(i)->setIcon(QIcon(":/application/icons/icon-singleshot-start.png"));
         //singleshot_buttons.at(i)->setPalette(QPalette(QColor(200, 250, 200)));
         singleshot_buttons.at(i)->setObjectName(core->singleshot->objects.at(i)[1]);
         singleshot_buttons.at(i)->setText(core->singleshot->objects.at(i)[1]);

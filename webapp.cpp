@@ -43,7 +43,7 @@ void Webapp::setHotkeysManager(HotkeysManager *hotkeys) {
 }
 
 
-QJsonObject Webapp::getButtonsForManager(QList<AGQPushButton *> manager_buttons) {
+QJsonObject Webapp::getButtonsForManager(QList<YonderPushButton *> manager_buttons) {
     QJsonObject buttons;
     for(int i=0; i < manager_buttons.length(); i++) {
         buttons.insert(QString("%1").arg(manager_buttons.at(i)->getPosInArray()), QJsonValue(manager_buttons.at(i)->label()));
@@ -61,7 +61,7 @@ QJsonObject Webapp::getButtonsForManager(QList<HotkeysPushButton *> manager_butt
 
 
 
-QJsonObject Webapp::getButtonsStatesForManager(QList<AGQPushButton *> manager_buttons) {
+QJsonObject Webapp::getButtonsStatesForManager(QList<YonderPushButton *> manager_buttons) {
     QJsonObject buttons;
     for(int i=0; i < manager_buttons.length(); i++) {
         buttons.insert(QString("%1").arg(manager_buttons.at(i)->getPosInArray()), QJsonValue(QString("%1").arg(manager_buttons.at(i)->isChecked())));

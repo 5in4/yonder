@@ -1,6 +1,5 @@
 CONFIG += warn_off
 QT += sql network widgets
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
@@ -57,7 +56,6 @@ SOURCES += main.cpp soundmanager.cpp \
     view/hotkeysactionsview.cpp \
     view/atmosphereobjectstracksview.cpp \
     view/atmospherelibraryview.cpp \
-    view/agqpushbutton.cpp \
     view/agpreviewpushbutton.cpp \
     view/qlineeditfilter.cpp \
     model/objectstracksmodel.cpp \
@@ -75,7 +73,8 @@ SOURCES += main.cpp soundmanager.cpp \
     mediamanager.cpp \
     view/hotkeyspushbutton.cpp \
     yondergui.cpp \
-    yondercore.cpp
+    yondercore.cpp \
+    view/yonderpushbutton.cpp
 HEADERS += soundmanager.h \
     musicmanager.h \
     hotkeysmanager.h \
@@ -100,7 +99,6 @@ HEADERS += soundmanager.h \
     view/hotkeysactionsview.h \
     view/atmosphereobjectstracksview.h \
     view/atmospherelibraryview.h \
-    view/agqpushbutton.h \
     view/agpreviewpushbutton.h \
     view/qlineeditfilter.h \
     model/objectstracksmodel.h \
@@ -118,7 +116,8 @@ HEADERS += soundmanager.h \
     mediamanager.h \
     view/hotkeyspushbutton.h \
     yondergui.h \
-    yondercore.h
+    yondercore.h \
+    view/yonderpushbutton.h
 FORMS += \
     framestart.ui \
     frameresourcebrowser.ui \

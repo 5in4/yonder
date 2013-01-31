@@ -4,7 +4,7 @@ HotkeysManager::HotkeysManager(QSqlDatabase db, AtmosphereManager *atmosphere, M
 
 }
 
-HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<AGQPushButton *> atmosphere_buttons, QList<AGQPushButton *> sfx_buttons, QList<AGQPushButton *> singleshot_buttons, QListView *musicComboBoxSelectPlaylist, AGQPushButton *musicButtonNext, AGQPushButton *musicButtonPlayPause, QObject *parent) : QObject(parent)
+HotkeysManager::HotkeysManager(QSqlDatabase db, MusicManager *music, QList<YonderPushButton *> atmosphere_buttons, QList<YonderPushButton *> sfx_buttons, QList<YonderPushButton *> singleshot_buttons, QListView *musicComboBoxSelectPlaylist, YonderPushButton *musicButtonNext, YonderPushButton *musicButtonPlayPause, QObject *parent) : QObject(parent)
 {
     this->music = music;
     this->atmosphere_buttons = atmosphere_buttons;
