@@ -7,8 +7,8 @@
 
 #include <QDebug>
 
-#include <fmodex/fmod.h>
-#include <fmodex/fmod_errors.h>
+#include <fmod.h>
+#include <fmod_errors.h>
 
 #ifndef MEDIACONTAINER_H
 #define MEDIACONTAINER_H

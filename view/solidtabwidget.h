@@ -22,7 +22,7 @@ class SolidTabButton : public QToolButton
 {
     Q_OBJECT
 public:
-    explicit SolidTabButton(int widget_width, QWidget *parent = 0);
+    explicit SolidTabButton(int widget_width = 110, QWidget *parent = 0);
 
     void setPage(FrameObject *page);
     FrameObject *getPage();

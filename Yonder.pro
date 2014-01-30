@@ -1,6 +1,8 @@
 CONFIG += warn_off
 QT += sql network widgets
 
+cache()
+
 win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
     INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
@@ -18,7 +20,7 @@ macx {
     LIBS += -L/usr/local/lib -ltag -L$$PWD/../fmod/osx/api/lib/ -lfmodex
     INCLUDEPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
     DEPENDPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
-    QMAKE_POST_LINK += ../src/osx_postbuild
+    #QMAKE_POST_LINK += ../src/osx_postbuild
 }
 
 unix {

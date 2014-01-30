@@ -174,14 +174,14 @@ void FrameEditor::setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, Mu
     connect(ui->button_music_tracks_remove, SIGNAL(clicked()), this, SLOT(musicPlaylistsTracksRemove()));
 
     ui->music_library_view->setModel(this->music->library_model);
-    ui->music_library_view->setItemDelegateForColumn(0, new AGTagByIDDelegate(this->music->identifier, ui->music_library_view));
-    ui->music_library_view->hideColumn(1);
-    ui->music_library_view->hideColumn(2);
-    ui->music_library_view->hideColumn(3);
-    ui->music_library_view->hideColumn(4);
-    ui->music_library_view->hideColumn(5);
-    ui->music_library_view->hideColumn(6);
-    ui->music_library_view->resizeRowsToContents();
+    //ui->music_library_view->setItemDelegateForColumn(0, new AGTagByIDDelegate(this->music->identifier, ui->music_library_view));
+    //ui->music_library_view->hideColumn(1);
+    //ui->music_library_view->hideColumn(2);
+    //ui->music_library_view->hideColumn(3);
+    //ui->music_library_view->hideColumn(4);
+    //ui->music_library_view->hideColumn(5);
+    //ui->music_library_view->hideColumn(6);
+    //ui->music_library_view->resizeRowsToContents();
     connect(ui->edit_music_filter, SIGNAL(textChanged(QString)), this->music->library_model, SLOT(applyFilter(QString)));
 
     // Hotkeys
@@ -421,8 +421,8 @@ void FrameEditor::musicPlaylistsTracksRemove() {
 void FrameEditor::musicUiRefresh() {
     int oid = this->music->objects_model->record(this->ui->music_playlists_view->currentIndex().row()).value(0).toInt();
     this->music->objects_tracks_model->selectObject(oid);
-    this->ui->music_library_view->resizeColumnsToContents();
-    this->ui->music_library_view->resizeRowsToContents();
+    //this->ui->music_library_view->resizeColumnsToContents();
+    //this->ui->music_library_view->resizeRowsToContents();
 }
 
 

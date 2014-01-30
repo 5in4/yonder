@@ -140,7 +140,7 @@ void SolidTabWidget::applyStylesheet(bool apply) {
 
 
 
-SolidTabButton::SolidTabButton(int widget_width = 110, QWidget *parent) :
+SolidTabButton::SolidTabButton(int widget_width, QWidget *parent) :
     QToolButton(parent)
 {
     this->setCheckable(true);

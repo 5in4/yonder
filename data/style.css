@@ -3,15 +3,15 @@ YonderGui {
 }
 
 YonderPushButton {
-    background: rgb(68, 68, 68);
+    /*background: rgb(68, 68, 68);
     border: none;
-    color: white;
+    color: white;*/
     min-height: 36px;
     min-width: 120px;
 }
 
 #frame_sidebar {
-    background: rgb(68, 68, 68);
+    background: url(:/application/gradient.png) repeat-y center right rgb(68, 68, 68);
     border: none;
 }
 
@@ -23,23 +23,23 @@ YonderPushButton {
 }
 
 #frame_sidebar SolidTabButton:hover { /*, #frame_sidebar SolidTabButton:focus {*/
-    background: rgba(255, 255, 255, 70);
+    background: url(:/application/gradient.png) repeat-y center right rgba(255, 255, 255, 70);
 }
 
 #frame_sidebar SolidTabButton:checked {
-    background: rgb(83, 83, 83);
+    background: url(:/application/gradient.png) repeat-y center right rgb(83, 83, 83);
 }
 
 #frame_sidebar SolidTabButton:disabled {
-    color: rgb(166, 166, 166);
+    color: url(:/application/gradient.png) repeat-y center right rgb(166, 166, 166);
 }
 
 #frame_sidebar QProgressBar:horizontal {
-	height: 6px;
-	background: rgba(0, 0, 0, 0);
-	border: 0;
+    height: 6px;
+    background: url(:/application/gradient.png) repeat-y center right rgba(0, 0, 0, 0);
+    border: 0;
 }
 
 #frame_sidebar QProgressBar::chunk:horizontal {
-	background: rgba(255, 255, 255, 70);
+    background: rgba(255, 255, 255, 70);
 }

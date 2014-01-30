@@ -7,6 +7,7 @@ Webapp::Webapp(int port, int slots_max, QString static_serve_path, QObject *pare
 }
 
 QString Webapp::routing(QString route, Arguments *arg) {
+    qDebug() << "Webapp routing to" << route;
     if(route == "/") {
         return routeRoot(arg);
     }

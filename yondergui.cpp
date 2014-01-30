@@ -15,7 +15,7 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) :
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
-//    settings.sync();
+    // settings.sync();
 
     core = new YonderCore(this);
     connect(core, &YonderCore::updateAvailable, this, &YonderGui::openUpdater);
@@ -187,7 +187,6 @@ void YonderGui::openOnlineHelp() {
  * Launch updating mechanism. Right now it's only a messagebox.
  */
 void YonderGui::openUpdater() {
-    qDebug() << "openupdater";
     QMessageBox::information(this, tr("New version available"), tr("<p><b>A new version of %1 is available!</b></p><p>Visit <a href=\"%2\">%2</a> to download the recent version.</p>").arg(NAME, WEBADDRESS), QMessageBox::Close);
 }
 

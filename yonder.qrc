@@ -39,6 +39,7 @@
         <file alias="ostrich_regular.ttf">data/Ostrich Regular.ttf</file>
         <file alias="fmod-logo.svg">data/fmod-logo.svg</file>
         <file alias="qt-logo.svg">data/qt-logo.svg</file>
+        <file alias="gradient.png">data/gradient.png</file>
     </qresource>
     <qresource prefix="/manual">
         <file alias="index.htm">data/manual/index.htm</file>

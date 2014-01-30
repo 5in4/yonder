@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>945</width>
-    <height>424</height>
+    <width>947</width>
+    <height>430</height>
    </rect>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -102,10 +102,6 @@
                </property>
               </widget>
              </item>
-            </layout>
-           </widget>
-           <widget class="QWidget" name="layoutWidget_6">
-            <layout class="QVBoxLayout" name="layout_music_tracks">
              <item>
               <layout class="QHBoxLayout" name="layout_music_tracks_buttons">
                <item>
@@ -250,7 +246,7 @@
               </layout>
              </item>
              <item>
-              <widget class="MusicLibraryView" name="music_library_view">
+              <widget class="QTreeView" name="music_library_view">
                <property name="editTriggers">
                 <set>QAbstractItemView::NoEditTriggers</set>
                </property>
@@ -269,21 +265,6 @@
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
-               <property name="showGrid">
-                <bool>false</bool>
-               </property>
-               <attribute name="horizontalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="horizontalHeaderStretchLastSection">
-                <bool>true</bool>
-               </attribute>
-               <attribute name="verticalHeaderVisible">
-                <bool>false</bool>
-               </attribute>
-               <attribute name="verticalHeaderHighlightSections">
-                <bool>false</bool>
-               </attribute>
               </widget>
              </item>
             </layout>
@@ -1315,8 +1296,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>296</width>
-                  <height>122</height>
+                  <width>255</width>
+                  <height>102</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -1362,8 +1343,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>97</width>
-                  <height>97</height>
+                  <width>102</width>
+                  <height>102</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -1406,8 +1387,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>97</width>
-                  <height>97</height>
+                  <width>102</width>
+                  <height>102</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -1450,8 +1431,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>97</width>
-                  <height>97</height>
+                  <width>102</width>
+                  <height>102</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -1494,8 +1475,8 @@
                  <rect>
                   <x>0</x>
                   <y>0</y>
-                  <width>97</width>
-                  <height>97</height>
+                  <width>102</width>
+                  <height>102</height>
                  </rect>
                 </property>
                 <attribute name="icon">
@@ -1597,11 +1578,6 @@
    <class>MusicPlaylistTracksView</class>
    <extends>QTableView</extends>
    <header>view/musicplaylisttracksview.h</header>
-  </customwidget>
-  <customwidget>
-   <class>MusicLibraryView</class>
-   <extends>QTableView</extends>
-   <header>view/musiclibraryview.h</header>
   </customwidget>
   <customwidget>
    <class>AtmosphereLibraryView</class>

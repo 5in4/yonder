@@ -96,6 +96,7 @@ void YonderCore::projectStop() {
 void YonderCore::webappStart() {
     QSettings settings;
     if(!webapp) {
+        qDebug() << "Creating new webapp instance";
         webapp = new Webapp(settings.value("Settings/webapp_port").toInt(), 10, QString(":webservice/static"), this);
         if(settings.value("Settings/webapp_active").toBool() && settings.value("Settings/webapp_port").toInt() != 0) {
             webapp->setHotkeysManager(hotkeys);

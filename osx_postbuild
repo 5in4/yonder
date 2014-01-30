@@ -1,5 +1,5 @@
 #!/bin/sh
-/Applications/QtSDK/Desktop/Qt/4.8.1/gcc/bin/macdeployqt yonder.app
+"/Applications/Qt/5.1.0/clang_64/bin/macdeployqt" yonder.app
 cp ../src/data/Info.plist yonder.app/Contents
 cp ../src/data/yonder.icns yonder.app/Contents/Resources
 install_name_tool -change ./libfmodex.dylib @executable_path/../Frameworks/libfmodex.dylib yonder.app/Contents/MacOS/yonder
