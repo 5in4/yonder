@@ -1,8 +1,8 @@
 #ifndef ATMOSPHEREMANAGER_H
 #define ATMOSPHEREMANAGER_H
 
-#include <mediamanager.h>
-#include <soundmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/soundmanager.h>
 
 class AtmosphereManager: public SoundManager
 {

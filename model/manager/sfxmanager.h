@@ -3,8 +3,8 @@
 
 #include <cstdlib>
 
-#include <mediamanager.h>
-#include <soundmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/soundmanager.h>
 
 
 class SfxManager: public SoundManager

@@ -1,8 +1,8 @@
 #ifndef SINGLESHOTMANAGER_H
 #define SINGLESHOTMANAGER_H
 
-#include <mediamanager.h>
-#include <soundmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/soundmanager.h>
 
 class SingleshotManager : public SoundManager
 {

@@ -7,12 +7,12 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
-#include <mediamanager.h>
-#include <atmospheremanager.h>
-#include <hotkeysmanager.h>
-#include <musicmanager.h>
-#include <sfxmanager.h>
-#include <singleshotmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/atmospheremanager.h>
+#include <model/manager/hotkeysmanager.h>
+#include <model/manager/musicmanager.h>
+#include <model/manager/sfxmanager.h>
+#include <model/manager/singleshotmanager.h>
 
 #include <webapp.h>
 

@@ -11,9 +11,7 @@
 *.lai
 *.la
 *.a
-<<<<<<< HEAD
 
 # Qt
 *.user*
-=======
->>>>>>> 8a3bd30e11a841f5250ec80d0996a5b2470d1317
+third_party/*

@@ -1,8 +1,8 @@
 #ifndef MUSICMANAGER_H
 #define MUSICMANAGER_H
 
-#include <mediamanager.h>
-#include <soundmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/soundmanager.h>
 
 class MusicManager : public SoundManager
 {

@@ -8,12 +8,12 @@
 #include <delegate/aghotkeyactiondelegate.h>
 #include <delegate/agtagbyiddelegate.h>
 #include <delegate/qdoublespinboxdelegate.h>
-#include <mediamanager.h>
-#include <atmospheremanager.h>
-#include <sfxmanager.h>
-#include <singleshotmanager.h>
-#include <hotkeysmanager.h>
-#include <musicmanager.h>
+#include <model/manager/mediamanager.h>
+#include <model/manager/atmospheremanager.h>
+#include <model/manager/sfxmanager.h>
+#include <model/manager/singleshotmanager.h>
+#include <model/manager/hotkeysmanager.h>
+#include <model/manager/musicmanager.h>
 
 
 namespace Ui {

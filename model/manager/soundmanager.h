@@ -14,7 +14,7 @@
 #include <taglib/tag.h>
 #endif
 
-#include <mediamanager.h>
+#include <model/manager/mediamanager.h>
 #include <model/librarymodel.h>
 #include <model/objectsmodel.h>
 #include <model/objectstracksmodel.h>

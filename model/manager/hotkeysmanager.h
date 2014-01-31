@@ -4,10 +4,10 @@
 #include <QtSql>
 #include <QKeySequence>
 
-#include <atmospheremanager.h>
-#include <musicmanager.h>
-#include <sfxmanager.h>
-#include <singleshotmanager.h>
+#include <model/manager/atmospheremanager.h>
+#include <model/manager/musicmanager.h>
+#include <model/manager/sfxmanager.h>
+#include <model/manager/singleshotmanager.h>
 
 #include <view/yonderpushbutton.h>
 #include <view/hotkeyspushbutton.h>

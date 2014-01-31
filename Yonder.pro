@@ -17,9 +17,9 @@ unix:!macx {
 }
 
 macx {
-    LIBS += -L/usr/local/lib -ltag -L$$PWD/../fmod/osx/api/lib/ -lfmodex
-    INCLUDEPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
-    DEPENDPATH += /usr/local/include $$PWD/../fmod/osx/api/inc
+    LIBS += -L/usr/local/Cellar/taglib/1.9.1/lib -ltag -./third_party/fmod/osx/api/lib/ -lfmodex
+    INCLUDEPATH += /usr/local/Cellar/taglib/1.9.1/include ./third_party/fmod/osx/api/inc ./third_party/QFrontDesk
+    DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include ./third_party/fmod/osx/api/inc ./third_party/QFrontDesk
     #QMAKE_POST_LINK += ../src/osx_postbuild
 }
 
@@ -34,12 +34,13 @@ DEPENDPATH += $$PWD/../auxiliary/qfrontdesk-build
 TARGET = yonder
 TEMPLATE = app
 VERSION = 1.1.1
-SOURCES += main.cpp soundmanager.cpp \
-    musicmanager.cpp \
-    hotkeysmanager.cpp \
-    singleshotmanager.cpp \
-    atmospheremanager.cpp \
-    sfxmanager.cpp \
+SOURCES += main.cpp \
+    model/manager/soundmanager.cpp \
+    model/manager/musicmanager.cpp \
+    model/manager/hotkeysmanager.cpp \
+    model/manager/singleshotmanager.cpp \
+    model/manager/atmospheremanager.cpp \
+    model/manager/sfxmanager.cpp \
     delegate/qdoublespinboxdelegate.cpp \
     delegate/agtagbyiddelegate.cpp \
     delegate/agresourcedelegate.cpp \
@@ -72,17 +73,17 @@ SOURCES += main.cpp soundmanager.cpp \
     frameeditor.cpp \
     framegenerator.cpp \
     webapp.cpp \
-    mediamanager.cpp \
+    model/manager/mediamanager.cpp \
     view/hotkeyspushbutton.cpp \
     yondergui.cpp \
     yondercore.cpp \
     view/yonderpushbutton.cpp
-HEADERS += soundmanager.h \
-    musicmanager.h \
-    hotkeysmanager.h \
-    singleshotmanager.h \
-    atmospheremanager.h \
-    sfxmanager.h \
+HEADERS += model/manager/soundmanager.h \
+    model/manager/musicmanager.h \
+    model/manager/hotkeysmanager.h \
+    model/manager/singleshotmanager.h \
+    model/manager/atmospheremanager.h \
+    model/manager/sfxmanager.h \
     delegate/qdoublespinboxdelegate.h \
     delegate/agtagbyiddelegate.h \
     delegate/agresourcedelegate.h \
@@ -115,7 +116,7 @@ HEADERS += soundmanager.h \
     frameeditor.h \
     framegenerator.h \
     webapp.h \
-    mediamanager.h \
+    model/manager/mediamanager.h \
     view/hotkeyspushbutton.h \
     yondergui.h \
     yondercore.h \

@@ -6,7 +6,7 @@
 
 #include <qfrontdesk.h>
 
-#include <hotkeysmanager.h>
+#include <model/manager/hotkeysmanager.h>
 
 class Webapp : public QFrontDesk
 {
