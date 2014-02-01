@@ -17,17 +17,17 @@ unix:!macx {
 }
 
 macx {
-    LIBS += -L/usr/local/Cellar/taglib/1.9.1/lib -ltag -./third_party/fmod/osx/api/lib/ -lfmodex
-    INCLUDEPATH += /usr/local/Cellar/taglib/1.9.1/include ./third_party/fmod/osx/api/inc ./third_party/QFrontDesk
-    DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include ./third_party/fmod/osx/api/inc ./third_party/QFrontDesk
+    LIBS += -L/usr/local/Cellar/taglib/1.9.1/lib -ltag -L$$PWD/third_party/fmod/osx/api/lib -lfmodex
+    INCLUDEPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/third_party/fmod/osx/api/inc
+    DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/third_party/fmod/osx/api/inc
     #QMAKE_POST_LINK += ../src/osx_postbuild
 }
 
 unix {
 #libqfrontdesk
-LIBS += -L$$PWD/../auxiliary/qfrontdesk-build/ -lqfrontdesk
-INCLUDEPATH += $$PWD/../auxiliary/QFrontDesk
-DEPENDPATH += $$PWD/../auxiliary/qfrontdesk-build
+LIBS += -L$$PWD/third_party/build-qfrontdesk -lqfrontdesk
+INCLUDEPATH += $$PWD/third_party/QFrontDesk
+DEPENDPATH += $$PWD/third_party/build-qfrontdesk
 }
 
 
