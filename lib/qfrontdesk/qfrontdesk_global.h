@@ -1,0 +1,12 @@
+#ifndef QFRONTDESK_GLOBAL_H
+#define QFRONTDESK_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(QFRONTDESK_LIBRARY)
+#  define QFRONTDESKSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define QFRONTDESKSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // QFRONTDESK_GLOBAL_H
