@@ -195,7 +195,7 @@ void FrameEditor::setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, Mu
     ui->hotkeys_hotkey_view->selectRow(0);
     //hotkeysUiRefresh();
 
-    ui->hotkeys_actions_view->setModel(this->hotkeys->actions_model);
+    //ui->hotkeys_actions_view->setModel(this->hotkeys->actions_model);
     ui->hotkeys_actions_view->setItemDelegateForColumn(0, new AGHotkeyActionDelegate(this));
     ui->hotkeys_actions_view->hideColumn(1);
     ui->hotkeys_actions_view->hideColumn(2);
@@ -212,9 +212,8 @@ void FrameEditor::setManagers(AtmosphereManager *atmosphere, SfxManager *sfx, Mu
     ui->hotkeys_library_music_view->setModel(this->music->objects_model);
     ui->hotkeys_library_music_view->hideColumn(0);
     ui->hotkeys_library_singleshot_view->setModel(this->singleshot->objects_model);
-    ui->hotkeys_library_singleshot_view->hideColumn(0);
-    ui->hotkeys_library_special_view->setModel(this->hotkeys->special_model);
-    ui->hotkeys_library_special_view->hideColumn(0);
+    //ui->hotkeys_library_special_view->setModel(this->hotkeys->special_model);
+    //ui->hotkeys_library_special_view->hideColumn(0);
 }
 
 void FrameEditor::atmosphereObjectAdd() {

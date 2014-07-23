@@ -3,6 +3,7 @@ QT += sql network widgets
 
 cache()
 
+
 win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
     INCLUDEPATH += C:/lib/qfrontdesk/release/include C:/lib/qjsonbackport/release/include C:/lib/fmod/include C:/lib/taglib/include
@@ -22,14 +23,6 @@ macx {
     DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/third_party/fmod/osx/api/inc
     #QMAKE_POST_LINK += ../src/osx_postbuild
 }
-
-unix {
-#libqfrontdesk
-LIBS += -L$$PWD/third_party/build-qfrontdesk -lqfrontdesk
-INCLUDEPATH += $$PWD/third_party/QFrontDesk
-DEPENDPATH += $$PWD/third_party/build-qfrontdesk
-}
-
 
 TARGET = yonder
 TEMPLATE = app
@@ -77,7 +70,12 @@ SOURCES += main.cpp \
     view/hotkeyspushbutton.cpp \
     yondergui.cpp \
     yondercore.cpp \
-    view/yonderpushbutton.cpp
+    view/yonderpushbutton.cpp \
+    lib/qfrontdesk/arguments.cpp \
+    lib/qfrontdesk/qfrontdesk.cpp \
+    lib/qfrontdesk/request.cpp \
+    lib/qfrontdesk/requestmanager.cpp
+
 HEADERS += model/manager/soundmanager.h \
     model/manager/musicmanager.h \
     model/manager/hotkeysmanager.h \
@@ -120,7 +118,13 @@ HEADERS += model/manager/soundmanager.h \
     view/hotkeyspushbutton.h \
     yondergui.h \
     yondercore.h \
-    view/yonderpushbutton.h
+    view/yonderpushbutton.h \
+    lib/qfrontdesk/arguments.h \
+    lib/qfrontdesk/qfrontdesk.h \
+    lib/qfrontdesk/qfrontdesk_global.h \
+    lib/qfrontdesk/request.h \
+    lib/qfrontdesk/requestmanager.h
+
 FORMS += \
     framestart.ui \
     frameresourcebrowser.ui \

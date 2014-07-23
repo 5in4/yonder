@@ -4,7 +4,7 @@
 #include <QJsonObject>
 #include <QJsonValue>
 
-#include <qfrontdesk.h>
+#include <lib/qfrontdesk/qfrontdesk.h>
 
 #include <model/manager/hotkeysmanager.h>
 

@@ -3,9 +3,7 @@
 extern QString VERSION;
 extern QString WEBADDRESS;
 
-YonderCore::YonderCore(QObject *parent) :
-    QObject(parent)
-{
+YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
 
@@ -94,6 +92,7 @@ void YonderCore::projectStop() {
  * Starts the webapp module if it is not running and it is activated in settings
  */
 void YonderCore::webappStart() {
+    return;
     QSettings settings;
     if(!webapp) {
         qDebug() << "Creating new webapp instance";

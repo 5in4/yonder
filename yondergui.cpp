@@ -8,10 +8,7 @@ extern QString AUTHOR;
 extern QString WEBADDRESS;
 extern QString ACCEPTED_MIMETYPES;
 
-YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::YonderGui)
-{
+YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindow(parent), ui(new Ui::YonderGui) {
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
@@ -24,37 +21,36 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) :
 
     // Setup Ui
     ui->setupUi(this);
-    {
-        start_frame = new FrameStart(this);
-        ui->frame_wrapper->addWidget(start_frame);
 
-        generator_frame = new FrameGenerator(core, this);
-        ui->frame_wrapper->addWidget(generator_frame);
+    start_frame = new FrameStart(this);
+    ui->frame_wrapper->addWidget(start_frame);
 
-        editor_frame = new FrameEditor(core->media, this);
-        ui->frame_wrapper->addWidget(editor_frame);
+    generator_frame = new FrameGenerator(core, this);
+    ui->frame_wrapper->addWidget(generator_frame);
 
-        resource_frame = new FrameResourceBrowser(this);
-        ui->frame_wrapper->addWidget(resource_frame);
+    editor_frame = new FrameEditor(core->media, this);
+    ui->frame_wrapper->addWidget(editor_frame);
 
-        configure_frame = new FrameConfigure(this);
-        ui->frame_wrapper->addWidget(configure_frame);
+    resource_frame = new FrameResourceBrowser(this);
+    ui->frame_wrapper->addWidget(resource_frame);
 
-        help_frame = new FrameHelp(this);
-        ui->frame_wrapper->addWidget(help_frame);
+    configure_frame = new FrameConfigure(this);
+    ui->frame_wrapper->addWidget(configure_frame);
 
-        ui->frame_sidebar->addTab(start_frame, tr("Start"), tr("Ctrl+P"));
-        ui->frame_sidebar->addTab(generator_frame, tr("Generate"), tr("Ctrl+G"));
-        ui->frame_sidebar->addTab(editor_frame, tr("Edit"), tr("Ctrl+E"));
-        ui->frame_sidebar->addTab(resource_frame, tr("Resources"), tr("Ctrl+R"));
-        ui->frame_sidebar->addTab(configure_frame, tr("Configure"), tr("Ctrl+C"));
-        ui->frame_sidebar->addTab(help_frame, tr("Help"), tr("Ctrl+H"));
+    help_frame = new FrameHelp(this);
+    ui->frame_wrapper->addWidget(help_frame);
 
-        // only enabled after project is loaded. Default to start tab
-        ui->frame_sidebar->setTabEnabled(1, false);
-        ui->frame_sidebar->setTabEnabled(2, false);
-        ui->frame_sidebar->setActive(0);
-    }
+    ui->frame_sidebar->addTab(start_frame, tr("Start"), tr("Ctrl+P"));
+    ui->frame_sidebar->addTab(generator_frame, tr("Generate"), tr("Ctrl+G"));
+    ui->frame_sidebar->addTab(editor_frame, tr("Edit"), tr("Ctrl+E"));
+    ui->frame_sidebar->addTab(resource_frame, tr("Resources"), tr("Ctrl+R"));
+    ui->frame_sidebar->addTab(configure_frame, tr("Configure"), tr("Ctrl+C"));
+    ui->frame_sidebar->addTab(help_frame, tr("Help"), tr("Ctrl+H"));
+
+    // only enabled after project is loaded. Default to start tab
+    ui->frame_sidebar->setTabEnabled(1, false);
+    ui->frame_sidebar->setTabEnabled(2, false);
+    ui->frame_sidebar->setActive(0);
 
     // Quit immediately if clicked close. Open browser if clicked on webapp button
     connect(ui->frame_sidebar->quit_button, &SolidTabButton::clicked, this, &YonderGui::close);

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>717</width>
+    <width>834</width>
     <height>300</height>
    </rect>
   </property>
@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="intro_label">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you know of any other good resource, please tell us about it in our forums at &lt;a href=&quot;http://yonderfx.com/forums/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;yonderfx.com!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Though we try to keep these links up to date, there is no guarantee that their content is not outdated and/or inappropriate&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If you know of any other good resource, please tell us about it in our forums at &lt;a href=&quot;http://yonderfx.com/forums/?pk_campaign=app&amp;pk_kwd=resourcebrowser&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;yonderfx.com!&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Though we try to keep these links up to date, there is no guarantee that their content is not outdated and/or inappropriate&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
