@@ -10,6 +10,8 @@
 #include <fmodex/fmod.h>
 #include <fmodex/fmod_errors.h>
 
+#include <model/track.h>
+
 #ifndef MEDIACONTAINER_H
 #define MEDIACONTAINER_H
 
@@ -27,7 +29,7 @@ public:
 
     QTimer *delay_timer;
 
-    bool loadFile(QString path, bool stream=true);
+    bool loadFile(Track *track, bool stream=true);
     bool isPlaying();
     bool isPlayingVirtual();
     bool setVolume(float volume);
@@ -47,6 +49,10 @@ private:
     int channel_nr;
     int oid;
     bool playing_virtual;
+
+    QByteArray inb;
+    char *raw_data;
+    FMOD_CREATESOUNDEXINFO info;
 
 signals:
     void finished(int channel_nr);

@@ -1,8 +1,6 @@
 #include "mediamanager.h"
 
-MediaManager::MediaManager(QObject *parent) :
-    QObject(parent)
-{
+MediaManager::MediaManager(QObject *parent) : QObject(parent) {
 
     result = FMOD_System_Create(&system);
     if(result != FMOD_OK) {
@@ -13,6 +11,7 @@ MediaManager::MediaManager(QObject *parent) :
     if(result != FMOD_OK) {
         qDebug() << "FMOD error" << FMOD_ErrorString(result);
     }
+    FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
 
     fmod_timer = new QTimer(this);
     connect(fmod_timer, SIGNAL(timeout()), this, SLOT(fmodLoop()));
@@ -38,9 +37,6 @@ MediaContainer* MediaManager::createContainer() {
 }
 
 
-
-
-
 MediaContainer::MediaContainer(FMOD_SYSTEM *system, QObject *parent) :
     QObject(parent)
 {
@@ -58,31 +54,31 @@ MediaContainer::MediaContainer(FMOD_SYSTEM *system, QObject *parent) :
 }
 
 
-bool MediaContainer::loadFile(QString path, bool stream) {
+bool MediaContainer::loadFile(Track *track, bool stream) {
     // while releasing is broke, force streaming
     stream = true;
-    const char * encoded_name = QFile::encodeName(path).constData();
+    inb = track->data();
+    int inbs = inb.size();
+    raw_data = new char[inbs];
+    raw_data = inb.data();
+
+    memset(&info, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+    info.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+    info.length = inbs;
 
     if(stream == false) {
-        result = FMOD_System_CreateSound(system, encoded_name, FMOD_DEFAULT, 0, &sound);
-        if(result == FMOD_OK) {
-            file_loaded = true;
-            playing_file = path;
-            return true;
-        } else {
-            file_loaded = false;
-            return false;
-        }
+        result = FMOD_System_CreateSound(system, raw_data, FMOD_OPENMEMORY, &info, &sound);
     } else {
-        result = FMOD_System_CreateStream(system, encoded_name, FMOD_DEFAULT, 0, &sound);
-        if(result == FMOD_OK) {
-            file_loaded = true;
-            playing_file = path;
-            return true;
-        } else {
-            file_loaded = false;
-            return false;
-        }
+        result = FMOD_System_CreateStream(system, raw_data, FMOD_OPENMEMORY, &info, &sound);
+    }
+    qDebug() << result << FMOD_ERR_FORMAT;
+    if(result == FMOD_OK) {
+        file_loaded = true;
+        //playing_file = path;
+        return true;
+    } else {
+        file_loaded = false;
+        return false;
     }
 }
 

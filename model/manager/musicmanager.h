@@ -8,7 +8,7 @@ class MusicManager : public SoundManager
 {
 Q_OBJECT
 public:
-    MusicManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent);
+    MusicManager(MediaManager *media, QObject *parent);
 
 public slots:
     bool enqueue();

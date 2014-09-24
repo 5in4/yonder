@@ -1,8 +1,7 @@
 CONFIG += warn_off
-QT += sql network widgets
+QT += sql network widgets webkitwidgets qml quick
 
 cache()
-
 
 win32 {
     LIBS += C:/lib/qfrontdesk/release/libqfrontdesk.a C:/lib/qjsonbackport/release/libqjson-backport.a C:/lib/fmod/lib/libfmodex.a C:/lib/taglib/libtag.dll.a
@@ -11,9 +10,9 @@ win32 {
 }
 
 unix:!macx {
-    LIBS += -L/usr/lib/ -ltag -lfmodex
-    INCLUDEPATH += /usr/include
-    DEPENDPATH += /usr/include
+    LIBS += -L/usr/lib/ -ltag -lfmodexL -L$$PWD/lib/qdjango-db/ -lqdjango-db -L$$PWD/lib/qfrontdesk/ -lqfrontdesk
+    INCLUDEPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk
+    DEPENDPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk
     #QMAKE_POST_LINK += ../src/linux_postbuild
 }
 
@@ -26,117 +25,65 @@ macx {
 
 TARGET = yonder
 TEMPLATE = app
-VERSION = 1.1.1
+VERSION = 2.0
 SOURCES += main.cpp \
     model/manager/soundmanager.cpp \
     model/manager/musicmanager.cpp \
-    model/manager/hotkeysmanager.cpp \
-    model/manager/singleshotmanager.cpp \
-    model/manager/atmospheremanager.cpp \
     model/manager/sfxmanager.cpp \
     delegate/qdoublespinboxdelegate.cpp \
     delegate/agtagbyiddelegate.cpp \
     delegate/agresourcedelegate.cpp \
     delegate/aghotkeyactiondelegate.cpp \
-    view/singleshotobjectstracksview.cpp \
-    view/singleshotlibraryview.cpp \
-    view/sfxobjectstracksview.cpp \
-    view/sfxlibraryview.cpp \
-    view/musicplaylisttracksview.cpp \
-    view/musiclibraryview.cpp \
-    view/hotkeyslibraryspecialview.cpp \
-    view/hotkeyslibrarysingleshotview.cpp \
-    view/hotkeyslibrarysfxview.cpp \
-    view/hotkeyslibrarymusicview.cpp \
-    view/hotkeyslibraryatmosphereview.cpp \
-    view/hotkeysactionsview.cpp \
-    view/atmosphereobjectstracksview.cpp \
-    view/atmospherelibraryview.cpp \
     view/agpreviewpushbutton.cpp \
     view/qlineeditfilter.cpp \
-    model/objectstracksmodel.cpp \
-    model/objectsmodel.cpp \
-    model/librarymodel.cpp \
     view/solidtabwidget.cpp \
     frameobject.cpp \
-    framestart.cpp \
     frameresourcebrowser.cpp \
-    framehelp.cpp \
     frameconfigure.cpp \
-    frameeditor.cpp \
     framegenerator.cpp \
-    webapp.cpp \
-    model/manager/mediamanager.cpp \
-    view/hotkeyspushbutton.cpp \
     yondergui.cpp \
     yondercore.cpp \
     view/yonderpushbutton.cpp \
-    lib/qfrontdesk/arguments.cpp \
-    lib/qfrontdesk/qfrontdesk.cpp \
-    lib/qfrontdesk/request.cpp \
-    lib/qfrontdesk/requestmanager.cpp
+    model/track.cpp \
+    model/sfxcontainer.cpp \
+    model/sfxbit.cpp \
+    sfxbasetype.cpp \
+    model/manager/mediamanager.cpp \
+    model/qdjangotablemodel.cpp
 
 HEADERS += model/manager/soundmanager.h \
     model/manager/musicmanager.h \
-    model/manager/hotkeysmanager.h \
-    model/manager/singleshotmanager.h \
-    model/manager/atmospheremanager.h \
     model/manager/sfxmanager.h \
     delegate/qdoublespinboxdelegate.h \
     delegate/agtagbyiddelegate.h \
     delegate/agresourcedelegate.h \
     delegate/aghotkeyactiondelegate.h \
-    view/singleshotobjectstracksview.h \
-    view/singleshotlibraryview.h \
-    view/sfxobjectstracksview.h \
-    view/sfxlibraryview.h \
-    view/musicplaylisttracksview.h \
-    view/musiclibraryview.h \
-    view/hotkeyslibraryspecialview.h \
-    view/hotkeyslibrarysingleshotview.h \
-    view/hotkeyslibrarysfxview.h \
-    view/hotkeyslibrarymusicview.h \
-    view/hotkeyslibraryatmosphereview.h \
-    view/hotkeysactionsview.h \
-    view/atmosphereobjectstracksview.h \
-    view/atmospherelibraryview.h \
     view/agpreviewpushbutton.h \
     view/qlineeditfilter.h \
-    model/objectstracksmodel.h \
-    model/objectsmodel.h \
-    model/librarymodel.h \
     view/solidtabwidget.h \
     frameobject.h \
-    framestart.h \
     frameresourcebrowser.h \
-    framehelp.h \
     frameconfigure.h \
-    frameeditor.h \
     framegenerator.h \
-    webapp.h \
     model/manager/mediamanager.h \
-    view/hotkeyspushbutton.h \
     yondergui.h \
     yondercore.h \
     view/yonderpushbutton.h \
-    lib/qfrontdesk/arguments.h \
-    lib/qfrontdesk/qfrontdesk.h \
-    lib/qfrontdesk/qfrontdesk_global.h \
-    lib/qfrontdesk/request.h \
-    lib/qfrontdesk/requestmanager.h
+    model/track.h \
+    model/sfxcontainer.h \
+    model/sfxbit.h \
+    sfxbasetype.h \
+    model/qdjangotablemodel.h
 
 FORMS += \
-    framestart.ui \
-    frameresourcebrowser.ui \
-    framehelp.ui \
-    frameconfigure.ui \
-    frameeditor.ui \
-    framegenerator.ui \
     yondergui.ui
 
 RESOURCES += \
     yonder.qrc \
 
 RC_FILE = yonder.rc
+
+OTHER_FILES += \
+    BackgroundGenerator.qml
 
 

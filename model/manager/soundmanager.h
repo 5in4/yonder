@@ -14,37 +14,24 @@
 #include <taglib/tag.h>
 #endif
 
-#include <model/manager/mediamanager.h>
-#include <model/librarymodel.h>
-#include <model/objectsmodel.h>
-#include <model/objectstracksmodel.h>
+#include <QDjangoQuerySet.h>
 
-class SoundManager : public QObject
-{
-Q_OBJECT
+#include <model/manager/mediamanager.h>
+
+class SoundManager : public QObject {
+
 public:
-    explicit SoundManager(QString project_path, QString identifier, QSqlDatabase db, MediaManager *media, QObject *parent = 0);
+    explicit SoundManager(MediaManager *media, QObject *parent = 0);
     ~SoundManager();
 
     QSqlDatabase db;
 
-    QString project_path;
-    QString identifier;
-
-    QString library_identifier;
-    QString objects_identifier;
-    QString objects_tracks_identifier;
-    QString path;
 
     QStringList accepted_mimetypes;
     QStringList library_tracks;
     int channels;
     MediaManager *media;
     QList<MediaContainer *> container;
-
-    LibraryModel *library_model;
-    ObjectsModel *objects_model;
-    ObjectsTracksModel *objects_tracks_model;
 
     virtual void createTables();
     bool rescanLibrary();
@@ -64,9 +51,6 @@ public:
 
 private:
     QStringList scanLibraryDirectory(QString dir);
-
-    //refactoring
-
 
 signals:
     void playbackError(int channel);

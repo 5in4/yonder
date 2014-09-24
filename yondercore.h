@@ -7,14 +7,17 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
+#include <QDjango.h>
+
+#include <sfxbasetype.h>
+#include <model/track.h>
+#include <model/sfxbit.h>
+#include <model/sfxcontainer.h>
+
 #include <model/manager/mediamanager.h>
-#include <model/manager/atmospheremanager.h>
-#include <model/manager/hotkeysmanager.h>
 #include <model/manager/musicmanager.h>
 #include <model/manager/sfxmanager.h>
-#include <model/manager/singleshotmanager.h>
 
-#include <webapp.h>
 
 class YonderCore : public QObject
 {
@@ -23,18 +26,13 @@ public:
     explicit YonderCore(QObject *parent = 0);
 
     QPointer<MediaManager> media;
-    QPointer<AtmosphereManager> atmosphere;
     QPointer<MusicManager> music;
     QPointer<SfxManager> sfx;
-    QPointer<SingleshotManager> singleshot;
-    QPointer<HotkeysManager> hotkeys;
 
 private:
     void checkUpdate();
 
     QString project_path;
-
-    QPointer<Webapp> webapp;
 
     QNetworkAccessManager *update_manager;
     QNetworkReply *update_reply;
@@ -56,6 +54,7 @@ signals:
     void updateAvailable();
 
 public slots:
+    void projectCreate(QString path);
     bool projectLoad(QString path);
     void projectStop();
     void projectRefresh();

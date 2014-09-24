@@ -11,7 +11,7 @@ class SfxManager: public SoundManager
 {
 Q_OBJECT
 public:
-    SfxManager(QString project_path, QSqlDatabase db, MediaManager *media, QObject *parent);
+    SfxManager(MediaManager *media, QObject *parent);
 
     QList<QStringList> objects;
     QList<QStringList> objects_tracks;

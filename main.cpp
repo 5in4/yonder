@@ -3,7 +3,7 @@
 #include <yondergui.h>
 
 QString NAME = "Yonder";
-QString VERSION = "1.2";
+QString VERSION = "2.0";
 QString ACTION_KEY = "";
 QString AUTHOR = "Dominik Seemann";
 QString WEBADDRESS = "http://yonderfx.com/"; // always with trailing slash!
@@ -43,13 +43,13 @@ void noHandler(QtMsgType type, const QMessageLogContext &context, const QString 
 
 int main(int argc, char *argv[])
 {
-    if(argc > 1 && QString(argv[1]) == "debug") {
-        qInstallMessageHandler(debugHandler);
-    } else if(argc > 1 && QString(argv[1]) == "debug-console") {
+//    if(argc > 1 && QString(argv[1]) == "debug") {
+//        qInstallMessageHandler(debugHandler);
+//    } else if(argc > 1 && QString(argv[1]) == "debug-console") {
 
-    } else {
-        qInstallMessageHandler(noHandler);
-    }
+//    } else {
+//        qInstallMessageHandler(noHandler);
+//    }
 
     qDebug() << QString("%1 %2").arg(NAME, VERSION);
 

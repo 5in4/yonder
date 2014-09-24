@@ -1,45 +1,39 @@
-YonderGui {
-    /*background: rgb(83, 83, 83);*/
+#dock, #start {
+    background: rgb(68, 68, 68);
 }
 
-YonderPushButton {
-    /*background: rgb(68, 68, 68);
-    border: none;
-    color: white;*/
-    min-height: 36px;
+#start QPushButton {
+    font: 16pt;
+}
+
+#dock QPushButton {
+    background: rgb(68, 68, 68);
+    color: white;
+    min-height: 70px;
     min-width: 120px;
-}
-
-#frame_sidebar {
-    background: url(:/application/gradient.png) repeat-y center right rgb(68, 68, 68);
-    border: none;
-}
-
-#frame_sidebar SolidTabButton, #frame_sidebar QLabel {
-    background: none;
     color: white;
     border: none;
     font: 22pt "Ostrich Sans";
 }
 
-#frame_sidebar SolidTabButton:hover { /*, #frame_sidebar SolidTabButton:focus {*/
+#dock QPushButton:hover { /*, #frame_sidebar SolidTabButton:focus {*/
     background: url(:/application/gradient.png) repeat-y center right rgba(255, 255, 255, 70);
 }
 
-#frame_sidebar SolidTabButton:checked {
+#dock QPushButton:checked {
     background: url(:/application/gradient.png) repeat-y center right rgb(83, 83, 83);
 }
 
-#frame_sidebar SolidTabButton:disabled {
+#dock QPushButton:disabled {
     color: url(:/application/gradient.png) repeat-y center right rgb(166, 166, 166);
 }
 
-#frame_sidebar QProgressBar:horizontal {
+#dock QPushButton:horizontal {
     height: 6px;
     background: url(:/application/gradient.png) repeat-y center right rgba(0, 0, 0, 0);
     border: 0;
 }
 
-#frame_sidebar QProgressBar::chunk:horizontal {
+#dock QProgressBar::chunk:horizontal {
     background: rgba(255, 255, 255, 70);
 }

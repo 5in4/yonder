@@ -8,7 +8,6 @@
 #include <frameobject.h>
 
 #include <view/yonderpushbutton.h>
-#include <view/hotkeyspushbutton.h>
 
 #include <yondercore.h>
 
@@ -35,7 +34,6 @@ public:
     QList<YonderPushButton*> atmosphere_buttons;
     QList<YonderPushButton*> sfx_buttons;
     QList<YonderPushButton*> singleshot_buttons;
-    QList<HotkeysPushButton*> hotkeys_buttons;
 
 public slots:
     void atmosphereControl(int pos_in_array, bool checked);
@@ -50,16 +48,13 @@ public slots:
     void musicTrackChanged();
     void musicPlayPause();
 
-    void sfxControl(int pos_in_array, bool checked);
+    //void sfxControl(int pos_in_array, bool checked);
     void sfxCreateButtons();
     void sfxSetVolume();
 
     void singleshotControl(int pos_in_array, bool checked);
     void singleshotCreateButtons();
     void singleshotSetVolume();
-
-    void hotkeysCreateButtons();
-    void hotkeysControl(int pos_in_array, bool checked);
 
     void refreshUi();
     void refreshUi(bool project_set);

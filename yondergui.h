@@ -3,19 +3,20 @@
 
 #include <QMainWindow>
 #include <QSplashScreen>
-//#include <QtNetwork/QNetworkAccessManager>
-//#include <QtNetwork/QNetworkReply>
+#include <QFontDatabase>
+#include <QSignalMapper>
+#include <QQuickView>
+#include <QErrorMessage>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QDesktopServices>
 
 #include <qmath.h>
 
-#include <framestart.h>
-#include <framegenerator.h>
-#include <frameeditor.h>
-#include <frameresourcebrowser.h>
-#include <frameconfigure.h>
-#include <framehelp.h>
-
 #include <yondercore.h>
+#include <model/qdjangotablemodel.h>
+#include <model/track.h>
+
 
 namespace Ui {
     class YonderGui;
@@ -34,14 +35,11 @@ public:
     YonderCore *core;
     QSplashScreen *splash_screen;
 
-    FrameStart *start_frame;
-    FrameGenerator *generator_frame;
-    FrameEditor *editor_frame;
-    FrameResourceBrowser *resource_frame;
-    FrameConfigure *configure_frame;
-    FrameHelp *help_frame;
+    QSignalMapper *mapper_menu;
 
     QUrl webapp_url;
+
+    QString soundbank_path;
 
 public slots:
     void applyStylesheet();
@@ -59,6 +57,12 @@ public slots:
     void webappStarted(QUrl url);
     void webappStopped();
 
+
+
+    //refactored
+    void soundbankOpen();
+    void soundbankCreate();
+    void showAbout();
 };
 
 #endif // YONDERGUI_H

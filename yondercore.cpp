@@ -11,7 +11,26 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
         checkUpdate();
     }
 
+    QDjango::setDebugEnabled(true);
+    QDjango::registerModel<Track>();
+    QDjango::registerModel<SfxBaseType>();
+    QDjango::registerModel<SfxBit>();
+    QDjango::registerModel<SfxContainer>();
+
     this->media = new MediaManager(this);
+}
+
+
+void YonderCore::projectCreate(QString path) {
+    qDebug() << "Creating new soundbank";
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(path);
+    db.open();
+    QDjango::setDatabase(db);
+    QDjango::createTables();
+    db.commit();
+    db.close();
+    projectLoad(path);
 }
 
 /*!
@@ -21,52 +40,56 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
  * Create all Managers and Webapp if activated.
  */
 bool YonderCore::projectLoad(QString path) {
-    emit projectLoading();
-    // Check if project path really really exists. Return if not.
-    if(!QDir().exists(path)) {
+    if(!QFile().exists(path)) {
         emit projectLoadingFailed();
-        qDebug() << "loadProject failed: path does not exist";
+        qDebug() << "Soundbank does not exist:" << path;
         return false;
     }
+
+    emit projectLoading();
+
     this->project_path = path;
 
     webappStop();
 
     QSettings settings;
-    settings.setValue("Settings/last_project_path", project_path);
+    settings.setValue("Settings/LastSoundbank", project_path);
 
-    QString db_filename = QString("%1/project.db").arg(project_path);
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName(db_filename);
+    db.setDatabaseName(project_path);
     db.open();
+    QDjango::setDatabase(db);
 
-    qDebug() << "Setting project path to" << this->project_path;
-
-    emit managerLoading("atmosphere");
-    if(!atmosphere) {
-        delete atmosphere;
-    }
-    atmosphere = new AtmosphereManager(project_path, db, media, this);
-
-    emit managerLoading("music");
-    if(!music) {
-        delete music;
-    }
-    music = new MusicManager(project_path, db, media, this);
+    qDebug() << "Opened soundbank" << this->project_path;
 
     emit managerLoading("sfx");
-    if(!sfx) {
-        delete sfx;
-    }
-    sfx = new SfxManager(project_path, db, media, this);
+    sfx = new SfxManager(media, this);
 
-    emit managerLoading("singleshots");
-    if(!singleshot) {
-        delete singleshot;
-    }
-    singleshot = new SingleshotManager(project_path, db, media, this);
+//    emit managerLoading("atmosphere");
+//    if(!atmosphere) {
+//        delete atmosphere;
+//    }
+//    atmosphere = new AtmosphereManager(project_path, db, media, this);
 
-    hotkeys = new HotkeysManager(db, atmosphere, music, sfx, singleshot, this);
+//    emit managerLoading("music");
+//    if(!music) {
+//        delete music;
+//    }
+//    music = new MusicManager(project_path, db, media, this);
+
+//    emit managerLoading("sfx");
+//    if(!sfx) {
+//        delete sfx;
+//    }
+//    sfx = new SfxManager(project_path, db, media, this);
+
+//    emit managerLoading("singleshots");
+//    if(!singleshot) {
+//        delete singleshot;
+//    }
+//    singleshot = new SingleshotManager(project_path, db, media, this);
+
+//    hotkeys = new HotkeysManager(db, atmosphere, music, sfx, singleshot, this);
 
     webappStart();
 
@@ -77,13 +100,13 @@ bool YonderCore::projectLoad(QString path) {
 void YonderCore::projectRefresh() {
     emit projectRefreshing();
 
-    webappStart();
+    //webappStart();
     emit projectRefreshed();
 }
 
 void YonderCore::projectStop() {
     emit projectStopping();
-    webappStop();
+    //webappStop();
     emit projectStopped();
 }
 
@@ -93,16 +116,16 @@ void YonderCore::projectStop() {
  */
 void YonderCore::webappStart() {
     return;
-    QSettings settings;
-    if(!webapp) {
-        qDebug() << "Creating new webapp instance";
-        webapp = new Webapp(settings.value("Settings/webapp_port").toInt(), 10, QString(":webservice/static"), this);
-        if(settings.value("Settings/webapp_active").toBool() && settings.value("Settings/webapp_port").toInt() != 0) {
-            webapp->setHotkeysManager(hotkeys);
-            webapp->setActive(true);
-            emit webappStarted(webapp->getUrl());
-        }
-    }
+//    QSettings settings;
+//    if(!webapp) {
+//        qDebug() << "Creating new webapp instance";
+//        webapp = new Webapp(settings.value("Settings/webapp_port").toInt(), 10, QString(":webservice/static"), this);
+//        if(settings.value("Settings/webapp_active").toBool() && settings.value("Settings/webapp_port").toInt() != 0) {
+//            webapp->setHotkeysManager(hotkeys);
+//            webapp->setActive(true);
+//            emit webappStarted(webapp->getUrl());
+//        }
+//    }
 }
 
 /*!
@@ -110,11 +133,11 @@ void YonderCore::webappStart() {
  * Stops the webapp if it is running
  */
 void YonderCore::webappStop() {
-    if(webapp) {
-        webapp->setActive(false);
-        webapp->deleteLater();
-    }
-    emit webappStopped();
+//    if(webapp) {
+//        webapp->setActive(false);
+//        webapp->deleteLater();
+//    }
+//    emit webappStopped();
 }
 
 /*!

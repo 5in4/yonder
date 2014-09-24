@@ -8,6 +8,7 @@ extern QString AUTHOR;
 extern QString WEBADDRESS;
 extern QString ACCEPTED_MIMETYPES;
 
+
 YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindow(parent), ui(new Ui::YonderGui) {
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
@@ -19,43 +20,37 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
 
     this->splash_screen = splash_screen;
 
-    // Setup Ui
+    // setup ui
     ui->setupUi(this);
 
-    start_frame = new FrameStart(this);
-    ui->frame_wrapper->addWidget(start_frame);
+    QQuickView *bg = new QQuickView(QUrl("BackgroundGenerator.qml"));
 
-    generator_frame = new FrameGenerator(core, this);
-    ui->frame_wrapper->addWidget(generator_frame);
+    mapper_menu = new QSignalMapper(this) ;
+    connect(ui->btn_start, SIGNAL(clicked()), mapper_menu, SLOT(map()));
+    connect(ui->btn_generate, SIGNAL(clicked()), mapper_menu, SLOT(map()));
+    connect(ui->btn_edit, SIGNAL(clicked()), mapper_menu, SLOT(map()));
+    connect(ui->btn_resources, SIGNAL(clicked()), mapper_menu, SLOT(map()));
+    connect(ui->btn_configure, SIGNAL(clicked()), mapper_menu, SLOT(map()));
+    connect(ui->btn_help, SIGNAL(clicked()), mapper_menu, SLOT(map()));
 
-    editor_frame = new FrameEditor(core->media, this);
-    ui->frame_wrapper->addWidget(editor_frame);
+    mapper_menu->setMapping(ui->btn_start, 0);
+    mapper_menu->setMapping(ui->btn_generate, 1);
+    mapper_menu->setMapping(ui->btn_edit, 2);
+    mapper_menu->setMapping(ui->btn_resources, 3);
+    mapper_menu->setMapping(ui->btn_configure, 4);
+    mapper_menu->setMapping(ui->btn_help, 5);
 
-    resource_frame = new FrameResourceBrowser(this);
-    ui->frame_wrapper->addWidget(resource_frame);
+    connect(mapper_menu, SIGNAL(mapped(int)), ui->frame, SLOT(setCurrentIndex(int)));
+    //connect(ui->frame, SIGNAL(currentChanged(int)), this, SLOT() // fixme sort ui and core state
+    connect(ui->btn_webapp, SIGNAL(clicked()), this, SLOT(openWebappUrl()));
+    connect(ui->btn_about, SIGNAL(clicked()), this, SLOT(showAbout()));
+    connect(ui->btn_quit, SIGNAL(clicked()), this, SLOT(close()));
 
-    configure_frame = new FrameConfigure(this);
-    ui->frame_wrapper->addWidget(configure_frame);
+    connect(ui->btn_soundbank_open, SIGNAL(clicked()), this, SLOT(soundbankOpen()));
+    connect(ui->btn_soundbank_create, SIGNAL(clicked()), this, SLOT(soundbankCreate()));
 
-    help_frame = new FrameHelp(this);
-    ui->frame_wrapper->addWidget(help_frame);
 
-    ui->frame_sidebar->addTab(start_frame, tr("Start"), tr("Ctrl+P"));
-    ui->frame_sidebar->addTab(generator_frame, tr("Generate"), tr("Ctrl+G"));
-    ui->frame_sidebar->addTab(editor_frame, tr("Edit"), tr("Ctrl+E"));
-    ui->frame_sidebar->addTab(resource_frame, tr("Resources"), tr("Ctrl+R"));
-    ui->frame_sidebar->addTab(configure_frame, tr("Configure"), tr("Ctrl+C"));
-    ui->frame_sidebar->addTab(help_frame, tr("Help"), tr("Ctrl+H"));
-
-    // only enabled after project is loaded. Default to start tab
-    ui->frame_sidebar->setTabEnabled(1, false);
-    ui->frame_sidebar->setTabEnabled(2, false);
-    ui->frame_sidebar->setActive(0);
-
-    // Quit immediately if clicked close. Open browser if clicked on webapp button
-    connect(ui->frame_sidebar->quit_button, &SolidTabButton::clicked, this, &YonderGui::close);
-    connect(ui->frame_sidebar->webapp_running, &SolidTabButton::clicked, this, &YonderGui::openWebappUrl);
-
+    // setup core
     connect(core, &YonderCore::managerLoading, this, &YonderGui::setSplashScreen);
     connect(core, &YonderCore::projectLoading, this, &YonderGui::stateLoading);
     connect(core, &YonderCore::projectLoadingFailed, this, &YonderGui::stateLoadingFailed);
@@ -64,30 +59,67 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(core, &YonderCore::webappStarted, this, &YonderGui::webappStarted);
     connect(core, &YonderCore::webappStopped, this, &YonderGui::webappStopped);
 
-    connect(generator_frame, SIGNAL(deactivated()), core, SLOT(projectStop()));
-    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
+//    connect(generator_frame, SIGNAL(deactivated()), core, SLOT(projectStop()));
+//    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
 
 
     // Load project setProject returns to default state if no path is set.
-    connect(start_frame, SIGNAL(acceptedProjectFolder(QString)), core, SLOT(projectLoad(QString)));
-    core->projectLoad(settings.value("Settings/last_project_path", "").toString());
+    //connect(start_frame, SIGNAL(acceptedProjectFolder(QString)), core, SLOT(projectLoad(QString)));
+    core->projectLoad(settings.value("Settings/LastSoundbank", "").toString());
 
     // Set style. Signals for changed settings while running
     applyStylesheet();
-    connect(configure_frame, &FrameConfigure::deactivated, this, &YonderGui::applyStylesheet);
+    //connect(configure_frame, &FrameConfigure::deactivated, this, &YonderGui::applyStylesheet);
     this->setWindowTitle(QString("%1 %2").arg(QApplication::instance()->applicationName(), VERSION));
-    this->restoreGeometry(settings.value("MainWindow/geometry").toByteArray());
+    this->restoreGeometry(settings.value("MainWindow/Geometry").toByteArray());
 
 }
+
+
+/*!
+ * \brief open dialog to set soundbank, perform brief check on file and load in core
+ */
+void YonderGui::soundbankOpen() {
+    QString soundbank_path = QFileDialog::getOpenFileName(this, tr("Open soundbank"), QDir::homePath(), tr("Yonder soundbank (*.yfx)"));
+    if(soundbank_path.isEmpty()) {
+        return;
+    }
+    QFileInfo soundbank_check(soundbank_path);
+    QErrorMessage alert;
+    if(!soundbank_check.isFile()) {
+        alert.showMessage(tr("This is not a file"));
+        return;
+    }
+    if(!soundbank_check.exists()) {
+        alert.showMessage(tr("This file does not exist"));
+        return;
+    }
+    if(!soundbank_check.isWritable()) {
+        alert.showMessage(tr("This file is not writable"));
+        return;
+    }
+    core->projectLoad(soundbank_path);
+}
+
+
+void YonderGui::soundbankCreate() {
+    QString soundbank_path = QFileDialog::getSaveFileName(this, tr("Create soundbank"), QDir::homePath(), tr("Yonder soundbank (*.yfx)"));
+    if(soundbank_path.isEmpty()) {
+        return;
+    }
+    soundbank_path += ".yfx";
+    core->projectCreate(soundbank_path);
+}
+
 
 /*!
  * \brief YonderGui::stateLoading
  * Set ui to state for loading a project
  */
 void YonderGui::stateLoading() {
-    ui->frame_sidebar->setTabEnabled(1, false);
-    ui->frame_sidebar->setTabEnabled(2, false);
-    ui->frame_sidebar->progress_bar->show(); //repair signals
+//    ui->frame_sidebar->setTabEnabled(1, false);
+//    ui->frame_sidebar->setTabEnabled(2, false);
+//    ui->frame_sidebar->progress_bar->show(); //repair signals
 }
 
 /*!
@@ -95,7 +127,7 @@ void YonderGui::stateLoading() {
  * Set ui to state if loading a project failed
  */
 void YonderGui::stateLoadingFailed() {
-    ui->frame_sidebar->setActive(0);
+//    ui->frame_sidebar->setActive(0);
 }
 
 /*!
@@ -103,16 +135,21 @@ void YonderGui::stateLoadingFailed() {
  * Set ui to state right after a project finished loading
  */
 void YonderGui::stateLoaded() {
-    ui->frame_sidebar->setTabEnabled(1, true);
-    ui->frame_sidebar->setTabEnabled(2, true);
-    start_frame->hide(); // weird behaviour fix
-    ui->frame_sidebar->setActive(1);
-    ui->frame_sidebar->progress_bar->hide();
-    editor_frame->setManagers(core->atmosphere, core->sfx, core->music, core->singleshot, core->hotkeys);
+    QDjangoTableModel<Track> *demo_model = new QDjangoTableModel<Track>(this);
+    demo_model->setFilter(QDjangoWhere("id", QDjangoWhere::Equals, 1));
+    ui->editor_music_library->setModel(demo_model);
+    ui->editor_music_library->hideColumn(2);
+    ui->editor_music_library->hideColumn(3);
+    ui->editor_music_library->hideColumn(4);
+//    ui->frame_sidebar->setTabEnabled(1, true);
+//    ui->frame_sidebar->setTabEnabled(2, true);
+//    start_frame->hide(); // weird behaviour fix
+//    ui->frame_sidebar->setActive(1);
+//    ui->frame_sidebar->progress_bar->hide();
 }
 
 void YonderGui::stateRefreshed() {
-    generator_frame->refreshUi();
+    //generator_frame->refreshUi();
 }
 
 /*!
@@ -131,8 +168,8 @@ void YonderGui::setSplashScreen(QString message) {
  */
 void YonderGui::webappStarted(QUrl url) {
     this->webapp_url = url;
-    ui->frame_sidebar->webapp_running->setToolTip(tr("Open webapp in browser\nAddress:%1").arg(webapp_url.toString()));
-    ui->frame_sidebar->webapp_running->show();
+//    ui->frame_sidebar->webapp_running->setToolTip(tr("Open webapp in browser\nAddress:%1").arg(webapp_url.toString()));
+//    ui->frame_sidebar->webapp_running->show();
 }
 
 /*!
@@ -140,7 +177,7 @@ void YonderGui::webappStarted(QUrl url) {
  * Update ui after webapp stopped
 */
 void YonderGui::webappStopped() {
-    ui->frame_sidebar->webapp_running->hide();
+//    ui->frame_sidebar->webapp_running->hide();
 }
 
 /*!
@@ -153,12 +190,10 @@ void YonderGui::applyStylesheet() {
         QFile stylesheet(":application/style.css");
         QFontDatabase::addApplicationFont(":application/ostrich_regular.ttf");
         stylesheet.open(QIODevice::ReadOnly);
-        setStyleSheet(QString(stylesheet.readAll()));
+        qApp->setStyleSheet(QString(stylesheet.readAll()));
         stylesheet.close();
-        ui->frame_sidebar->applyStylesheet(true);
     } else {
-        setStyleSheet(QString());
-        ui->frame_sidebar->applyStylesheet(false);
+        qApp->setStyleSheet(QString());
     }
 }
 
@@ -186,15 +221,15 @@ void YonderGui::openUpdater() {
     QMessageBox::information(this, tr("New version available"), tr("<p><b>A new version of %1 is available!</b></p><p>Visit <a href=\"%2\">%2</a> to download the recent version.</p>").arg(NAME, WEBADDRESS), QMessageBox::Close);
 }
 
-YonderGui::~YonderGui()
-{
-    qDebug() << "Yonder is shutting down!";
 
+void YonderGui::showAbout() {
+    QMessageBox::about(this, tr("About Yonder"), tr("<b>%1 %2</b><p>&copy; 2011-2013 by %3</p><p><a href=\"%4?pk_campaign=app&pk_kwd=about\">%4</a></p><p><i>Running with:</i><br />Qt %5<br />TagLib %6.%7<p><i>Audio engine:</i><br />FMOD Sound System by Firelight Technologies</p><br /><img src=\":/application/qt-logo.svg\" /><img src=\":/application/fmod-logo.svg\" />").arg(NAME, VERSION, AUTHOR, WEBADDRESS, QT_VERSION_STR, QString("%1").arg(TAGLIB_MAJOR_VERSION), QString("%1").arg(TAGLIB_MINOR_VERSION)));
+}
+
+YonderGui::~YonderGui() {
     QSettings settings;
-    settings.setValue("MainWindow/geometry", this->saveGeometry());
+    settings.setValue("MainWindow/Geometry", this->saveGeometry());
     settings.sync();
 
     delete ui;
-
-    qDebug() << "So this is goodbye";
 }
