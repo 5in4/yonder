@@ -527,7 +527,39 @@ p, li { white-space: pre-wrap; }
              <widget class="QTableView" name="editor_music_playlist_content"/>
             </item>
             <item>
-             <widget class="QTableView" name="editor_music_library"/>
+             <widget class="LibraryView" name="editor_music_library">
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DropOnly</enum>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ExtendedSelection</enum>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectRows</enum>
+              </property>
+              <property name="showGrid">
+               <bool>false</bool>
+              </property>
+              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="horizontalHeaderStretchLastSection">
+               <bool>true</bool>
+              </attribute>
+              <attribute name="verticalHeaderVisible">
+               <bool>false</bool>
+              </attribute>
+             </widget>
+            </item>
+            <item>
+             <widget class="QToolButton" name="btn_music_library_add">
+              <property name="text">
+               <string>Add files to library</string>
+              </property>
+              <property name="popupMode">
+               <enum>QToolButton::MenuButtonPopup</enum>
+              </property>
+             </widget>
             </item>
            </layout>
           </widget>
@@ -883,12 +915,27 @@ Halfchecked: This option may or may not apply</string>
     </item>
    </layout>
   </widget>
+  <action name="action_add_files_to_library">
+   <property name="text">
+    <string>Add files to library</string>
+   </property>
+  </action>
+  <action name="action_add_stream_to_library">
+   <property name="text">
+    <string>Add stream to library</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>QLineEditFilter</class>
    <extends>QLineEdit</extends>
    <header>view/qlineeditfilter.h</header>
+  </customwidget>
+  <customwidget>
+   <class>LibraryView</class>
+   <extends>QTableView</extends>
+   <header>view/libraryview.h</header>
   </customwidget>
  </customwidgets>
  <resources>

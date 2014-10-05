@@ -3,11 +3,11 @@
 #include <yondergui.h>
 
 QString NAME = "Yonder";
-QString VERSION = "2.0";
-QString ACTION_KEY = "";
+QString VERSION = "2.0.0-devel";
 QString AUTHOR = "Dominik Seemann";
 QString WEBADDRESS = "http://yonderfx.com/"; // always with trailing slash!
-QString ACCEPTED_MIMETYPES = "mp3 ogg flac aac wav";
+QString ACCEPTED_MIMETYPES = "*.mp3 *.ogg *.flac *.aac *.wav";
+QString YONDER_MIMETYPE = "*.yfx";
 
 void debugHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {

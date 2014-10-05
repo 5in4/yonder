@@ -2,38 +2,24 @@
 
 MediaManager::MediaManager(QObject *parent) : QObject(parent) {
 
-    result = FMOD_System_Create(&system);
-    if(result != FMOD_OK) {
-        qDebug() << "FMOD error" << FMOD_ErrorString(result);
-    }
 
-    result = FMOD_System_Init(system, 1000, FMOD_INIT_NORMAL, 0);
-    if(result != FMOD_OK) {
-        qDebug() << "FMOD error" << FMOD_ErrorString(result);
-    }
-    FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
-
-    fmod_timer = new QTimer(this);
-    connect(fmod_timer, SIGNAL(timeout()), this, SLOT(fmodLoop()));
-    fmod_timer->start(10);
 
 }
 
 
 void MediaManager::fmodLoop() {
-    QList<MediaContainer *>::const_iterator i;
-    for(i=container.constBegin(); i!=container.constEnd(); ++i) {
-        (*i)->checkFinished();
 
-    }
-
-    FMOD_System_Update(system);
 }
 
 
 MediaContainer* MediaManager::createContainer() {
-    container.append(new MediaContainer(system, this));
-    return container.last();
+    containers.append(new MediaContainer(system, this));
+    return containers.last();
+}
+
+
+bool MediaManager::removeContainer(MediaContainer* container) {
+    return containers.removeOne(container);
 }
 
 
@@ -54,32 +40,7 @@ MediaContainer::MediaContainer(FMOD_SYSTEM *system, QObject *parent) :
 }
 
 
-bool MediaContainer::loadFile(Track *track, bool stream) {
-    // while releasing is broke, force streaming
-    stream = true;
-    inb = track->data();
-    int inbs = inb.size();
-    raw_data = new char[inbs];
-    raw_data = inb.data();
-
-    memset(&info, 0, sizeof(FMOD_CREATESOUNDEXINFO));
-    info.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
-    info.length = inbs;
-
-    if(stream == false) {
-        result = FMOD_System_CreateSound(system, raw_data, FMOD_OPENMEMORY, &info, &sound);
-    } else {
-        result = FMOD_System_CreateStream(system, raw_data, FMOD_OPENMEMORY, &info, &sound);
-    }
-    qDebug() << result << FMOD_ERR_FORMAT;
-    if(result == FMOD_OK) {
-        file_loaded = true;
-        //playing_file = path;
-        return true;
-    } else {
-        file_loaded = false;
-        return false;
-    }
+bool MediaContainer::load(Track *track, bool stream) {
 }
 
 
@@ -118,11 +79,8 @@ QString MediaContainer::getCurrentFilename() {
 }
 
 
-QStringList MediaContainer::getTagList() {
-    QStringList tag_list;
-    QString title;
-    QString artist;
-    QString album;
+QMap<QString, QString> MediaContainer::getTags() {
+    QMap<QString, QString> tag_list;
     if(file_loaded) {
         FMOD_TAG tag;
         int num_tags;
@@ -130,19 +88,9 @@ QStringList MediaContainer::getTagList() {
         FMOD_Sound_GetNumTags(sound, &num_tags, &num_tags_updated);
         for(int i=0; i <= num_tags; i++) {
             FMOD_Sound_GetTag(sound, 0, i, &tag);
-            if(QString((char *)tag.name) == "TITLE") {
-                title = QString((char *)tag.data);
-            } else if (QString((char *)tag.name) == "ARTIST") {
-                artist = QString((char *)tag.data);
-            } else if(QString((char *)tag.name) == "ALBUM") {
-                album = QString((char *)tag.data);
-            }
+            tag_list.insert(QString((char *)tag.name), QString((char *)tag.data));
         }
     }
-    tag_list.append(title.trimmed());
-    tag_list.append(artist.trimmed());
-    tag_list.append(album.trimmed());
-    qDebug() << tag_list;
     return tag_list;
 }
 

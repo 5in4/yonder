@@ -7,6 +7,7 @@ extern QString ACTION_KEY;
 extern QString AUTHOR;
 extern QString WEBADDRESS;
 extern QString ACCEPTED_MIMETYPES;
+extern QString YONDER_MIMETYPE;
 
 
 YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindow(parent), ui(new Ui::YonderGui) {
@@ -49,7 +50,6 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(ui->btn_soundbank_open, SIGNAL(clicked()), this, SLOT(soundbankOpen()));
     connect(ui->btn_soundbank_create, SIGNAL(clicked()), this, SLOT(soundbankCreate()));
 
-
     // setup core
     connect(core, &YonderCore::managerLoading, this, &YonderGui::setSplashScreen);
     connect(core, &YonderCore::projectLoading, this, &YonderGui::stateLoading);
@@ -59,8 +59,17 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(core, &YonderCore::webappStarted, this, &YonderGui::webappStarted);
     connect(core, &YonderCore::webappStopped, this, &YonderGui::webappStopped);
 
-//    connect(generator_frame, SIGNAL(deactivated()), core, SLOT(projectStop()));
-//    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
+    // setup generator
+    //    connect(generator_frame, SIGNAL(deactivated()), core, SLOT(projectStop()));
+    //    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
+
+    // setup editor
+    ui->btn_music_library_add->addAction(ui->action_add_files_to_library);
+    ui->btn_music_library_add->addAction(ui->action_add_stream_to_library);
+    connect(ui->btn_music_library_add, SIGNAL(clicked()), this, SLOT(soundbankAddFilesMusic()));
+    connect(ui->action_add_files_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddFilesMusic()));
+    connect(ui->action_add_stream_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddStream()));
+
 
 
     // Load project setProject returns to default state if no path is set.
@@ -80,7 +89,7 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
  * \brief open dialog to set soundbank, perform brief check on file and load in core
  */
 void YonderGui::soundbankOpen() {
-    QString soundbank_path = QFileDialog::getOpenFileName(this, tr("Open soundbank"), QDir::homePath(), tr("Yonder soundbank (*.yfx)"));
+    QString soundbank_path = QFileDialog::getOpenFileName(this, tr("Open soundbank"), QDir::homePath(), tr("Yonder soundbank (%1)").arg(YONDER_MIMETYPE));
     if(soundbank_path.isEmpty()) {
         return;
     }
@@ -103,12 +112,42 @@ void YonderGui::soundbankOpen() {
 
 
 void YonderGui::soundbankCreate() {
-    QString soundbank_path = QFileDialog::getSaveFileName(this, tr("Create soundbank"), QDir::homePath(), tr("Yonder soundbank (*.yfx)"));
+    QString soundbank_path = QFileDialog::getSaveFileName(this, tr("Create soundbank"), QDir::homePath(), tr("Yonder soundbank (%1)").arg(YONDER_MIMETYPE));
     if(soundbank_path.isEmpty()) {
         return;
     }
     soundbank_path += ".yfx";
     core->projectCreate(soundbank_path);
+}
+
+
+/*
+ * \brief open dialog to add files
+ */
+void YonderGui::soundbankAddFiles() {
+    QStringList paths = QFileDialog::getOpenFileNames(this, tr("Add sfx files to soundbank"), QDir::homePath(), tr("Music files (%1)").arg(ACCEPTED_MIMETYPES));
+    if(!paths.isEmpty()) {
+        core->soundbankAddFiles(paths, false);
+    }
+}
+
+
+/*
+ * \brief open dialog to add music files
+ */
+void YonderGui::soundbankAddFilesMusic() {
+    QStringList paths = QFileDialog::getOpenFileNames(this, tr("Add music files to soundbank"), QDir::homePath(), tr("Music files (%1)").arg(ACCEPTED_MIMETYPES));
+    if(!paths.isEmpty()) {
+        core->soundbankAddFiles(paths, true);
+    }
+}
+
+
+/*
+ * \brief open dialog to enter stream url
+ */
+void YonderGui::soundbankAddStream() {
+
 }
 
 
@@ -135,9 +174,7 @@ void YonderGui::stateLoadingFailed() {
  * Set ui to state right after a project finished loading
  */
 void YonderGui::stateLoaded() {
-    QDjangoTableModel<Track> *demo_model = new QDjangoTableModel<Track>(this);
-    demo_model->setFilter(QDjangoWhere("id", QDjangoWhere::Equals, 1));
-    ui->editor_music_library->setModel(demo_model);
+    ui->editor_music_library->setModel(core->sfx->model_library);
     ui->editor_music_library->hideColumn(2);
     ui->editor_music_library->hideColumn(3);
     ui->editor_music_library->hideColumn(4);

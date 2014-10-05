@@ -1,7 +1,10 @@
 #ifndef TRACK_H
 #define TRACK_H
 
+#include <QDjango.h>
+
 #include "QDjangoModel.h"
+#include "model/manager/mediamanager.h"
 
 class Track : public QDjangoModel {
 
@@ -30,6 +33,10 @@ public:
     bool isMusic() const;
     void setIsMusic(const bool &is_music);
 
+    void init(FMOD_SYSTEM *system);
+    void loadDataToSystem();
+    void insert(QString path, bool is_music);
+
 signals:
     emit void dataChanged();
     emit void artistChanged();
@@ -38,11 +45,16 @@ signals:
     emit void isMusicChanged();
 
 private:
-    QByteArray m_data;
-    QString m_artist;
-    QString m_album;
-    QString m_title;
-    bool m_is_music;
+    FMOD_SYSTEM * _system;
+    FMOD_CREATESOUNDEXINFO info;
+    char *raw_data;
+
+
+    QByteArray _data;
+    QString _artist = tr("Unknown artist");
+    QString _album = tr("Unknown album");
+    QString _title = tr("Unknown title");
+    bool _is_music = false;
 };
 
 #endif // TRACK_H

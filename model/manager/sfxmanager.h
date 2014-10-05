@@ -3,6 +3,9 @@
 
 #include <cstdlib>
 
+#include "model/qdjangotablemodel.h"
+#include "model/track.h"
+
 #include <model/manager/mediamanager.h>
 #include <model/manager/soundmanager.h>
 
@@ -25,6 +28,9 @@ public:
 
     virtual void createChannels();
     void createTables();
+
+    // refactored
+    QDjangoTableModel<Track> * model_library;
 
 public slots:
     void createObjectsList();

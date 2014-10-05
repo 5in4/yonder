@@ -17,9 +17,9 @@ unix:!macx {
 }
 
 macx {
-    LIBS += -L/usr/local/Cellar/taglib/1.9.1/lib -ltag -L$$PWD/third_party/fmod/osx/api/lib -lfmodex
-    INCLUDEPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/third_party/fmod/osx/api/inc
-    DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/third_party/fmod/osx/api/inc
+    LIBS += -L/usr/local/Cellar/taglib/1.9.1/lib -ltag -L$$PWD/lib/fmod/lib -lfmodex
+    INCLUDEPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/lib/fmod/inc
+    DEPENDPATH += /usr/local/Cellar/taglib/1.9.1/include $$PWD/lib/fmod/inc
     #QMAKE_POST_LINK += ../src/osx_postbuild
 }
 
@@ -49,7 +49,8 @@ SOURCES += main.cpp \
     model/sfxbit.cpp \
     sfxbasetype.cpp \
     model/manager/mediamanager.cpp \
-    model/qdjangotablemodel.cpp
+    model/qdjangotablemodel.cpp \
+    view/libraryview.cpp
 
 HEADERS += model/manager/soundmanager.h \
     model/manager/musicmanager.h \
@@ -73,7 +74,8 @@ HEADERS += model/manager/soundmanager.h \
     model/sfxcontainer.h \
     model/sfxbit.h \
     sfxbasetype.h \
-    model/qdjangotablemodel.h
+    model/qdjangotablemodel.h \
+    view/libraryview.h
 
 FORMS += \
     yondergui.ui

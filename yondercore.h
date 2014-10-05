@@ -34,6 +34,9 @@ private:
 
     QString project_path;
 
+    FMOD_SYSTEM *system;
+    QTimer *sound_loop_timeout;
+
     QNetworkAccessManager *update_manager;
     QNetworkReply *update_reply;
 
@@ -62,6 +65,9 @@ public slots:
     void webappStop();
     void checkUpdateProcess(QNetworkReply *rep);
 
+    void soundbankAddFiles(QStringList paths, bool is_music);
+    void soundbankAddStream(QUrl path);
+    void soundLoop();
 };
 
 #endif // YONDERCORE_H

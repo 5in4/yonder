@@ -12,8 +12,8 @@ class QDjangoTableModel : public QAbstractTableModel {
 public:
 
     QDjangoTableModel(QObject *parent);
-    int rowCount(const QModelIndex &parent) const;
-    int columnCount(const QModelIndex &parent) const;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
     bool setData(const QModelIndex &index, const QVariant &value, int role) const;
@@ -71,9 +71,10 @@ QVariant QDjangoTableModel<Type>::headerData(int section, Qt::Orientation orient
 
 template <class Type>
 bool QDjangoTableModel<Type>::setData(const QModelIndex &index, const QVariant &value, int role) const {
-    if (index.isValid() && role == Qt::EditRole) {
+    if (role == Qt::EditRole) {
+        Type *t = new Type();
 
-        //emit dataChanged(index, index);
+        t->save();
         return true;
     }
     return false;

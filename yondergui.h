@@ -63,6 +63,9 @@ public slots:
     void soundbankOpen();
     void soundbankCreate();
     void showAbout();
+    void soundbankAddFilesMusic();
+    void soundbankAddFiles();
+    void soundbankAddStream();
 };
 
 #endif // YONDERGUI_H

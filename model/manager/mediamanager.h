@@ -10,10 +10,12 @@
 #include <fmodex/fmod.h>
 #include <fmodex/fmod_errors.h>
 
-#include <model/track.h>
+#include "model/track.h"
 
 #ifndef MEDIACONTAINER_H
 #define MEDIACONTAINER_H
+
+class Track;
 
 class MediaContainer : public QObject
 {
@@ -29,12 +31,12 @@ public:
 
     QTimer *delay_timer;
 
-    bool loadFile(Track *track, bool stream=true);
+    bool load(Track *track, bool stream=true);
     bool isPlaying();
     bool isPlayingVirtual();
     bool setVolume(float volume);
     QString getCurrentFilename();
-    QStringList getTagList();
+    QMap<QString, QString> getTags();
 
     int getChannel();
     void setChannel(int channel_nr);
@@ -50,9 +52,7 @@ private:
     int oid;
     bool playing_virtual;
 
-    QByteArray inb;
-    char *raw_data;
-    FMOD_CREATESOUNDEXINFO info;
+
 
 signals:
     void finished(int channel_nr);
@@ -83,8 +83,9 @@ public:
     FMOD_RESULT result;
     FMOD_SYSTEM *system;
 
-    QList<MediaContainer*> container;
+    QList<MediaContainer*> containers;
     MediaContainer *createContainer();
+    bool removeContainer(MediaContainer* container);
 
     QTimer *fmod_timer;
 

@@ -4,51 +4,88 @@ Track::Track(QDjangoModel *parent) {
 
 }
 
+
+void Track::init(FMOD_SYSTEM *system) {
+    _system = system;
+}
+
+
+void Track::loadDataToSystem() {
+    int inbs = data().size();
+    raw_data = new char[inbs];
+    raw_data = data().data();
+
+    memset(&info, 0, sizeof(FMOD_CREATESOUNDEXINFO));
+    info.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
+    info.length = inbs;
+
+    Q_ASSERT(FMOD_OK == FMOD_System_CreateStream(_system, raw_data, FMOD_OPENMEMORY, &info, &sound))
+}
+
+
+void Track::insert(QString path, bool is_music) {
+    MediaContainer *c = media->createContainer();
+    QFile f(path);
+    f.open(QFile::ReadOnly);
+    setData(f.readAll());
+    setIsMusic(is_music);
+    c->load(this, true);
+    QMap<QString, QString> tags = c->getTags();
+    setArtist(tags["ARTIST"]);
+    setAlbum(tags["ALBUM"]);
+    setTitle(tags["TITLE"]);
+    save();
+    QDjango::database().commit();
+    QSqlQuery query_vacuum("VACUUM", QDjango::database());
+    query_vacuum.exec();
+    media->removeContainer(c);
+}
+
 QByteArray Track::data() const {
-    return m_data;
+    return _data;
 }
 
 
 void Track::setData(const QByteArray &data) {
-    m_data = data;
+    _data = data;
 }
 
 
 QString Track::artist() const {
-    return m_artist;
+    return _artist;
 }
 
 
 void Track::setArtist(const QString &artist) {
-    m_artist = artist;
+    _artist = artist;
 }
 
 
 QString Track::album() const {
-    return m_album;
+    return _album;
 }
 
 
 void Track::setAlbum(const QString &album) {
-    m_album = album;
+    _album = album;
 }
 
 
 QString Track::title() const {
-    return m_title;
+    return _title;
 }
 
 
 void Track::setTitle(const QString &title) {
-    m_title = title;
+    _title = title;
 }
 
 
 bool Track::isMusic() const {
-    return m_is_music;
+    return _is_music;
 }
 
 
 void Track::setIsMusic(const bool &is_music) {
-    m_is_music = is_music;
+    _is_music = is_music;
 }

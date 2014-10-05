@@ -12,6 +12,8 @@
  * media_container: id == objects.id
  */
 SfxManager::SfxManager(MediaManager *media, QObject *parent): SoundManager(media, parent) {
+    model_library = new QDjangoTableModel<Track>(this);
+    model_library->setFilter(QDjangoWhere("isMusic", QDjangoWhere::Equals, true));
 //    qsrand(QTime::currentTime().msec());
 
 //    createTables();

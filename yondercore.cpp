@@ -11,13 +11,21 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
         checkUpdate();
     }
 
+    // setup database
     QDjango::setDebugEnabled(true);
     QDjango::registerModel<Track>();
     QDjango::registerModel<SfxBaseType>();
     QDjango::registerModel<SfxBit>();
     QDjango::registerModel<SfxContainer>();
 
-    this->media = new MediaManager(this);
+    // startup fmod
+    FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
+    Q_ASSERT(FMOD_OK == FMOD_System_Create(&system));
+    Q_ASSERT(FMOD_OK == FMOD_System_Init(system, 1000, FMOD_INIT_NORMAL, 0));
+
+    sound_loop_timeout = new QTimer(this);
+    connect(sound_loop_timeout, SIGNAL(timeout()), this, SLOT(soundLoop()));
+    sound_loop_timeout->start(10);
 }
 
 
@@ -50,7 +58,7 @@ bool YonderCore::projectLoad(QString path) {
 
     this->project_path = path;
 
-    webappStop();
+    //webappStop();
 
     QSettings settings;
     settings.setValue("Settings/LastSoundbank", project_path);
@@ -60,42 +68,35 @@ bool YonderCore::projectLoad(QString path) {
     db.open();
     QDjango::setDatabase(db);
 
-    qDebug() << "Opened soundbank" << this->project_path;
-
     emit managerLoading("sfx");
     sfx = new SfxManager(media, this);
 
-//    emit managerLoading("atmosphere");
-//    if(!atmosphere) {
-//        delete atmosphere;
-//    }
-//    atmosphere = new AtmosphereManager(project_path, db, media, this);
-
-//    emit managerLoading("music");
-//    if(!music) {
-//        delete music;
-//    }
-//    music = new MusicManager(project_path, db, media, this);
-
-//    emit managerLoading("sfx");
-//    if(!sfx) {
-//        delete sfx;
-//    }
-//    sfx = new SfxManager(project_path, db, media, this);
-
-//    emit managerLoading("singleshots");
-//    if(!singleshot) {
-//        delete singleshot;
-//    }
-//    singleshot = new SingleshotManager(project_path, db, media, this);
-
-//    hotkeys = new HotkeysManager(db, atmosphere, music, sfx, singleshot, this);
-
-    webappStart();
-
+    //webappStart();
+    qDebug() << "Opened soundbank" << this->project_path;
     emit projectLoaded();
     return true;
 }
+
+
+/*
+ * \brief Read file, parse tags and insert in db
+ */
+void YonderCore::soundbankAddFiles(QStringList paths, bool is_music) {
+    QStringList::iterator path;
+    QDjango::database().transaction();
+    for(path=paths.begin(); path!=paths.end(); ++path) {
+        sfx->model_library->setData(sfx->model_library->index(0, 0), QVariant(*path), Qt::EditRole);
+    }
+}
+
+
+/*
+ * \brief Read stream, parse tags and insert in db
+ */
+void YonderCore::soundbankAddStream(QUrl path) {
+
+}
+
 
 void YonderCore::projectRefresh() {
     emit projectRefreshing();
@@ -108,6 +109,15 @@ void YonderCore::projectStop() {
     emit projectStopping();
     //webappStop();
     emit projectStopped();
+}
+
+
+void YonderCore::soundLoop() {
+//    QList<MediaContainer *>::const_iterator i;
+//    for(i=containers.constBegin(); i!=containers.constEnd(); ++i) {
+//        (*i)->checkFinished();
+//    }
+    Q_ASSERT(FMOD_OK == FMOD_System_Update(system));
 }
 
 /*!
