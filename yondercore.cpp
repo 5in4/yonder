@@ -3,6 +3,10 @@
 extern QString VERSION;
 extern QString WEBADDRESS;
 
+
+FMOD_SYSTEM * YonderCore::system;
+
+
 YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     QSettings::setDefaultFormat(QSettings::IniFormat);
     QSettings settings;
@@ -69,7 +73,7 @@ bool YonderCore::projectLoad(QString path) {
     QDjango::setDatabase(db);
 
     emit managerLoading("sfx");
-    sfx = new SfxManager(media, this);
+    sfx = new SfxManager(this);
 
     //webappStart();
     qDebug() << "Opened soundbank" << this->project_path;

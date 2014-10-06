@@ -3,7 +3,7 @@
 extern QString NAME;
 extern QString ACCEPTED_MIMETYPES;
 
-SoundManager::SoundManager(MediaManager *media, QObject *parent) : QObject(parent)
+SoundManager::SoundManager(QObject *parent) : QObject(parent)
 {
 //    this->media = media;
 //    this->project_path = project_path;

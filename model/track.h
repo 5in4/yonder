@@ -1,10 +1,12 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include <QDjango.h>
+#include <fmodex/fmod.h>
+#include <fmodex/fmod_errors.h>
 
+#include "QDjango.h"
 #include "QDjangoModel.h"
-#include "model/manager/mediamanager.h"
+
 
 class Track : public QDjangoModel {
 
@@ -45,8 +47,8 @@ signals:
     emit void isMusicChanged();
 
 private:
-    FMOD_SYSTEM * _system;
     FMOD_CREATESOUNDEXINFO info;
+    FMOD_SOUND *sound;
     char *raw_data;
 
 

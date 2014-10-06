@@ -6,7 +6,6 @@
 #include "model/qdjangotablemodel.h"
 #include "model/track.h"
 
-#include <model/manager/mediamanager.h>
 #include <model/manager/soundmanager.h>
 
 
@@ -14,7 +13,7 @@ class SfxManager: public SoundManager
 {
 Q_OBJECT
 public:
-    SfxManager(MediaManager *media, QObject *parent);
+    SfxManager(QObject *parent);
 
     QList<QStringList> objects;
     QList<QStringList> objects_tracks;

@@ -1,12 +1,9 @@
 #include "track.h"
 
+#include "yondercore.h"
+
 Track::Track(QDjangoModel *parent) {
 
-}
-
-
-void Track::init(FMOD_SYSTEM *system) {
-    _system = system;
 }
 
 
@@ -19,12 +16,11 @@ void Track::loadDataToSystem() {
     info.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
     info.length = inbs;
 
-    Q_ASSERT(FMOD_OK == FMOD_System_CreateStream(_system, raw_data, FMOD_OPENMEMORY, &info, &sound))
+    Q_ASSERT(FMOD_OK == FMOD_System_CreateStream(YonderCore::system, raw_data, FMOD_OPENMEMORY, &info, &sound));
 }
 
 
 void Track::insert(QString path, bool is_music) {
-    MediaContainer *c = media->createContainer();
     QFile f(path);
     f.open(QFile::ReadOnly);
     setData(f.readAll());
@@ -38,7 +34,6 @@ void Track::insert(QString path, bool is_music) {
     QDjango::database().commit();
     QSqlQuery query_vacuum("VACUUM", QDjango::database());
     query_vacuum.exec();
-    media->removeContainer(c);
 }
 
 QByteArray Track::data() const {

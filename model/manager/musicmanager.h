@@ -1,14 +1,13 @@
 #ifndef MUSICMANAGER_H
 #define MUSICMANAGER_H
 
-#include <model/manager/mediamanager.h>
 #include <model/manager/soundmanager.h>
 
 class MusicManager : public SoundManager
 {
 Q_OBJECT
 public:
-    MusicManager(MediaManager *media, QObject *parent);
+    MusicManager(QObject *parent);
 
 public slots:
     bool enqueue();

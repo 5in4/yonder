@@ -14,27 +14,24 @@
 #include <model/sfxbit.h>
 #include <model/sfxcontainer.h>
 
-#include <model/manager/mediamanager.h>
 #include <model/manager/musicmanager.h>
 #include <model/manager/sfxmanager.h>
 
 
-class YonderCore : public QObject
-{
+class YonderCore : public QObject {
     Q_OBJECT
 public:
     explicit YonderCore(QObject *parent = 0);
 
-    QPointer<MediaManager> media;
     QPointer<MusicManager> music;
     QPointer<SfxManager> sfx;
+    static FMOD_SYSTEM * system;
 
 private:
     void checkUpdate();
 
     QString project_path;
 
-    FMOD_SYSTEM *system;
     QTimer *sound_loop_timeout;
 
     QNetworkAccessManager *update_manager;

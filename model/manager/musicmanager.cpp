@@ -4,7 +4,7 @@
 /*!
  * Performs default startup
  */
-MusicManager::MusicManager(MediaManager *media, QObject *parent): SoundManager(media, parent) {
+MusicManager::MusicManager(QObject *parent): SoundManager(parent) {
 //    this->createTables();
 
 //    this->library_model = new LibraryModel(this->library_identifier);

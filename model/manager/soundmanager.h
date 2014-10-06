@@ -16,12 +16,11 @@
 
 #include <QDjangoQuerySet.h>
 
-#include <model/manager/mediamanager.h>
 
 class SoundManager : public QObject {
 
 public:
-    explicit SoundManager(MediaManager *media, QObject *parent = 0);
+    explicit SoundManager(QObject *parent = 0);
     ~SoundManager();
 
     QSqlDatabase db;
@@ -30,8 +29,6 @@ public:
     QStringList accepted_mimetypes;
     QStringList library_tracks;
     int channels;
-    MediaManager *media;
-    QList<MediaContainer *> container;
 
     virtual void createTables();
     bool rescanLibrary();
