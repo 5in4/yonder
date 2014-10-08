@@ -9,6 +9,7 @@ LibraryView::LibraryView(QWidget *parent) : QTableView(parent) {
 
 void LibraryView::setModel(QAbstractItemModel *model) {
     _model = (QDjangoTableModel<Track>*) model;
+    QTableView::setModel(model);
 }
 
 void LibraryView::dragEnterEvent(QDragEnterEvent *event) {

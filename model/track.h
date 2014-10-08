@@ -4,6 +4,16 @@
 #include <fmodex/fmod.h>
 #include <fmodex/fmod_errors.h>
 
+#ifdef Q_OS_WIN
+#include <taglib.h>
+#include <tag.h>
+#include <fileref.h>
+#else
+#include <taglib/taglib.h>
+#include <taglib/fileref.h>
+#include <taglib/tag.h>
+#endif
+
 #include "QDjango.h"
 #include "QDjangoModel.h"
 
@@ -35,9 +45,8 @@ public:
     bool isMusic() const;
     void setIsMusic(const bool &is_music);
 
-    void init(FMOD_SYSTEM *system);
-    void loadDataToSystem();
-    void insert(QString path, bool is_music);
+    bool loadDataToSystem();
+    bool insert(QString path, bool is_music);
 
 signals:
     emit void dataChanged();
@@ -48,14 +57,15 @@ signals:
 
 private:
     FMOD_CREATESOUNDEXINFO info;
+    int data_size;
     FMOD_SOUND *sound;
     char *raw_data;
 
 
     QByteArray _data;
-    QString _artist = tr("Unknown artist");
-    QString _album = tr("Unknown album");
-    QString _title = tr("Unknown title");
+    QString _artist;
+    QString _album;
+    QString _title;
     bool _is_music = false;
 };
 

@@ -18,15 +18,14 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     // setup database
     QDjango::setDebugEnabled(true);
     QDjango::registerModel<Track>();
+    QDjango::registerModel<SfxContainer>();
     QDjango::registerModel<SfxBaseType>();
     QDjango::registerModel<SfxBit>();
-    QDjango::registerModel<SfxContainer>();
 
     // startup fmod
     FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
     Q_ASSERT(FMOD_OK == FMOD_System_Create(&system));
     Q_ASSERT(FMOD_OK == FMOD_System_Init(system, 1000, FMOD_INIT_NORMAL, 0));
-
     sound_loop_timeout = new QTimer(this);
     connect(sound_loop_timeout, SIGNAL(timeout()), this, SLOT(soundLoop()));
     sound_loop_timeout->start(10);
@@ -72,8 +71,11 @@ bool YonderCore::projectLoad(QString path) {
     db.open();
     QDjango::setDatabase(db);
 
+    model_library = new TrackTableModel<Track>(this);
+
     emit managerLoading("sfx");
     sfx = new SfxManager(this);
+    music = new MusicManager(this);
 
     //webappStart();
     qDebug() << "Opened soundbank" << this->project_path;
@@ -89,7 +91,7 @@ void YonderCore::soundbankAddFiles(QStringList paths, bool is_music) {
     QStringList::iterator path;
     QDjango::database().transaction();
     for(path=paths.begin(); path!=paths.end(); ++path) {
-        sfx->model_library->setData(sfx->model_library->index(0, 0), QVariant(*path), Qt::EditRole);
+        model_library->setData(model_library->index(0, 0), QVariant(*path), Qt::EditRole);
     }
 }
 
@@ -182,4 +184,10 @@ void YonderCore::checkUpdateProcess(QNetworkReply *rep) {
     if(version > VERSION.toFloat()) {
         emit updateAvailable();
     }
+}
+
+
+YonderCore::~YonderCore() {
+    QSqlQuery query_vacuum("VACUUM", QDjango::database());
+    query_vacuum.exec();
 }

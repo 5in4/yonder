@@ -5,7 +5,6 @@
 #include <QSplashScreen>
 #include <QFontDatabase>
 #include <QSignalMapper>
-#include <QQuickView>
 #include <QErrorMessage>
 #include <QFileDialog>
 #include <QMessageBox>
@@ -66,6 +65,8 @@ public slots:
     void soundbankAddFilesMusic();
     void soundbankAddFiles();
     void soundbankAddStream();
+
+    void editorLibraryMusic(bool show);
 };
 
 #endif // YONDERGUI_H

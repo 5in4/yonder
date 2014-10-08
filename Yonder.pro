@@ -1,5 +1,5 @@
 CONFIG += warn_off
-QT += sql network widgets webkitwidgets qml quick
+QT += sql network widgets webkitwidgets
 
 cache()
 
@@ -27,9 +27,6 @@ TARGET = yonder
 TEMPLATE = app
 VERSION = 2.0
 SOURCES += main.cpp \
-    model/manager/soundmanager.cpp \
-    model/manager/musicmanager.cpp \
-    model/manager/sfxmanager.cpp \
     delegate/qdoublespinboxdelegate.cpp \
     delegate/agtagbyiddelegate.cpp \
     delegate/agresourcedelegate.cpp \
@@ -48,11 +45,11 @@ SOURCES += main.cpp \
     model/sfxcontainer.cpp \
     model/sfxbit.cpp \
     sfxbasetype.cpp \
-    model/manager/mediamanager.cpp \
-    model/qdjangotablemodel.cpp \
-    view/libraryview.cpp
+    view/libraryview.cpp \
+    sfxmanager.cpp \
+    musicmanager.cpp \
 
-HEADERS += model/manager/soundmanager.h \
+HEADERS += \
     model/manager/musicmanager.h \
     model/manager/sfxmanager.h \
     delegate/qdoublespinboxdelegate.h \
@@ -66,7 +63,6 @@ HEADERS += model/manager/soundmanager.h \
     frameresourcebrowser.h \
     frameconfigure.h \
     framegenerator.h \
-    model/manager/mediamanager.h \
     yondergui.h \
     yondercore.h \
     view/yonderpushbutton.h \
@@ -75,7 +71,11 @@ HEADERS += model/manager/soundmanager.h \
     model/sfxbit.h \
     sfxbasetype.h \
     model/qdjangotablemodel.h \
-    view/libraryview.h
+    view/libraryview.h \
+    sfxmanager.h \
+    musicmanager.h \
+    model/tracktablemodel.h \
+    model/sfxcontainertablemodel.h
 
 FORMS += \
     yondergui.ui
@@ -85,7 +85,6 @@ RESOURCES += \
 
 RC_FILE = yonder.rc
 
-OTHER_FILES += \
-    BackgroundGenerator.qml
+OTHER_FILES +=
 
 

@@ -2,6 +2,10 @@
     background: rgb(68, 68, 68);
 }
 
+#start {
+    background: url(":/application/data/background.svg");
+}
+
 #start QPushButton {
     font: 16pt;
 }
@@ -17,20 +21,20 @@
 }
 
 #dock QPushButton:hover { /*, #frame_sidebar SolidTabButton:focus {*/
-    background: url(:/application/gradient.png) repeat-y center right rgba(255, 255, 255, 70);
+    background: rgba(255, 255, 255, 70);
 }
 
 #dock QPushButton:checked {
-    background: url(:/application/gradient.png) repeat-y center right rgb(83, 83, 83);
+    background: rgb(83, 83, 83);
 }
 
 #dock QPushButton:disabled {
-    color: url(:/application/gradient.png) repeat-y center right rgb(166, 166, 166);
+    color: rgb(166, 166, 166);
 }
 
 #dock QPushButton:horizontal {
     height: 6px;
-    background: url(:/application/gradient.png) repeat-y center right rgba(0, 0, 0, 0);
+    background: rgba(0, 0, 0, 0);
     border: 0;
 }
 

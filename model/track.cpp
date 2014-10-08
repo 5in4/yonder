@@ -7,33 +7,46 @@ Track::Track(QDjangoModel *parent) {
 }
 
 
-void Track::loadDataToSystem() {
-    int inbs = data().size();
-    raw_data = new char[inbs];
-    raw_data = data().data();
-
+/**
+ * \brief verify that loaded data really is audio and load in fmod
+ */
+bool Track::loadDataToSystem() {
+    data_size = data().size();
+    raw_data = new char[data_size];
+    raw_data = _data.data();
     memset(&info, 0, sizeof(FMOD_CREATESOUNDEXINFO));
     info.cbsize = sizeof(FMOD_CREATESOUNDEXINFO);
-    info.length = inbs;
-
-    Q_ASSERT(FMOD_OK == FMOD_System_CreateStream(YonderCore::system, raw_data, FMOD_OPENMEMORY, &info, &sound));
+    info.length = data_size;
+    FMOD_RESULT result = FMOD_System_CreateStream(YonderCore::system, raw_data, FMOD_OPENMEMORY, &info, &sound);
+    if(result == FMOD_OK) {
+        return true;
+    }
+    return false;
 }
 
 
-void Track::insert(QString path, bool is_music) {
+bool Track::insert(QString path, bool is_music) {
     QFile f(path);
     f.open(QFile::ReadOnly);
     setData(f.readAll());
     setIsMusic(is_music);
-    c->load(this, true);
-    QMap<QString, QString> tags = c->getTags();
-    setArtist(tags["ARTIST"]);
-    setAlbum(tags["ALBUM"]);
-    setTitle(tags["TITLE"]);
-    save();
+    if(!loadDataToSystem()) {
+        return false;
+    }
+
+    TagLib::FileRef file_tag(QFile::encodeName(path).constData());
+    if(!file_tag.isNull()) {
+            setArtist(TStringToQString(file_tag.tag()->artist()).trimmed());
+            setAlbum(TStringToQString(file_tag.tag()->album()).trimmed());
+            setTitle(TStringToQString(file_tag.tag()->title()).trimmed());
+    }
+
+    bool success = save();
     QDjango::database().commit();
-    QSqlQuery query_vacuum("VACUUM", QDjango::database());
-    query_vacuum.exec();
+    if(success) {
+        return true;
+    }
+    return false;
 }
 
 QByteArray Track::data() const {

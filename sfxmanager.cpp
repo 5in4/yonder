@@ -11,9 +11,8 @@
  * objects_range_stop: Stop of tracks for object in objects_tracks, id == objects.id
  * media_container: id == objects.id
  */
-SfxManager::SfxManager(QObject *parent): SoundManager(parent) {
-    model_library = new QDjangoTableModel<Track>(this);
-    model_library->setFilter(QDjangoWhere("isMusic", QDjangoWhere::Equals, true));
+SfxManager::SfxManager(QObject *parent) {
+
 //    qsrand(QTime::currentTime().msec());
 
 //    createTables();
@@ -29,6 +28,7 @@ SfxManager::SfxManager(QObject *parent): SoundManager(parent) {
 //    rescanLibrary();
 //    createObjectsList();
 //    connect(objects_model, SIGNAL(dataChanged(QModelIndex,QModelIndex)), this, SLOT(createObjectsList()));
+    qDebug() << "SfxManager summoned";
 }
 
 

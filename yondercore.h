@@ -4,6 +4,9 @@
 #include <QDebug>
 
 #include <QObject>
+#include <QTimer>
+#include <QSettings>
+#include <QFile>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
@@ -14,18 +17,21 @@
 #include <model/sfxbit.h>
 #include <model/sfxcontainer.h>
 
-#include <model/manager/musicmanager.h>
-#include <model/manager/sfxmanager.h>
+#include <musicmanager.h>
+#include <sfxmanager.h>
 
 
 class YonderCore : public QObject {
     Q_OBJECT
 public:
     explicit YonderCore(QObject *parent = 0);
+    ~YonderCore();
 
-    QPointer<MusicManager> music;
-    QPointer<SfxManager> sfx;
+    MusicManager *music;
+    SfxManager *sfx;
     static FMOD_SYSTEM * system;
+
+    TrackTableModel<Track> *model_library;
 
 private:
     void checkUpdate();

@@ -1,11 +1,15 @@
 #include "musicmanager.h"
 
-
 /*!
  * Performs default startup
  */
-MusicManager::MusicManager(QObject *parent): SoundManager(parent) {
-//    this->createTables();
+MusicManager::MusicManager(QObject *parent) {
+    model_playlists = new SfxContainerTableModel<SfxContainer>(this);
+    model_playlists->setFilter(QDjangoWhere("isPlaylist", QDjangoWhere::Equals, true));
+
+    model_library = new TrackTableModel<Track>(this);
+    model_library->setFilter(QDjangoWhere("isMusic", QDjangoWhere::Equals, true));
+    //    this->createTables();
 
 //    this->library_model = new LibraryModel(this->library_identifier);
 //    this->objects_model = new ObjectsModel(this->objects_identifier);
@@ -14,6 +18,7 @@ MusicManager::MusicManager(QObject *parent): SoundManager(parent) {
 //    this->rescanLibrary();
 //    this->createChannels(1);
 //    connect(container.at(0), SIGNAL(finished(int)), this, SLOT(play()));
+    qDebug() << "MusicManager summoned";
 }
 
 

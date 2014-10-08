@@ -5,14 +5,14 @@ SfxBit::SfxBit(QDjangoModel *parent) : QDjangoModel(parent) {
 }
 
 
-//SfxContainer *SfxBit::container() const {
-//    return qobject_cast<SfxContainer*>(foreignKey("container"));
-//}
+SfxContainer *SfxBit::container() const {
+    return qobject_cast<SfxContainer*>(foreignKey("container"));
+}
 
 
-//void SfxBit::setContainer(SfxContainer *container) {
-//    setForeignKey("container", container);
-//}
+void SfxBit::setContainer(SfxContainer *container) {
+    setForeignKey("container", container);
+}
 
 
 qint16 SfxBit::order() const {

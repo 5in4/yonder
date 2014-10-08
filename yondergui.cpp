@@ -24,9 +24,7 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     // setup ui
     ui->setupUi(this);
 
-    QQuickView *bg = new QQuickView(QUrl("BackgroundGenerator.qml"));
-
-    mapper_menu = new QSignalMapper(this) ;
+    mapper_menu = new QSignalMapper(this);
     connect(ui->btn_start, SIGNAL(clicked()), mapper_menu, SLOT(map()));
     connect(ui->btn_generate, SIGNAL(clicked()), mapper_menu, SLOT(map()));
     connect(ui->btn_edit, SIGNAL(clicked()), mapper_menu, SLOT(map()));
@@ -64,13 +62,13 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     //    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
 
     // setup editor
-    ui->btn_music_library_add->addAction(ui->action_add_files_to_library);
-    ui->btn_music_library_add->addAction(ui->action_add_stream_to_library);
-    connect(ui->btn_music_library_add, SIGNAL(clicked()), this, SLOT(soundbankAddFilesMusic()));
+    ui->btn_library_add->addAction(ui->action_add_files_to_library);
+    ui->btn_library_add->addAction(ui->action_add_stream_to_library);
+    connect(ui->btn_library_add, SIGNAL(clicked()), this, SLOT(soundbankAddFilesMusic()));
     connect(ui->action_add_files_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddFilesMusic()));
     connect(ui->action_add_stream_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddStream()));
 
-
+    connect(ui->checkbox_library_music, SIGNAL(toggled(bool)), this, SLOT(editorLibraryMusic(bool)));
 
     // Load project setProject returns to default state if no path is set.
     //connect(start_frame, SIGNAL(acceptedProjectFolder(QString)), core, SLOT(projectLoad(QString)));
@@ -174,10 +172,12 @@ void YonderGui::stateLoadingFailed() {
  * Set ui to state right after a project finished loading
  */
 void YonderGui::stateLoaded() {
-    ui->editor_music_library->setModel(core->sfx->model_library);
-    ui->editor_music_library->hideColumn(2);
-    ui->editor_music_library->hideColumn(3);
-    ui->editor_music_library->hideColumn(4);
+    ui->editor_music_playlists->setModel(core->music->model_playlists);
+    ui->editor_music_playlists->setModelColumn(2);
+    ui->editor_library->setModel(core->model_library);
+    ui->editor_library->hideColumn(2);
+    ui->editor_library->hideColumn(3);
+    ui->editor_library->hideColumn(4);
 //    ui->frame_sidebar->setTabEnabled(1, true);
 //    ui->frame_sidebar->setTabEnabled(2, true);
 //    start_frame->hide(); // weird behaviour fix
@@ -188,6 +188,17 @@ void YonderGui::stateLoaded() {
 void YonderGui::stateRefreshed() {
     //generator_frame->refreshUi();
 }
+
+
+/*!
+ * \brief set library model to chosen filter
+ */
+void YonderGui::editorLibraryMusic(bool show) {
+    QDjangoWhere filter = core->model_library->filter();
+    filter = filter && QDjangoWhere("isMusic", QDjangoWhere::Equals, show);
+    core->model_library->setFilter(filter);
+}
+
 
 /*!
  * \brief YonderGui::setSplashScreen

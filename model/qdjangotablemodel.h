@@ -16,23 +16,33 @@ public:
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    QDjangoWhere filter();
     void setFilter(const QDjangoWhere &filter);
+    void select();
 
 signals:
     void dataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight, const QVector<int> &roles = QVector<int>());
 private:
     QDjangoQuerySet<Type> _model;
     QDjangoQuerySet<Type> *_m_ptr;
+    QDjangoWhere _filter;
 };
 
 
 template <class Type>
 QDjangoTableModel<Type>::QDjangoTableModel(QObject *parent) : QAbstractTableModel(parent = 0) {
-    _model = QDjangoQuerySet<Type>();
-    _m_ptr = &_model;
+    //_filter("isMusic", QDjangoWhere::, true)
+    select();
 }
 
+
+template <class Type>
+void QDjangoTableModel<Type>::select() {
+    _model = QDjangoQuerySet<Type>();
+    _m_ptr = &_model;
+    _m_ptr->filter(_filter);
+}
 
 template <class Type>
 int QDjangoTableModel<Type>::rowCount(const QModelIndex &parent) const {
@@ -70,21 +80,24 @@ QVariant QDjangoTableModel<Type>::headerData(int section, Qt::Orientation orient
 
 
 template <class Type>
-bool QDjangoTableModel<Type>::setData(const QModelIndex &index, const QVariant &value, int role) const {
-    if (role == Qt::EditRole) {
-        Type *t = new Type();
-
-        t->save();
-        return true;
-    }
+bool QDjangoTableModel<Type>::setData(const QModelIndex &index, const QVariant &value, int role) {
     return false;
 }
 
 
 template <class Type>
+QDjangoWhere QDjangoTableModel<Type>::filter() {
+    return _filter;
+}
+
+
+template <class Type>
 void QDjangoTableModel<Type>::setFilter(const QDjangoWhere &filter) {
-    _model = _m_ptr->filter(filter);
+    _filter = filter;
+    beginResetModel();
+    _model = _m_ptr->filter(_filter);
     _m_ptr = &_model;
+    endResetModel();
 }
 
 

@@ -3,14 +3,13 @@
 
 #include <cstdlib>
 
-#include "model/qdjangotablemodel.h"
+#include <QSignalMapper>
+#include <QDebug>
+
 #include "model/track.h"
+#include "model/tracktablemodel.h"
 
-#include <model/manager/soundmanager.h>
-
-
-class SfxManager: public SoundManager
-{
+class SfxManager : QObject {
 Q_OBJECT
 public:
     SfxManager(QObject *parent);
@@ -27,9 +26,6 @@ public:
 
     virtual void createChannels();
     void createTables();
-
-    // refactored
-    QDjangoTableModel<Track> * model_library;
 
 public slots:
     void createObjectsList();

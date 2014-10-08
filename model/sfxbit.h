@@ -10,15 +10,15 @@
 class SfxBit : public QDjangoModel {
 
     Q_OBJECT
-    //Q_PROPERTY(SfxContainer* container READ container WRITE setContainer NOTIFY containerChanged)
+    Q_PROPERTY(SfxContainer* container READ container WRITE setContainer NOTIFY containerChanged)
     Q_PROPERTY(qint16 order READ order WRITE setOrder NOTIFY orderChanged)
     Q_PROPERTY(SfxBaseType* type READ type WRITE setType NOTIFY typeChanged)
 
 public:
     explicit SfxBit(QDjangoModel *parent = 0);
 
-//    SfxContainer *container() const;
-//    void setContainer(SfxContainer *container);
+    SfxContainer *container() const;
+    void setContainer(SfxContainer *container);
 
     qint16 order() const;
     void setOrder(const qint16 order);
