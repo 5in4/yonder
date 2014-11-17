@@ -70,6 +70,7 @@ public slots:
 
     void soundbankAddFiles(QStringList paths, bool is_music);
     void soundbankAddStream(QUrl path);
+    void soundbankAddPlaylists(QStringList names);
     void soundLoop();
 };
 

@@ -377,18 +377,53 @@ p, li { white-space: pre-wrap; }
         <item>
          <widget class="QTabWidget" name="editor_tab">
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="editor_music">
            <attribute name="title">
             <string>Playlists</string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_7">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QListView" name="editor_music_playlists"/>
+             <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <item>
+               <widget class="QPushButton" name="btn_playlist_add">
+                <property name="text">
+                 <string>Add playlist</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btn_playlist_track_add">
+                <property name="text">
+                 <string>Add tracks</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
             <item>
-             <widget class="QTableView" name="editor_music_playlist_content"/>
+             <layout class="QHBoxLayout" name="horizontalLayout_7">
+              <item>
+               <widget class="QListView" name="editor_music_playlists"/>
+              </item>
+              <item>
+               <widget class="QTableView" name="editor_music_playlist_content"/>
+              </item>
+             </layout>
             </item>
            </layout>
           </widget>
@@ -832,6 +867,19 @@ Halfchecked: This option may or may not apply</string>
   <action name="action_add_stream_to_library">
    <property name="text">
     <string>Add stream to library</string>
+   </property>
+  </action>
+  <action name="action_add_playlist">
+   <property name="text">
+    <string>Add playlist</string>
+   </property>
+   <property name="toolTip">
+    <string>Add playlist</string>
+   </property>
+  </action>
+  <action name="action_add_tracks_to_playlist">
+   <property name="text">
+    <string>Add tracks to playlist</string>
    </property>
   </action>
  </widget>

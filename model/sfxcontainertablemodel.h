@@ -2,6 +2,7 @@
 #define SFXCONTAINERTABLEMODEL_H
 
 #include "model/qdjangotablemodel.h"
+#include "model/sfxcontainer.h"
 
 
 template <class Type>
@@ -9,6 +10,7 @@ class SfxContainerTableModel : public QDjangoTableModel<Type> {
 
 public:
     explicit SfxContainerTableModel(QObject *parent = 0);
+    bool setData(const QModelIndex &index, const QVariant &value, int role);
 
 signals:
 
@@ -21,5 +23,21 @@ template <class Type>
 SfxContainerTableModel<Type>::SfxContainerTableModel(QObject *parent) : QDjangoTableModel<Type>(parent) {
 }
 
+
+template <class Type>
+bool SfxContainerTableModel<Type>::setData(const QModelIndex &index, const QVariant &value, int role) {
+    qDebug() << "sfxcontainer set data";
+    if (role == Qt::EditRole) {
+        Type *t = new Type();
+        t->setName(value.toString());
+        t->setIsPlaylist(true);
+        QDjangoTableModel<Type>::beginResetModel();
+        t->save();
+        QDjangoTableModel<Type>::endResetModel();
+        QDjangoTableModel<Type>::select();
+        return true;
+    }
+    return false;
+}
 
 #endif // SFXCONTAINERTABLEMODEL_H

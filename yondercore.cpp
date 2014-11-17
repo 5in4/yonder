@@ -93,6 +93,7 @@ void YonderCore::soundbankAddFiles(QStringList paths, bool is_music) {
     for(path=paths.begin(); path!=paths.end(); ++path) {
         model_library->setData(model_library->index(0, 0), QVariant(*path), Qt::EditRole);
     }
+    QDjango::database().commit();
 }
 
 
@@ -101,6 +102,16 @@ void YonderCore::soundbankAddFiles(QStringList paths, bool is_music) {
  */
 void YonderCore::soundbankAddStream(QUrl path) {
 
+}
+
+
+void YonderCore::soundbankAddPlaylists(QStringList names) {
+    QStringList::iterator name;
+    QDjango::database().transaction();
+    for(name=names.begin(); name!=names.end(); ++name) {
+        music->model_playlists->setData(music->model_playlists->index(0, 0), QVariant(*name), Qt::EditRole);
+    }
+    QDjango::database().commit();
 }
 
 

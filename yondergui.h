@@ -7,6 +7,7 @@
 #include <QSignalMapper>
 #include <QErrorMessage>
 #include <QFileDialog>
+#include <QInputDialog>
 #include <QMessageBox>
 #include <QDesktopServices>
 
@@ -62,6 +63,7 @@ public slots:
     void soundbankOpen();
     void soundbankCreate();
     void showAbout();
+    void soundbankAddPlaylists();
     void soundbankAddFilesMusic();
     void soundbankAddFiles();
     void soundbankAddStream();

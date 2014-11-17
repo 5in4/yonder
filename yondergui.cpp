@@ -62,6 +62,10 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     //    connect(generator_frame, SIGNAL(activated()), core, SLOT(projectRefresh()));
 
     // setup editor
+    ui->btn_playlist_add->addAction(ui->action_add_playlist);
+    ui->btn_playlist_track_add->addAction(ui->action_add_tracks_to_playlist);
+    connect(ui->btn_playlist_add, SIGNAL(clicked()), this, SLOT(soundbankAddPlaylists()));
+
     ui->btn_library_add->addAction(ui->action_add_files_to_library);
     ui->btn_library_add->addAction(ui->action_add_stream_to_library);
     connect(ui->btn_library_add, SIGNAL(clicked()), this, SLOT(soundbankAddFilesMusic()));
@@ -137,6 +141,15 @@ void YonderGui::soundbankAddFilesMusic() {
     QStringList paths = QFileDialog::getOpenFileNames(this, tr("Add music files to soundbank"), QDir::homePath(), tr("Music files (%1)").arg(ACCEPTED_MIMETYPES));
     if(!paths.isEmpty()) {
         core->soundbankAddFiles(paths, true);
+    }
+}
+
+
+void YonderGui::soundbankAddPlaylists() {
+    bool ok;
+    QString name = QInputDialog::getText(this, tr("Add a playlist to soundbank"), tr("Playlist name"), QLineEdit::Normal, tr(""), &ok);
+    if(ok && !name.isEmpty()) {
+        core->soundbankAddPlaylists(QStringList(name));
     }
 }
 
