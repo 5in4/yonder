@@ -19,8 +19,8 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     QDjango::setDebugEnabled(true);
     QDjango::registerModel<Track>();
     QDjango::registerModel<SfxContainer>();
-    QDjango::registerModel<SfxBaseType>();
     QDjango::registerModel<SfxBit>();
+    QDjango::registerModel<SfxBitTrack>();
 
     // startup fmod
     FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
@@ -29,6 +29,10 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     sound_loop_timeout = new QTimer(this);
     connect(sound_loop_timeout, SIGNAL(timeout()), this, SLOT(soundLoop()));
     sound_loop_timeout->start(10);
+
+    // initialize duktape
+    duk = duk_create_heap_default();
+    Q_ASSERT(0 != duk);
 }
 
 
@@ -106,10 +110,18 @@ void YonderCore::soundbankAddStream(QUrl path) {
 
 
 void YonderCore::soundbankAddPlaylists(QStringList names) {
-    QStringList::iterator name;
     QDjango::database().transaction();
-    for(name=names.begin(); name!=names.end(); ++name) {
-        music->model_playlists->setData(music->model_playlists->index(0, 0), QVariant(*name), Qt::EditRole);
+    foreach(const QString name, names) {
+        music->model_playlists->setData(music->model_playlists->index(0, 0), QVariant(name), Qt::EditRole);
+    }
+    QDjango::database().commit();
+
+    QDjangoQuerySet<SfxContainer> sfx_container_query;
+    QDjango::database().transaction();
+    foreach(const QString name, names) {
+        SfxBit sb;
+        sb.setContainer(sfx_container_query.get(QDjangoWhere("name", QDjangoWhere::Equals, name)));
+        sb.save();
     }
     QDjango::database().commit();
 }
@@ -135,6 +147,22 @@ void YonderCore::soundLoop() {
 //        (*i)->checkFinished();
 //    }
     Q_ASSERT(FMOD_OK == FMOD_System_Update(system));
+}
+
+
+void YonderCore::sfxBitAddTracks(int sfx_bit_id, QList<int> track_ids) {
+    QDjango::database().transaction();
+    QDjangoQuerySet<SfxBit> sfx_bit_query;
+    QDjangoQuerySet<Track> track_query;
+//    SfxBit *sfx_bit = sfx_bit_query.get(QDjangoWhere("id", QDjangoWhere::Equals, sfx_bit_id));
+    foreach(const int track_id, track_ids) {
+        SfxBitTrack sbt;
+        sbt.setSfxBit(sfx_bit_query.get(QDjangoWhere("id", QDjangoWhere::Equals, sfx_bit_id)));
+        sbt.setTrack(track_query.get(QDjangoWhere("id", QDjangoWhere::Equals, track_id)));
+        sbt.save();
+    }
+    QDjango::database().commit();
+    emit sfxBitTrackAdded();
 }
 
 /*!
@@ -199,6 +227,6 @@ void YonderCore::checkUpdateProcess(QNetworkReply *rep) {
 
 
 YonderCore::~YonderCore() {
-    QSqlQuery query_vacuum("VACUUM", QDjango::database());
-    query_vacuum.exec();
+    //QSqlQuery query_vacuum("VACUUM", QDjango::database());
+    //query_vacuum.exec();
 }

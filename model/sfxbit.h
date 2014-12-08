@@ -2,17 +2,17 @@
 #define SFXBIT_H
 
 #include <QDjangoModel.h>
+#include <QDjangoQuerySet.h>
 
 #include "model/sfxcontainer.h"
-#include "sfxbasetype.h"
+#include "model/track.h"
 
 
 class SfxBit : public QDjangoModel {
 
     Q_OBJECT
     Q_PROPERTY(SfxContainer* container READ container WRITE setContainer NOTIFY containerChanged)
-    Q_PROPERTY(qint16 order READ order WRITE setOrder NOTIFY orderChanged)
-    Q_PROPERTY(SfxBaseType* type READ type WRITE setType NOTIFY typeChanged)
+    Q_PROPERTY(int order READ order WRITE setOrder NOTIFY orderChanged)
 
 public:
     explicit SfxBit(QDjangoModel *parent = 0);
@@ -20,19 +20,18 @@ public:
     SfxContainer *container() const;
     void setContainer(SfxContainer *container);
 
-    qint16 order() const;
-    void setOrder(const qint16 order);
+    int order() const;
+    void setOrder(const int &order);
 
-    SfxBaseType *type() const;
-    void setType(SfxBaseType *type);
+    void tracks();
 
 signals:
     emit void containerChanged();
     emit void orderChanged();
-    emit void typeChanged();
 
 private:
-    qint16 m_order;
+    int _order = 0;
+    QList<Track> _track_list;
 };
 
 #endif // SFXBIT_H

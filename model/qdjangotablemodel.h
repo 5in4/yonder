@@ -10,8 +10,6 @@
 template<class Type>
 class QDjangoTableModel : public QAbstractTableModel {
 public:
-
-    QDjangoTableModel(QObject *parent);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
     QVariant data(const QModelIndex &index, int role) const;
@@ -28,13 +26,6 @@ private:
     QDjangoQuerySet<Type> *_m_ptr;
     QDjangoWhere _filter;
 };
-
-
-template <class Type>
-QDjangoTableModel<Type>::QDjangoTableModel(QObject *parent) : QAbstractTableModel(parent = 0) {
-    //_filter("isMusic", QDjangoWhere::, true)
-    select();
-}
 
 
 template <class Type>
@@ -55,7 +46,6 @@ int QDjangoTableModel<Type>::columnCount(const QModelIndex &parent) const {
     if(_m_ptr->values().isEmpty()) {
         return 0;
     }
-    //if(_model->values())
     return _m_ptr->values().at(0).size();
 }
 

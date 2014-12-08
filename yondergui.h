@@ -14,8 +14,10 @@
 #include <qmath.h>
 
 #include <yondercore.h>
+#include <trackadd.h>
 #include <model/qdjangotablemodel.h>
 #include <model/track.h>
+#include <model/sfxcontainer.h>
 
 
 namespace Ui {
@@ -33,6 +35,7 @@ public:
     Ui::YonderGui *ui;
 
     YonderCore *core;
+    TrackAdd *ta;
     QSplashScreen *splash_screen;
 
     QSignalMapper *mapper_menu;
@@ -67,6 +70,8 @@ public slots:
     void soundbankAddFilesMusic();
     void soundbankAddFiles();
     void soundbankAddStream();
+    void soundbankAddTrackToPlaylist();
+    void soundbankAddTrackToSfxBit(int sfx_bit_id);
 
     void editorLibraryMusic(bool show);
 };

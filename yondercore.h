@@ -7,14 +7,18 @@
 #include <QTimer>
 #include <QSettings>
 #include <QFile>
+#include <QList>
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
 #include <QDjango.h>
+#include <QDjangoQuerySet.h>
 
-#include <sfxbasetype.h>
+#include "lib/duktape/src/duktape.h"
+
 #include <model/track.h>
 #include <model/sfxbit.h>
+#include <model/sfxbittrack.h>
 #include <model/sfxcontainer.h>
 
 #include <musicmanager.h>
@@ -30,6 +34,7 @@ public:
     MusicManager *music;
     SfxManager *sfx;
     static FMOD_SYSTEM * system;
+    duk_context * duk;
 
     TrackTableModel<Track> *model_library;
 
@@ -59,6 +64,8 @@ signals:
 
     void updateAvailable();
 
+    void sfxBitTrackAdded();
+
 public slots:
     void projectCreate(QString path);
     bool projectLoad(QString path);
@@ -71,7 +78,11 @@ public slots:
     void soundbankAddFiles(QStringList paths, bool is_music);
     void soundbankAddStream(QUrl path);
     void soundbankAddPlaylists(QStringList names);
+
+    void sfxBitAddTracks(int sfx_bit_id, QList<int> track_ids);
+
     void soundLoop();
+
 };
 
 #endif // YONDERCORE_H

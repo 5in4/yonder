@@ -11,7 +11,7 @@ class SfxContainerTableModel : public QDjangoTableModel<Type> {
 public:
     explicit SfxContainerTableModel(QObject *parent = 0);
     bool setData(const QModelIndex &index, const QVariant &value, int role);
-
+    SfxContainer modelData(const QModelIndex &index, int role) const;
 signals:
 
 public slots:
@@ -20,7 +20,8 @@ public slots:
 
 
 template <class Type>
-SfxContainerTableModel<Type>::SfxContainerTableModel(QObject *parent) : QDjangoTableModel<Type>(parent) {
+SfxContainerTableModel<Type>::SfxContainerTableModel(QObject *parent) {
+    QDjangoTableModel<Type>::select();
 }
 
 

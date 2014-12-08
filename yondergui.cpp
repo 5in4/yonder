@@ -54,6 +54,7 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(core, &YonderCore::projectLoadingFailed, this, &YonderGui::stateLoadingFailed);
     connect(core, &YonderCore::projectLoaded, this, &YonderGui::stateLoaded);
     connect(core, &YonderCore::projectRefreshed, this, &YonderGui::stateRefreshed);
+    connect(core, &YonderCore::sfxBitTrackAdded, this, &YonderGui::stateRefreshed);
     connect(core, &YonderCore::webappStarted, this, &YonderGui::webappStarted);
     connect(core, &YonderCore::webappStopped, this, &YonderGui::webappStopped);
 
@@ -65,6 +66,9 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     ui->btn_playlist_add->addAction(ui->action_add_playlist);
     ui->btn_playlist_track_add->addAction(ui->action_add_tracks_to_playlist);
     connect(ui->btn_playlist_add, SIGNAL(clicked()), this, SLOT(soundbankAddPlaylists()));
+
+    connect(ui->btn_playlist_track_add, SIGNAL(clicked()), this, SLOT(soundbankAddTrackToPlaylist()));
+
 
     ui->btn_library_add->addAction(ui->action_add_files_to_library);
     ui->btn_library_add->addAction(ui->action_add_stream_to_library);
@@ -154,6 +158,26 @@ void YonderGui::soundbankAddPlaylists() {
 }
 
 
+void YonderGui::soundbankAddTrackToPlaylist() {
+    QModelIndexList indexes = ui->editor_music_playlists->selectionModel()->selectedIndexes();
+    if(indexes.size() == 0) {
+        QMessageBox::information(this, tr("No playlist selected"), tr("Select a playlist to add tracks"), QMessageBox::Ok);
+        return;
+    }
+    QModelIndex mo = indexes.at(0);
+    QModelIndex mi = mo.sibling(mo.row(), 1);
+
+    QDjangoQuerySet<SfxBit> sfx_bit_query;
+    SfxBit *sb = sfx_bit_query.get(QDjangoWhere("container_id", QDjangoWhere::Equals, mi.data().toString()));
+    soundbankAddTrackToSfxBit(sb->pk().toInt());
+}
+
+
+void YonderGui::soundbankAddTrackToSfxBit(int sfx_bit_id) {
+    ta = new TrackAdd(sfx_bit_id, core, this);
+    ta->show();
+}
+
 /*
  * \brief open dialog to enter stream url
  */
@@ -186,11 +210,10 @@ void YonderGui::stateLoadingFailed() {
  */
 void YonderGui::stateLoaded() {
     ui->editor_music_playlists->setModel(core->music->model_playlists);
-    ui->editor_music_playlists->setModelColumn(2);
+    ui->editor_music_playlists->setModelColumn(1);
+    connect(ui->editor_music_playlists->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), core->music, SLOT(loadPlaylist(QModelIndex)));
+    connect(core->music, SIGNAL(playlistLoaded()), this, SLOT(stateRefreshed()));
     ui->editor_library->setModel(core->model_library);
-    ui->editor_library->hideColumn(2);
-    ui->editor_library->hideColumn(3);
-    ui->editor_library->hideColumn(4);
 //    ui->frame_sidebar->setTabEnabled(1, true);
 //    ui->frame_sidebar->setTabEnabled(2, true);
 //    start_frame->hide(); // weird behaviour fix
@@ -199,7 +222,9 @@ void YonderGui::stateLoaded() {
 }
 
 void YonderGui::stateRefreshed() {
-    //generator_frame->refreshUi();
+    if(core->music->model_playlist_active) {
+        ui->editor_music_playlist_content->setModel(core->music->model_playlist_active);
+    }
 }
 
 

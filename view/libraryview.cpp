@@ -10,6 +10,9 @@ LibraryView::LibraryView(QWidget *parent) : QTableView(parent) {
 void LibraryView::setModel(QAbstractItemModel *model) {
     _model = (QDjangoTableModel<Track>*) model;
     QTableView::setModel(model);
+    hideColumn(2);
+    hideColumn(3);
+    hideColumn(4);
 }
 
 void LibraryView::dragEnterEvent(QDragEnterEvent *event) {

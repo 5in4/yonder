@@ -9,6 +9,8 @@ class SfxContainer : public QDjangoModel {
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     Q_PROPERTY(bool isPlaylist READ isPlaylist WRITE setIsPlaylist NOTIFY isPlaylistChanged)
 
+    Q_CLASSINFO("name", "primary_key=true")
+
 public:
     explicit SfxContainer(QDjangoModel *parent = 0);
 

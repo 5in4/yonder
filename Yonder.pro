@@ -33,7 +33,6 @@ SOURCES += main.cpp \
     delegate/aghotkeyactiondelegate.cpp \
     view/agpreviewpushbutton.cpp \
     view/qlineeditfilter.cpp \
-    view/solidtabwidget.cpp \
     frameobject.cpp \
     frameresourcebrowser.cpp \
     frameconfigure.cpp \
@@ -44,10 +43,12 @@ SOURCES += main.cpp \
     model/track.cpp \
     model/sfxcontainer.cpp \
     model/sfxbit.cpp \
-    sfxbasetype.cpp \
     view/libraryview.cpp \
     sfxmanager.cpp \
     musicmanager.cpp \
+    trackadd.cpp \
+    lib/duktape/src/duktape.c \
+    model/sfxbittrack.cpp
 
 HEADERS += \
     model/manager/musicmanager.h \
@@ -58,7 +59,6 @@ HEADERS += \
     delegate/aghotkeyactiondelegate.h \
     view/agpreviewpushbutton.h \
     view/qlineeditfilter.h \
-    view/solidtabwidget.h \
     frameobject.h \
     frameresourcebrowser.h \
     frameconfigure.h \
@@ -69,16 +69,21 @@ HEADERS += \
     model/track.h \
     model/sfxcontainer.h \
     model/sfxbit.h \
-    sfxbasetype.h \
     model/qdjangotablemodel.h \
     view/libraryview.h \
     sfxmanager.h \
     musicmanager.h \
     model/tracktablemodel.h \
-    model/sfxcontainertablemodel.h
+    model/sfxcontainertablemodel.h \
+    trackadd.h \
+    lib/duktape/src/duktape.h \
+    model/sfxbittrack.h \
+    model/sfxbittablemodel.h \
+    model/sfxbittracktablemodel.h
 
 FORMS += \
-    yondergui.ui
+    yondergui.ui \
+    trackadd.ui
 
 RESOURCES += \
     yonder.qrc \

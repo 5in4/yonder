@@ -17,8 +17,8 @@ private:
 
 
 template<class Type>
-TrackTableModel<Type>::TrackTableModel(QObject *parent) : QDjangoTableModel<Type>(parent) {
-    qDebug() << "ttm created";
+TrackTableModel<Type>::TrackTableModel(QObject *parent) {
+    QDjangoTableModel<Type>::select();
 }
 
 

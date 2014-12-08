@@ -22,6 +22,27 @@ MusicManager::MusicManager(QObject *parent) {
 }
 
 
+void MusicManager::loadPlaylist(QModelIndex playlist_index) {
+    loadPlaylist(playlist_index.data().toString());
+}
+
+
+void MusicManager::loadPlaylist(QString playlist_id) {
+    QDjangoQuerySet<SfxBit> sfx_bit_query;
+    SfxBit *sfx_bit = sfx_bit_query.get(QDjangoWhere("container_id", QDjangoWhere::Equals, playlist_id));
+    QDjangoQuerySet<SfxBitTrack> sfx_bit_tracks;
+    sfx_bit_tracks = sfx_bit_tracks.filter(QDjangoWhere("sfx_bit_id", QDjangoWhere::Equals, sfx_bit->pk()));
+    QStringList track_ids;
+    for(int i=0;i<sfx_bit_tracks.size();++i) {
+        track_ids.append(sfx_bit_tracks.at(i)->pk().toString());
+    }
+
+    model_playlist_active = new TrackTableModel<Track>(this);
+    model_playlist_active->setFilter(QDjangoWhere("id", QDjangoWhere::IsIn, track_ids));
+    emit playlistLoaded();
+}
+
+
 /*!
  * Switches play/pause state
  */

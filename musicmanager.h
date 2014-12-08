@@ -4,8 +4,12 @@
 #include <QObject>
 #include <QDebug>
 
+#include <QDjangoQuerySet.h>
+
 #include "model/sfxcontainertablemodel.h"
 #include "model/sfxcontainer.h"
+#include "model/sfxbittracktablemodel.h"
+#include "model/sfxbittrack.h"
 #include "model/tracktablemodel.h"
 #include "model/track.h"
 
@@ -16,9 +20,16 @@ public:
     MusicManager(QObject *parent);
 
     SfxContainerTableModel<SfxContainer> *model_playlists;
+    TrackTableModel<Track> *model_playlist_active;
     TrackTableModel<Track> *model_library;
 
+signals:
+    void playlistLoaded();
+
 public slots:
+    void loadPlaylist(QModelIndex playlist_index);
+    void loadPlaylist(QString playlist_id);
+
     bool enqueue();
     void next();
     void playPause();
