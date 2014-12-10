@@ -85,7 +85,8 @@ template <class Type>
 void QDjangoTableModel<Type>::setFilter(const QDjangoWhere &filter) {
     _filter = filter;
     beginResetModel();
-    _model = _m_ptr->filter(_filter);
+    _model = QDjangoQuerySet<Type>();
+    _model = _model.filter(_filter);
     _m_ptr = &_model;
     endResetModel();
 }

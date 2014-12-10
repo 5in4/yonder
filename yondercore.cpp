@@ -83,6 +83,7 @@ bool YonderCore::projectLoad(QString path) {
 
     //webappStart();
     qDebug() << "Opened soundbank" << this->project_path;
+    connect(this, &YonderCore::sfxBitTrackAdded, this->music, &MusicManager::reloadPlaylist);
     emit projectLoaded();
     return true;
 }

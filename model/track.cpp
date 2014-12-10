@@ -97,3 +97,13 @@ bool Track::isMusic() const {
 void Track::setIsMusic(const bool &is_music) {
     _is_music = is_music;
 }
+
+
+bool Track::isSfx() const {
+    return _is_sfx;
+}
+
+
+void Track::setIsSfx(const bool &is_sfx) {
+    _is_sfx = is_sfx;
+}

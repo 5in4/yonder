@@ -54,7 +54,6 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(core, &YonderCore::projectLoadingFailed, this, &YonderGui::stateLoadingFailed);
     connect(core, &YonderCore::projectLoaded, this, &YonderGui::stateLoaded);
     connect(core, &YonderCore::projectRefreshed, this, &YonderGui::stateRefreshed);
-    connect(core, &YonderCore::sfxBitTrackAdded, this, &YonderGui::stateRefreshed);
     connect(core, &YonderCore::webappStarted, this, &YonderGui::webappStarted);
     connect(core, &YonderCore::webappStopped, this, &YonderGui::webappStopped);
 
@@ -76,7 +75,9 @@ YonderGui::YonderGui(QSplashScreen *splash_screen, QWidget *parent) : QMainWindo
     connect(ui->action_add_files_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddFilesMusic()));
     connect(ui->action_add_stream_to_library, SIGNAL(triggered()), this, SLOT(soundbankAddStream()));
 
-    connect(ui->checkbox_library_music, SIGNAL(toggled(bool)), this, SLOT(editorLibraryMusic(bool)));
+    connect(ui->checkbox_library_music, &QCheckBox::toggled, this, &YonderGui::editorLibrarySetFilter);
+    connect(ui->checkbox_library_sfx, &QCheckBox::toggled, this, &YonderGui::editorLibrarySetFilter);
+    connect(ui->lineedit_library_filter, &QLineEdit::textChanged, this, &YonderGui::editorLibrarySetFilter);
 
     // Load project setProject returns to default state if no path is set.
     //connect(start_frame, SIGNAL(acceptedProjectFolder(QString)), core, SLOT(projectLoad(QString)));
@@ -201,7 +202,9 @@ void YonderGui::stateLoading() {
  * Set ui to state if loading a project failed
  */
 void YonderGui::stateLoadingFailed() {
-//    ui->frame_sidebar->setActive(0);
+    ui->btn_start->click();
+    ui->btn_generate->setEnabled(false);
+    ui->btn_edit->setEnabled(false);
 }
 
 /*!
@@ -209,21 +212,23 @@ void YonderGui::stateLoadingFailed() {
  * Set ui to state right after a project finished loading
  */
 void YonderGui::stateLoaded() {
+    ui->music_playlists->setModel(core->music->model_playlists);
+    ui->music_playlists->setModelColumn(1);
     ui->editor_music_playlists->setModel(core->music->model_playlists);
     ui->editor_music_playlists->setModelColumn(1);
     connect(ui->editor_music_playlists->selectionModel(), SIGNAL(currentChanged(QModelIndex,QModelIndex)), core->music, SLOT(loadPlaylist(QModelIndex)));
     connect(core->music, SIGNAL(playlistLoaded()), this, SLOT(stateRefreshed()));
     ui->editor_library->setModel(core->model_library);
-//    ui->frame_sidebar->setTabEnabled(1, true);
-//    ui->frame_sidebar->setTabEnabled(2, true);
-//    start_frame->hide(); // weird behaviour fix
-//    ui->frame_sidebar->setActive(1);
-//    ui->frame_sidebar->progress_bar->hide();
+
+    ui->btn_generate->setEnabled(true);
+    ui->btn_edit->setEnabled(true);
+    ui->btn_generate->click();
 }
 
 void YonderGui::stateRefreshed() {
     if(core->music->model_playlist_active) {
         ui->editor_music_playlist_content->setModel(core->music->model_playlist_active);
+        ui->editor_music_playlist_content->update();
     }
 }
 
@@ -231,10 +236,15 @@ void YonderGui::stateRefreshed() {
 /*!
  * \brief set library model to chosen filter
  */
-void YonderGui::editorLibraryMusic(bool show) {
-    QDjangoWhere filter = core->model_library->filter();
-    filter = filter && QDjangoWhere("isMusic", QDjangoWhere::Equals, show);
-    core->model_library->setFilter(filter);
+void YonderGui::editorLibrarySetFilter() {
+    QDjangoWhere filter_type = QDjangoWhere("isMusic", QDjangoWhere::Equals, ui->checkbox_library_music->isChecked()) || QDjangoWhere("isSfx", QDjangoWhere::Equals, ui->checkbox_library_sfx->isChecked());
+    QString search = ui->lineedit_library_filter->text();
+    if(search.length() > 0) {
+        QDjangoWhere filter_content = QDjangoWhere("artist", QDjangoWhere::Contains, search) || QDjangoWhere("album", QDjangoWhere::Contains, search) || QDjangoWhere("title", QDjangoWhere::Contains, search);
+        core->model_library->setFilter(filter_type && filter_content);
+        return;
+    }
+    core->model_library->setFilter(filter_type );
 }
 
 

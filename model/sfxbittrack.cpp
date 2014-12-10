@@ -1,7 +1,8 @@
 #include "sfxbittrack.h"
 
 SfxBitTrack::SfxBitTrack(QDjangoModel *parent) : QDjangoModel(parent) {
-
+    setForeignKey("sfx_bit", new SfxBit(this));
+    setForeignKey("track", new Track(this));
 }
 
 

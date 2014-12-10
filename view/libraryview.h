@@ -4,6 +4,7 @@
 #include <QTableView>
 #include <QMimeData>
 #include <QDragEnterEvent>
+#include <QHeaderView>
 
 #include <QDebug>
 
@@ -21,6 +22,9 @@ public:
 private:
     QString mime_type_accepted = "text/uri-list";
     QDjangoTableModel<Track> * _model;
+    QHeaderView *_header_vertical;
+    QHeaderView *_header_horizontal;
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dragMoveEvent(QDragMoveEvent *event);

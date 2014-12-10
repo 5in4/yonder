@@ -73,7 +73,7 @@ public slots:
     void soundbankAddTrackToPlaylist();
     void soundbankAddTrackToSfxBit(int sfx_bit_id);
 
-    void editorLibraryMusic(bool show);
+    void editorLibrarySetFilter();
 };
 
 #endif // YONDERGUI_H

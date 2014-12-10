@@ -214,7 +214,7 @@
                 <item>
                  <layout class="QVBoxLayout" name="verticalLayout_4">
                   <item>
-                   <widget class="QSlider" name="musicSeek">
+                   <widget class="QSlider" name="music_seek">
                     <property name="enabled">
                      <bool>false</bool>
                     </property>
@@ -227,7 +227,7 @@
                    <layout class="QHBoxLayout" name="music_control_layout"/>
                   </item>
                   <item>
-                   <widget class="QLabel" name="musicTagLabel">
+                   <widget class="QLabel" name="music_tag">
                     <property name="text">
                      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
@@ -261,7 +261,7 @@ p, li { white-space: pre-wrap; }
                </layout>
               </item>
               <item>
-               <widget class="QListView" name="music_select_playlist">
+               <widget class="QListView" name="music_playlists">
                 <property name="editTriggers">
                  <set>QAbstractItemView::NoEditTriggers</set>
                 </property>
@@ -274,7 +274,7 @@ p, li { white-space: pre-wrap; }
                </widget>
               </item>
               <item>
-               <widget class="QSlider" name="musicVolume">
+               <widget class="QSlider" name="music_volume">
                 <property name="maximum">
                  <number>100</number>
                 </property>
@@ -407,7 +407,7 @@ p, li { white-space: pre-wrap; }
                </spacer>
               </item>
               <item>
-               <widget class="QLineEdit" name="lineEdit">
+               <widget class="QLineEdit" name="lineedit_playlist_filter">
                 <property name="placeholderText">
                  <string>filter tracks</string>
                 </property>
@@ -522,6 +522,13 @@ p, li { white-space: pre-wrap; }
                </spacer>
               </item>
               <item>
+               <widget class="QLineEdit" name="lineedit_library_filter">
+                <property name="placeholderText">
+                 <string>filter tracks</string>
+                </property>
+               </widget>
+              </item>
+              <item>
                <widget class="QToolButton" name="btn_library_add">
                 <property name="text">
                  <string>Add files to library</string>
@@ -538,24 +545,6 @@ p, li { white-space: pre-wrap; }
               <property name="dragDropMode">
                <enum>QAbstractItemView::DropOnly</enum>
               </property>
-              <property name="selectionMode">
-               <enum>QAbstractItemView::ExtendedSelection</enum>
-              </property>
-              <property name="selectionBehavior">
-               <enum>QAbstractItemView::SelectRows</enum>
-              </property>
-              <property name="showGrid">
-               <bool>false</bool>
-              </property>
-              <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
-               <bool>true</bool>
-              </attribute>
-              <attribute name="horizontalHeaderStretchLastSection">
-               <bool>true</bool>
-              </attribute>
-              <attribute name="verticalHeaderVisible">
-               <bool>false</bool>
-              </attribute>
              </widget>
             </item>
            </layout>

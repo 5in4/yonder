@@ -1,7 +1,7 @@
 #include "sfxbit.h"
 
 SfxBit::SfxBit(QDjangoModel *parent) : QDjangoModel(parent) {
-
+    setForeignKey("container", new SfxContainer(this));
 }
 
 

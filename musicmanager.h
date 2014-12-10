@@ -29,12 +29,16 @@ signals:
 public slots:
     void loadPlaylist(QModelIndex playlist_index);
     void loadPlaylist(QString playlist_id);
+    void reloadPlaylist();
 
     bool enqueue();
     void next();
     void playPause();
     void play();
     void pause();
+
+private:
+    QString _playlist_active_id;
 };
 
 #endif // MUSICMANAGER_H

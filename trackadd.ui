@@ -14,13 +14,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Add track to playlist</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select tracks from yoyur library to add to the playlist</string>
+      <string>Select tracks from your library to add to the playlist</string>
      </property>
     </widget>
    </item>

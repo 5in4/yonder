@@ -26,6 +26,7 @@ class Track : public QDjangoModel {
     Q_PROPERTY(QString album READ album WRITE setAlbum NOTIFY albumChanged)
     Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY titleChanged)
     Q_PROPERTY(bool isMusic READ isMusic WRITE setIsMusic NOTIFY isMusicChanged)
+    Q_PROPERTY(bool isSfx READ isSfx WRITE setIsSfx NOTIFY isSfxChanged)
 
 public:
     explicit Track(QDjangoModel *parent = 0);
@@ -45,6 +46,9 @@ public:
     bool isMusic() const;
     void setIsMusic(const bool &is_music);
 
+    bool isSfx() const;
+    void setIsSfx(const bool &is_sfx);
+
     bool loadDataToSystem();
     bool insert(QString path, bool is_music);
 
@@ -54,6 +58,7 @@ signals:
     emit void albumChanged();
     emit void titleChanged();
     emit void isMusicChanged();
+    emit void isSfxChanged();
 
 private:
     FMOD_CREATESOUNDEXINFO info;
@@ -67,6 +72,7 @@ private:
     QString _album;
     QString _title;
     bool _is_music = false;
+    bool _is_sfx = true;
 };
 
 #endif // TRACK_H
