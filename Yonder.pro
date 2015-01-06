@@ -10,9 +10,9 @@ win32 {
 }
 
 unix:!macx {
-    LIBS += -L/usr/lib/ -ltag -lfmodexL -L$$PWD/lib/qdjango-db/ -lqdjango-db -L$$PWD/lib/qfrontdesk/ -lqfrontdesk
-    INCLUDEPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk
-    DEPENDPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk
+    LIBS += -L/usr/lib/ -ltag -L$$PWD/lib/qdjango-db/ -lqdjango-db -L$$PWD/lib/qfrontdesk/ -lqfrontdesk -L$$PWD/lib/fmod/fmodstudioapi_linux/api/lowlevel/lib/x86_64/ -lfmod
+    INCLUDEPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk -L$$PWD/lib/fmod/fmodstudioapi_linux/api/lowlevel/
+    DEPENDPATH += /usr/include $$PWD/lib/qdjango-db $$/PWD/lib/qfrontdesk -L$$PWD/lib/fmod/fmodstudioapi_linux/api/lowlevel/
     #QMAKE_POST_LINK += ../src/linux_postbuild
 }
 

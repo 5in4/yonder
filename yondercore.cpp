@@ -23,7 +23,7 @@ YonderCore::YonderCore(QObject *parent) : QObject(parent) {
     QDjango::registerModel<SfxBitTrack>();
 
     // startup fmod
-    FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
+    //FMOD_Debug_SetLevel(FMOD_DEBUG_LEVEL_ALL);
     Q_ASSERT(FMOD_OK == FMOD_System_Create(&system));
     Q_ASSERT(FMOD_OK == FMOD_System_Init(system, 1000, FMOD_INIT_NORMAL, 0));
     sound_loop_timeout = new QTimer(this);
